@@ -1,24 +1,24 @@
 //
-//  ContentView.swift
-//  FinalStorm-iOS
+//  iOS/ContentView_iOS.swift
+//  FinalStorm
 //
-//  Created by Wenyan Qin on 2025-07-03.
+//  iOS-specific content view implementation
 //
 
 import SwiftUI
 
-struct ContentView: View {
+struct ContentView_iOS: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Hello, iOS world!")
         }
         .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView_iOS()
 }

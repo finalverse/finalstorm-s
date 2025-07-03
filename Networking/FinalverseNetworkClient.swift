@@ -36,6 +36,11 @@ class FinalverseNetworkClient {
     private let baseURL: String
     private let session = URLSession.shared
     
+    // Add endpoint property
+    var serviceEndpoint: URL? {
+        return URL(string: "\(baseURL):\(service.port)")
+    }
+    
     init(service: Service, baseURL: String = "http://localhost") {
         self.service = service
         self.baseURL = baseURL
@@ -48,7 +53,7 @@ class FinalverseNetworkClient {
         
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
-            throw NetworkError.connectionFailed
+            throw FinalverseNetworkError.connectionFailed
         }
     }
     
@@ -66,7 +71,7 @@ class FinalverseNetworkClient {
         
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
-            throw NetworkError.requestFailed
+            throw FinalverseNetworkError.requestFailed
         }
         
         return try JSONDecoder().decode(T.self, from: data)
@@ -83,9 +88,18 @@ struct ServiceEndpoint {
         self.method = method
         self.body = body
     }
+    
+    // Add predefined endpoints
+    static let getAvailableSongs = ServiceEndpoint(path: "/songs")
 }
 
-enum NetworkError: Error {
+// Renamed to avoid conflict with NetworkManager's NetworkError
+enum FinalverseNetworkError: Error {
     case connectionFailed
     case requestFailed
+}
+
+// Add response types for network calls
+struct SongsResponse: Codable {
+    let songs: [Song]
 }

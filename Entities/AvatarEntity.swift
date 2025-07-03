@@ -1,14 +1,18 @@
 //
 //  Entities/AvatarEntity.swift
-//  FinalStorm-S
+//  FinalStorm
 //
-//  Player avatar entity
+//  Player avatar entity with custom UUID for harmony system
 //
 
 import RealityKit
 import Combine
+import Foundation
 
 class AvatarEntity: BaseEntity {
+    // FIXED: Add custom UUID for our systems since Entity.id is UInt64
+    let customId = UUID()
+    
     // Properties
     var isLocalPlayer: Bool = false
     var avatarState: AvatarState = .idle
@@ -31,9 +35,22 @@ class AvatarEntity: BaseEntity {
     @Published var resonanceLevel: ResonanceLevel = .novice
     @Published var currentHarmony: Float = 1.0
     
-    override func setupComponents() {
-        super.setupComponents()
-        
+    // Add profile property
+    var userProfile: UserProfile?
+    
+    // Single required init for Entity inheritance
+    required init() {
+        super.init()
+        setupAvatarComponents()
+    }
+    
+    // Setup method to configure with profile
+    func setupForProfile(_ profile: UserProfile) {
+        self.userProfile = profile
+        self.name = profile.displayName
+    }
+    
+    private func setupAvatarComponents() {
         // Add avatar-specific components
         songweaverComponent = SongweaverComponent(resonanceLevel: resonanceLevel)
         harmonyComponent = HarmonyComponent()
@@ -52,6 +69,11 @@ class AvatarEntity: BaseEntity {
             interactionType: .conversation,
             onInteract: interactionClosure
         ))
+    }
+    
+    override func setupComponents() {
+        super.setupComponents()
+        // Additional setup if needed
     }
     
     func updateResonance(_ newLevel: ResonanceLevel) {
@@ -103,4 +125,12 @@ enum AvatarState {
     case jumping
     case songweaving
     case interacting
+}
+
+// MARK: - Supporting Error Types
+enum SongError: Error {
+    case insufficientResonance
+    case insufficientParticipants
+    case invalidTarget
+    case songOnCooldown
 }

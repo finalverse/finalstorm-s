@@ -59,8 +59,12 @@ enum MusicTheme {
     case celebration
 }
 
+// Define SongweavingAudioEngine only once here
 class SongweavingAudioEngine {
     func playMelody(_ melody: Melody) async {
-        // Play melody audio
+        // Play melody audio with platform-specific handling
+        #if os(iOS) || os(macOS) || os(visionOS)
+        print("Playing melody: \(melody.type.rawValue)")
+        #endif
     }
 }

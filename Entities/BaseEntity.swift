@@ -1,8 +1,8 @@
 //
-//  BaseEntity.swift
-//  FinalStorm-S
+//  Entities/BaseEntity.swift
+//  FinalStorm
 //
-//  Base entity class for all game objects
+//  Base entity class for all game objects with proper Entity inheritance
 //
 
 import RealityKit
@@ -19,11 +19,7 @@ class BaseEntity: Entity {
     let onHeal = PassthroughSubject<Float, Never>()
     let onInteract = PassthroughSubject<Entity?, Never>()
     
-    override init() {
-        super.init()
-        setupComponents()
-    }
-    
+    // Single required init for Entity inheritance
     required init() {
         super.init()
         setupComponents()
@@ -64,24 +60,7 @@ class BaseEntity: Entity {
     }
 }
 
-// MARK: - Components
-struct InteractionComponent: Component {
-    let interactionRadius: Float = 2.0
-    let requiresLineOfSight: Bool = true
-    let interactionType: InteractionType = .default
-    var onInteract: (() -> Void)?
-}
-
-enum InteractionType {
-    case `default`
-    case talk
-    case pickup
-    case activate
-    case questGive
-    case teach
-    case accompany
-}
-
+// MARK: - Health Component (InteractionComponent is defined in AvatarComponents.swift)
 struct HealthComponent: Component {
     var current: Float
     var maximum: Float

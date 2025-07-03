@@ -30,18 +30,8 @@ enum BodyShape: String, CaseIterable, Codable {
     }
 }
 
-typealias Color = CodableColor
-
-struct CodableColor: Codable {
-    let red: Float
-    let green: Float
-    let blue: Float
-    let alpha: Float
-    
-    static let light = CodableColor(red: 0.95, green: 0.85, blue: 0.75, alpha: 1.0)
-    static let medium = CodableColor(red: 0.75, green: 0.65, blue: 0.55, alpha: 1.0)
-    static let dark = CodableColor(red: 0.45, green: 0.35, blue: 0.25, alpha: 1.0)
-}
+// Remove the CodableColor redeclaration - it's already defined in CodableColor.swift
+// typealias Color = CodableColor  // REMOVED
 
 enum HairStyle: String, CaseIterable, Codable {
     case short = "Short"

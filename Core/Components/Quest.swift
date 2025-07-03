@@ -29,18 +29,6 @@ struct Quest: Identifiable, Codable {
     var completedAt: Date?            // When the quest was finished (nil if not complete)
     
     /// Initialize a new quest with all required parameters
-    /// - Parameters:
-    ///   - id: Unique quest identifier (auto-generated if not provided)
-    ///   - title: Display name for the quest
-    ///   - description: Detailed quest description
-    ///   - objectives: Array of tasks that must be completed
-    ///   - rewards: Array of rewards given upon completion
-    ///   - questGiver: Name/ID of the NPC or system that gave this quest
-    ///   - location: Area or region where quest takes place
-    ///   - category: Quest classification for organization
-    ///   - difficulty: Challenge level of the quest
-    ///   - estimatedDuration: Expected completion time
-    ///   - prerequisites: Other quests that must be completed first
     init(
         id: UUID = UUID(),
         title: String,
@@ -100,7 +88,6 @@ struct Quest: Identifiable, Codable {
     }
     
     /// Mark a specific objective as completed and update quest status
-    /// - Parameter objectiveId: The UUID of the objective to complete
     mutating func completeObjective(withId objectiveId: UUID) {
         if let index = objectives.firstIndex(where: { $0.id == objectiveId }) {
             objectives[index].isCompleted = true
@@ -115,13 +102,11 @@ struct Quest: Identifiable, Codable {
     }
     
     /// Add a new objective to the quest (for dynamic quest expansion)
-    /// - Parameter objective: The new objective to add
     mutating func addObjective(_ objective: QuestObjective) {
         objectives.append(objective)
     }
     
     /// Update quest status manually (for special cases)
-    /// - Parameter newStatus: The new status to set
     mutating func updateStatus(_ newStatus: QuestStatus) {
         status = newStatus
         if newStatus == .completed {
@@ -131,8 +116,6 @@ struct Quest: Identifiable, Codable {
 }
 
 // MARK: - Quest Objective
-
-/// Individual task within a quest that must be completed
 struct QuestObjective: Identifiable, Codable {
     let id: UUID
     let description: String              // Human-readable objective description
@@ -143,13 +126,6 @@ struct QuestObjective: Identifiable, Codable {
     let isOptional: Bool              // Whether this objective is required for quest completion
     var completedAt: Date?           // When this objective was finished
     
-    /// Initialize a new quest objective
-    /// - Parameters:
-    ///   - id: Unique objective identifier (auto-generated if not provided)
-    ///   - description: Human-readable description of what to do
-    ///   - targetType: Category of objective (kill, collect, etc.)
-    ///   - targetCount: Number of things that need to be accomplished
-    ///   - isOptional: Whether this objective is required for quest completion
     init(
         id: UUID = UUID(),
         description: String,
@@ -179,7 +155,6 @@ struct QuestObjective: Identifiable, Codable {
     }
     
     /// Update progress toward objective completion
-    /// - Parameter amount: How much progress to add (default 1)
     mutating func updateProgress(by amount: Int = 1) {
         currentCount = min(targetCount, currentCount + amount)
         if currentCount >= targetCount && !isCompleted {
@@ -197,20 +172,12 @@ struct QuestObjective: Identifiable, Codable {
 }
 
 // MARK: - Quest Reward
-
-/// Rewards that players receive for completing quests
 struct QuestReward: Identifiable, Codable {
     let id: UUID
     let type: QuestRewardType
     let description: String
     let rarity: RewardRarity
     
-    /// Initialize a new quest reward
-    /// - Parameters:
-    ///   - id: Unique reward identifier (auto-generated if not provided)
-    ///   - type: What kind of reward this is
-    ///   - description: Human-readable description of the reward
-    ///   - rarity: How rare/valuable this reward is
     init(
         id: UUID = UUID(),
         type: QuestRewardType,
@@ -245,8 +212,6 @@ struct QuestReward: Identifiable, Codable {
 }
 
 // MARK: - Quest Reward Types
-
-/// Types of rewards that can be granted from quests
 enum QuestRewardType: Codable {
     case experience(amount: Int)           // XP points
     case resonance(type: MelodyType, amount: Float)  // Resonance increase
@@ -277,7 +242,7 @@ enum QuestRewardType: Codable {
     }
 }
 
-/// Currency types in the game
+// MARK: - Supporting Enums
 enum CurrencyType: String, Codable {
     case gold = "Gold"
     case harmonyCrystals = "Harmony Crystals"
@@ -285,7 +250,6 @@ enum CurrencyType: String, Codable {
     case echoShards = "Echo Shards"
 }
 
-/// Categories for organizing different types of quests
 enum QuestCategory: String, Codable, CaseIterable {
     case main = "Main Story"
     case side = "Side Quest"
@@ -328,7 +292,6 @@ enum QuestCategory: String, Codable, CaseIterable {
     }
 }
 
-/// Difficulty levels for quests
 enum QuestDifficulty: String, Codable, CaseIterable {
     case trivial = "Trivial"
     case easy = "Easy"
@@ -374,7 +337,6 @@ enum QuestDifficulty: String, Codable, CaseIterable {
     }
 }
 
-/// Current status of a quest
 enum QuestStatus: String, Codable, CaseIterable {
     case locked = "Locked"           // Prerequisites not met
     case available = "Available"     // Can be started
@@ -395,7 +357,6 @@ enum QuestStatus: String, Codable, CaseIterable {
     }
 }
 
-/// Types of quest objectives
 enum ObjectiveTargetType: String, Codable, CaseIterable {
     case killEnemies = "Kill Enemies"
     case collectItems = "Collect Items"
@@ -429,7 +390,6 @@ enum ObjectiveTargetType: String, Codable, CaseIterable {
     }
 }
 
-/// Rarity levels for quest rewards
 enum RewardRarity: String, Codable, CaseIterable {
     case common = "Common"
     case uncommon = "Uncommon"
@@ -464,18 +424,8 @@ enum RewardRarity: String, Codable, CaseIterable {
 }
 
 // MARK: - Quest Factory
-
-/// Utility for creating common quest types with proper defaults
 struct QuestFactory {
     /// Create a simple collection quest
-    /// - Parameters:
-    ///   - title: Quest title
-    ///   - itemName: Name of item to collect
-    ///   - quantity: How many to collect
-    ///   - location: Where the quest takes place
-    ///   - questGiver: Who gave the quest
-    ///   - rewards: Array of rewards to give
-    /// - Returns: Configured Quest object
     static func createCollectionQuest(
         title: String,
         itemName: String,
@@ -502,13 +452,6 @@ struct QuestFactory {
     }
     
     /// Create a songweaving practice quest
-    /// - Parameters:
-    ///   - title: Quest title
-    ///   - melodyType: Type of melody to practice (as string)
-    ///   - castCount: How many times to cast
-    ///   - location: Where to practice
-    ///   - questGiver: Who gave the quest
-    /// - Returns: Configured Quest object
     static func createSongweavingQuest(
         title: String,
         melodyType: String,
@@ -523,7 +466,7 @@ struct QuestFactory {
         )
         
         let reward = QuestReward(
-            type: .melodyType(rawValue: melodyType),
+            type: .experience(amount: 200),
             description: "Learn advanced \(melodyType) techniques",
             rarity: .uncommon
         )
@@ -540,13 +483,6 @@ struct QuestFactory {
     }
     
     /// Create a social interaction quest
-    /// - Parameters:
-    ///   - title: Quest title
-    ///   - npcName: Name of NPC to talk to
-    ///   - location: Where to find the NPC
-    ///   - questGiver: Who gave the quest
-    ///   - experienceReward: How much XP to give
-    /// - Returns: Configured Quest object
     static func createSocialQuest(
         title: String,
         npcName: String,
@@ -579,7 +515,6 @@ struct QuestFactory {
 }
 
 // MARK: - Collection Extensions
-
 extension Array where Element == Quest {
     /// Get all active quests from the collection
     var activeQuests: [Quest] {
@@ -592,22 +527,16 @@ extension Array where Element == Quest {
     }
     
     /// Get quests by specific category
-    /// - Parameter category: The category to filter by
-    /// - Returns: Array of quests in that category
     func quests(in category: QuestCategory) -> [Quest] {
         return self.filter { $0.category == category }
     }
     
     /// Get quests by difficulty level
-    /// - Parameter difficulty: The difficulty to filter by
-    /// - Returns: Array of quests with that difficulty
     func quests(withDifficulty difficulty: QuestDifficulty) -> [Quest] {
         return self.filter { $0.difficulty == difficulty }
     }
     
     /// Get quests by status
-    /// - Parameter status: The status to filter by
-    /// - Returns: Array of quests with that status
     func quests(withStatus status: QuestStatus) -> [Quest] {
         return self.filter { $0.status == status }
     }
@@ -645,118 +574,3 @@ extension Array where Element == QuestObjective {
         return self.filter { !$0.isOptional }
     }
 }
-
-// MARK: - Quest Factory
-
-/// Utility for creating common quest types with proper defaults
-struct QuestFactory {
-    /// Create a simple collection quest
-    /// - Parameters:
-    ///   - title: Quest title
-    ///   - itemName: Name of item to collect
-    ///   - quantity: How many to collect
-    ///   - location: Where the quest takes place
-    ///   - questGiver: Who gave the quest
-    ///   - rewards: Array of rewards to give
-    /// - Returns: Configured Quest object
-    static func createCollectionQuest(
-        title: String,
-        itemName: String,
-        quantity: Int,
-        location: String,
-        questGiver: String,
-        rewards: [QuestReward]
-    ) -> Quest {
-        let objective = QuestObjective(
-            description: "Collect \(quantity) \(itemName)",
-            targetType: .collectItems,
-            targetCount: quantity
-        )
-        
-        return Quest(
-            title: title,
-            description: "Gather \(quantity) \(itemName) for \(questGiver).",
-            objectives: [objective],
-            rewards: rewards,
-            questGiver: questGiver,
-            location: location,
-            category: .collection
-        )
-    }
-    
-    /// Create a songweaving practice quest
-    /// - Parameters:
-    ///   - title: Quest title
-    ///   - melodyType: Type of melody to practice (as string)
-    ///   - castCount: How many times to cast
-    ///   - location: Where to practice
-    ///   - questGiver: Who gave the quest
-    /// - Returns: Configured Quest object
-    static func createSongweavingQuest(
-        title: String,
-        melodyType: String,
-        castCount: Int,
-        location: String,
-        questGiver: String
-    ) -> Quest {
-        let objective = QuestObjective(
-            description: "Cast \(castCount) \(melodyType) melodies",
-            targetType: .songweaveSpell,
-            targetCount: castCount
-        )
-        
-        let reward = QuestReward(
-            type: .experience(amount: 200),  // Fixed: use valid enum case
-            description: "Learn advanced \(melodyType) techniques",
-            rarity: .uncommon
-        )
-        
-        return Quest(
-            title: title,
-            description: "Practice your \(melodyType) songweaving skills.",
-            objectives: [objective],
-            rewards: [reward],
-            questGiver: questGiver,
-            location: location,
-            category: .songweaving
-        )
-    }
-    
-    /// Create a social interaction quest
-    /// - Parameters:
-    ///   - title: Quest title
-    ///   - npcName: Name of NPC to talk to
-    ///   - location: Where to find the NPC
-    ///   - questGiver: Who gave the quest
-    ///   - experienceReward: How much XP to give
-    /// - Returns: Configured Quest object
-    static func createSocialQuest(
-        title: String,
-        npcName: String,
-        location: String,
-        questGiver: String,
-        experienceReward: Int = 100
-    ) -> Quest {
-        let objective = QuestObjective(
-            description: "Speak with \(npcName)",
-            targetType: .talkToNPC,
-            targetCount: 1
-        )
-        
-        let reward = QuestReward(
-            type: .experience(amount: experienceReward),
-            description: "Social interaction experience",
-            rarity: .common
-        )
-        
-        return Quest(
-            title: title,
-            description: "Find and have a conversation with \(npcName) in \(location).",
-            objectives: [objective],
-            rewards: [reward],
-            questGiver: questGiver,
-            location: location,
-            category: .social
-        )
-    }
- }

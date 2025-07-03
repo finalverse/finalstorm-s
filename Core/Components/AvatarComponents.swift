@@ -1,8 +1,8 @@
 //
-//  AvatarComponents.swift
+//  Core/Components/AvatarComponents.swift
 //  FinalStorm
 //
-//  Shared avatar-related components and types
+//  Shared avatar-related components and types - SINGLE DEFINITION of InteractionComponent
 //
 
 import Foundation
@@ -112,19 +112,6 @@ struct AvatarAppearance: Codable {
     )
 }
 
-// MARK: - Resonance Level
-struct ResonanceLevel: Codable {
-    var creativeResonance: Float = 0
-    var explorationResonance: Float = 0
-    var restorationResonance: Float = 0
-    
-    var totalResonance: Float {
-        creativeResonance + explorationResonance + restorationResonance
-    }
-    
-    static let novice = ResonanceLevel()
-}
-
 // MARK: - Songweaver Component
 struct SongweaverComponent: Component, Codable {
     var resonanceLevel: ResonanceLevel
@@ -162,17 +149,32 @@ struct HarmonyComponent: Component, Codable {
     }
 }
 
-// MARK: - Interaction Component
+// MARK: - Interaction Component - SINGLE DEFINITION
 struct InteractionComponent: Component {
     let interactionRadius: Float
     let requiresLineOfSight: Bool
     let interactionType: InteractionType
-    let onInteract: () -> Void
+    var onInteract: (() -> Void)?
+    
+    init(interactionRadius: Float = 2.0,
+         requiresLineOfSight: Bool = true,
+         interactionType: InteractionType = .default,
+         onInteract: (() -> Void)? = nil) {
+        self.interactionRadius = interactionRadius
+        self.requiresLineOfSight = requiresLineOfSight
+        self.interactionType = interactionType
+        self.onInteract = onInteract
+    }
     
     enum InteractionType: String, Codable {
         case conversation
         case activate
         case pickup
         case songweave
+        case `default`
+        case talk
+        case questGive
+        case teach
+        case accompany
     }
 }

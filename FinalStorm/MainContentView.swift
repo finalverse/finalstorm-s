@@ -1,11 +1,13 @@
 //
-//  ContentView.swift
+//  FinalStorm/MainContentView.swift
 //  FinalStorm
+//
+//  Main content view that routes to platform-specific views
 //
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainContentView: View {
     var body: some View {
         #if os(iOS)
         ContentView_iOS()
@@ -15,4 +17,8 @@ struct ContentView: View {
         ContentView_visionOS()
         #endif
     }
+}
+
+#Preview {
+    MainContentView()
 }

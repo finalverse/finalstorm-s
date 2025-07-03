@@ -129,6 +129,15 @@
 		B422787B2E16A8D400559A0B /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787A2E16A8D400559A0B /* CodableColor.swift */; };
 		B422787C2E16A8D400559A0B /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787A2E16A8D400559A0B /* CodableColor.swift */; };
 		B422787D2E16A8D400559A0B /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787A2E16A8D400559A0B /* CodableColor.swift */; };
+		B422787F2E16E55400559A0B /* ResonanceLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787E2E16E55400559A0B /* ResonanceLevel.swift */; };
+		B42278802E16E55400559A0B /* ResonanceLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787E2E16E55400559A0B /* ResonanceLevel.swift */; };
+		B42278812E16E55400559A0B /* ResonanceLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787E2E16E55400559A0B /* ResonanceLevel.swift */; };
+		B437BD682E1700EB0045436F /* WorldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD672E1700EB0045436F /* WorldTypes.swift */; };
+		B437BD692E1700EB0045436F /* WorldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD672E1700EB0045436F /* WorldTypes.swift */; };
+		B437BD6A2E1700EB0045436F /* WorldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD672E1700EB0045436F /* WorldTypes.swift */; };
+		B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
+		B437BD6E2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
+		B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
 		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -140,6 +149,9 @@
 		B42277D12E162B5A00559A0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B42278762E16A22700559A0B /* AvatarComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarComponents.swift; sourceTree = "<group>"; };
 		B422787A2E16A8D400559A0B /* CodableColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableColor.swift; sourceTree = "<group>"; };
+		B422787E2E16E55400559A0B /* ResonanceLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResonanceLevel.swift; sourceTree = "<group>"; };
+		B437BD672E1700EB0045436F /* WorldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTypes.swift; sourceTree = "<group>"; };
+		B437BD6C2E1705100045436F /* MeshSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshSystem.swift; sourceTree = "<group>"; };
 		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
 		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
 		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
@@ -192,8 +204,8 @@
 		B42277DE2E16508500559A0B /* Exceptions for "FinalStorm" folder in "FinalStorm-iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ContentView.swift,
 				FinalStormApp.swift,
+				MainContentView.swift,
 				SpinComponent.swift,
 			);
 			target = B4CE86D82E16151F00ED541D /* FinalStorm-iOS */;
@@ -201,8 +213,8 @@
 		B42277DF2E16508500559A0B /* Exceptions for "FinalStorm" folder in "FinalStorm-macOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ContentView.swift,
 				FinalStormApp.swift,
+				MainContentView.swift,
 				SpinComponent.swift,
 			);
 			target = B4CE86E72E16154300ED541D /* FinalStorm-macOS */;
@@ -210,8 +222,8 @@
 		B42277E02E16508500559A0B /* Exceptions for "FinalStorm" folder in "FinalStorm-visionOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ContentView.swift,
 				FinalStormApp.swift,
+				MainContentView.swift,
 				SpinComponent.swift,
 			);
 			target = B4CE86F72E16159A00ED541D /* FinalStorm-visionOS */;
@@ -227,21 +239,6 @@
 				B42277E02E16508500559A0B /* Exceptions for "FinalStorm" folder in "FinalStorm-visionOS" target */,
 			);
 			path = FinalStorm;
-			sourceTree = "<group>";
-		};
-		B4CE86DA2E16151F00ED541D /* FinalStorm-iOS */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "FinalStorm-iOS";
-			sourceTree = "<group>";
-		};
-		B4CE86E92E16154300ED541D /* FinalStorm-macOS */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "FinalStorm-macOS";
-			sourceTree = "<group>";
-		};
-		B4CE86F92E16159A00ED541D /* FinalStorm-visionOS */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "FinalStorm-visionOS";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -272,6 +269,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B437BD6B2E1704F40045436F /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				B437BD6C2E1705100045436F /* MeshSystem.swift */,
+			);
+			path = Graphics;
+			sourceTree = "<group>";
+		};
 		B4CE860C2E1510C300ED541D = {
 			isa = PBXGroup;
 			children = (
@@ -286,9 +291,6 @@
 				B4CE863F2E151E8300ED541D /* Services */,
 				B4CE863E2E151E7700ED541D /* Core */,
 				B4CE86322E1517C700ED541D /* FinalStorm */,
-				B4CE86DA2E16151F00ED541D /* FinalStorm-iOS */,
-				B4CE86E92E16154300ED541D /* FinalStorm-macOS */,
-				B4CE86F92E16159A00ED541D /* FinalStorm-visionOS */,
 				B4CE86FA2E16159B00ED541D /* Packages */,
 				B4CE86162E1510C300ED541D /* Products */,
 			);
@@ -307,6 +309,7 @@
 		B4CE863E2E151E7700ED541D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B437BD6B2E1704F40045436F /* Graphics */,
 				B4CE86B42E160F4300ED541D /* Components */,
 				B4CE864C2E15227400ED541D /* World */,
 				B4CE86492E15220F00ED541D /* Avatar */,
@@ -406,6 +409,7 @@
 				B4CE86BB2E160FD200ED541D /* RegionManager.swift */,
 				B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */,
 				B4CE86D32E1611FF00ED541D /* ObjectData.swift */,
+				B437BD672E1700EB0045436F /* WorldTypes.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -451,6 +455,7 @@
 				B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */,
 				B42278762E16A22700559A0B /* AvatarComponents.swift */,
 				B422787A2E16A8D400559A0B /* CodableColor.swift */,
+				B422787E2E16E55400559A0B /* ResonanceLevel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -478,9 +483,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				B4CE86DA2E16151F00ED541D /* FinalStorm-iOS */,
-			);
 			name = "FinalStorm-iOS";
 			packageProductDependencies = (
 			);
@@ -500,9 +502,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				B4CE86E92E16154300ED541D /* FinalStorm-macOS */,
-			);
 			name = "FinalStorm-macOS";
 			packageProductDependencies = (
 			);
@@ -521,9 +520,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				B4CE86F92E16159A00ED541D /* FinalStorm-visionOS */,
 			);
 			name = "FinalStorm-visionOS";
 			packageProductDependencies = (
@@ -617,10 +613,12 @@
 				B42278152E16538400559A0B /* InventoryView.swift in Sources */,
 				B42278162E16538400559A0B /* ChatView.swift in Sources */,
 				B42278172E16538400559A0B /* ActionBarView.swift in Sources */,
+				B422787F2E16E55400559A0B /* ResonanceLevel.swift in Sources */,
 				B42278182E16538400559A0B /* NetworkManager.swift in Sources */,
 				B42278192E16538400559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B422781A2E16538400559A0B /* SongEngine.swift in Sources */,
 				B422781B2E16538400559A0B /* EchoEngine.swift in Sources */,
+				B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */,
 				B422781C2E16538400559A0B /* AIOrchestra.swift in Sources */,
 				B422781D2E16538400559A0B /* HarmonyService.swift in Sources */,
 				B422781E2E16538400559A0B /* StoryEngine.swift in Sources */,
@@ -632,6 +630,7 @@
 				B42278242E16538400559A0B /* AppearanceManager.swift in Sources */,
 				B42278252E16538400559A0B /* VoiceProfile.swift in Sources */,
 				B42278262E16538400559A0B /* Harmony.swift in Sources */,
+				B437BD692E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B42278272E16538400559A0B /* Quest.swift in Sources */,
 				B42278282E16538400559A0B /* Melody.swift in Sources */,
 				B42278292E16538400559A0B /* Biome.swift in Sources */,
@@ -663,10 +662,12 @@
 				B42277F12E16536C00559A0B /* InventoryView.swift in Sources */,
 				B42277F22E16536C00559A0B /* ChatView.swift in Sources */,
 				B42277F32E16536C00559A0B /* ActionBarView.swift in Sources */,
+				B42278812E16E55400559A0B /* ResonanceLevel.swift in Sources */,
 				B42277F42E16536C00559A0B /* NetworkManager.swift in Sources */,
 				B42277F52E16536C00559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B42277F62E16536C00559A0B /* SongEngine.swift in Sources */,
 				B42277F72E16536C00559A0B /* EchoEngine.swift in Sources */,
+				B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */,
 				B42277F82E16536C00559A0B /* AIOrchestra.swift in Sources */,
 				B42277F92E16536C00559A0B /* HarmonyService.swift in Sources */,
 				B42277FA2E16536C00559A0B /* StoryEngine.swift in Sources */,
@@ -678,6 +679,7 @@
 				B42278002E16536C00559A0B /* AppearanceManager.swift in Sources */,
 				B42278012E16536C00559A0B /* VoiceProfile.swift in Sources */,
 				B42278022E16536C00559A0B /* Harmony.swift in Sources */,
+				B437BD682E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B42278032E16536C00559A0B /* Quest.swift in Sources */,
 				B42278042E16536C00559A0B /* Melody.swift in Sources */,
 				B42278052E16536C00559A0B /* Biome.swift in Sources */,
@@ -712,6 +714,7 @@
 				B422783C2E16539300559A0B /* NetworkManager.swift in Sources */,
 				B422783D2E16539300559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B422783E2E16539300559A0B /* SongEngine.swift in Sources */,
+				B437BD6A2E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B422783F2E16539300559A0B /* EchoEngine.swift in Sources */,
 				B42278402E16539300559A0B /* AIOrchestra.swift in Sources */,
 				B42278412E16539300559A0B /* HarmonyService.swift in Sources */,
@@ -733,6 +736,8 @@
 				B42278512E16539300559A0B /* SceneManager.swift in Sources */,
 				B42278522E16539300559A0B /* RegionManager.swift in Sources */,
 				B42278532E16539300559A0B /* TerrainPatch.swift in Sources */,
+				B437BD6E2E1705100045436F /* MeshSystem.swift in Sources */,
+				B42278802E16E55400559A0B /* ResonanceLevel.swift in Sources */,
 				B42278542E16539300559A0B /* ObjectData.swift in Sources */,
 				B42278552E16539300559A0B /* AvatarSystem.swift in Sources */,
 				B42278562E16539300559A0B /* AppStateManager.swift in Sources */,
@@ -993,7 +998,7 @@
 				DEVELOPMENT_TEAM = 2F3E73M8TT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				INFOPLIST_FILE = visionOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1020,7 +1025,7 @@
 				DEVELOPMENT_TEAM = 2F3E73M8TT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				INFOPLIST_FILE = visionOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

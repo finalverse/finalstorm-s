@@ -1,18 +1,24 @@
 //
-//  EchoEngine.swift
+//  Services/Finalverse/EchoEngine.swift
 //  FinalStorm-S
 //
 //  Manages the First Echoes (Lumi, KAI, Terra, Ignis) and other AI-driven NPCs
+//  This service coordinates Echo behavior, interactions, and teaching sequences
 //
 
 import Foundation
 import RealityKit
 import Combine
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 @MainActor
 class EchoEngine: ObservableObject {
     // MARK: - Properties
-    @Published var activeEchoes: [EchoEntity] = []
+    @Published var activeEchoes: [EchoEntityService] = []
     @Published var echoStates: [UUID: EchoState] = [:]
     
     private let networkClient: FinalverseNetworkClient
@@ -21,10 +27,10 @@ class EchoEngine: ObservableObject {
     private var updateCancellable: AnyCancellable?
     
     // The First Echoes
-    private var lumi: EchoEntity?
-    private var kai: EchoEntity?
-    private var terra: EchoEntity?
-    private var ignis: EchoEntity?
+    private var lumi: EchoEntityService?
+    private var kai: EchoEntityService?
+    private var terra: EchoEntityService?
+    private var ignis: EchoEntityService?
     
     init() {
         self.networkClient = FinalverseNetworkClient(service: .echoEngine)
@@ -55,7 +61,7 @@ class EchoEngine: ObservableObject {
             name: "Lumi",
             appearance: .lumiAppearance,
             personality: .hopeful,
-            primaryColor: .systemYellow
+            primaryColor: createPlatformColor(red: 1.0, green: 0.9, blue: 0.0)
         )
         
         // Create KAI - Echo of Knowledge and Understanding
@@ -64,7 +70,7 @@ class EchoEngine: ObservableObject {
             name: "KAI",
             appearance: .kaiAppearance,
             personality: .logical,
-            primaryColor: .systemBlue
+            primaryColor: createPlatformColor(red: 0.0, green: 0.5, blue: 1.0)
         )
         
         // Create Terra - Echo of Resilience and Growth
@@ -73,7 +79,7 @@ class EchoEngine: ObservableObject {
             name: "Terra",
             appearance: .terraAppearance,
             personality: .nurturing,
-            primaryColor: .systemGreen
+            primaryColor: createPlatformColor(red: 0.0, green: 0.8, blue: 0.0)
         )
         
         // Create Ignis - Echo of Courage and Creation
@@ -82,7 +88,7 @@ class EchoEngine: ObservableObject {
             name: "Ignis",
             appearance: .ignisAppearance,
             personality: .passionate,
-            primaryColor: .systemOrange
+            primaryColor: createPlatformColor(red: 1.0, green: 0.6, blue: 0.0)
         )
     }
     
@@ -91,27 +97,27 @@ class EchoEngine: ObservableObject {
         name: String,
         appearance: EchoAppearance,
         personality: PersonalityType,
-        primaryColor: UIColor
-    ) async -> EchoEntity {
-        let echo = EchoEntity(type: type, name: name)
+        primaryColor: CodableColor
+    ) async -> EchoEntityService {
+        let echo = EchoEntityService(type: type, name: name)
         
         // Set appearance
         await echo.setAppearance(appearance)
         
         // Initialize components
-        echo.components.set(EchoComponent(
+        echo.echoComponent = EchoComponent(
             type: type,
             personality: personality,
             primaryColor: primaryColor
-        ))
+        )
         
-        echo.components.set(AIBehaviorComponent(
+        echo.behaviorComponent = AIBehaviorComponent(
             behaviorTree: createBehaviorTree(for: type)
-        ))
+        )
         
-        echo.components.set(DialogueComponent(
+        echo.dialogueComponent = DialogueComponent(
             voiceProfile: type.voiceProfile
-        ))
+        )
         
         // Add to active echoes
         activeEchoes.append(echo)
@@ -130,12 +136,14 @@ class EchoEngine: ObservableObject {
         
         // Fade in with particles
         let appearanceEffect = createAppearanceEffect(for: type)
-        echo.addChild(appearanceEffect)
+        await echo.addVisualEffect(appearanceEffect)
         
         // Animate to position
-        echo.move(to: Transform(scale: .one, translation: location),
-                 relativeTo: nil,
-                 duration: 2.0)
+        await echo.animateTo(
+            position: location,
+            scale: SIMD3<Float>(1, 1, 1),
+            duration: 2.0
+        )
         
         // Update state
         echoStates[echo.id]?.activity = .interacting
@@ -155,16 +163,21 @@ class EchoEngine: ObservableObject {
             worldState: getCurrentWorldState()
         )
         
-        let dialogue = await aiOrchestra.generateDialogue(context: context)
-        
-        // Play dialogue with appropriate emotion
-        await echo.speak(dialogue)
-        
-        return dialogue.text
+        do {
+            let dialogue = try await aiOrchestra.generateDialogue(context: context)
+            
+            // Play dialogue with appropriate emotion
+            await echo.speak(dialogue)
+            
+            return dialogue.text
+        } catch {
+            print("Failed to generate dialogue: \(error)")
+            return nil
+        }
     }
     
     // MARK: - Echo Interactions
-    func interactWithEcho(_ echo: EchoEntity, interaction: InteractionType) async {
+    func interactWithEcho(_ echo: EchoEntityService, interaction: InteractionType) async {
         guard let state = echoStates[echo.id] else { return }
         
         switch interaction {
@@ -176,12 +189,14 @@ class EchoEngine: ObservableObject {
             await teachMelody(from: echo)
         case .accompany:
             await toggleCompanion(echo)
+        default:
+            break
         }
     }
     
-    private func handleConversation(with echo: EchoEntity) async {
+    private func handleConversation(with echo: EchoEntityService) async {
         // Update mood based on conversation
-        if let component = echo.components[EchoComponent.self] {
+        if let component = echo.echoComponent {
             let newMood = component.personality.respondToInteraction()
             echoStates[echo.id]?.mood = newMood
             
@@ -191,8 +206,28 @@ class EchoEngine: ObservableObject {
         }
     }
     
-    private func teachMelody(from echo: EchoEntity) async {
-        guard let echoComponent = echo.components[EchoComponent.self] else { return }
+    private func offerQuest(from echo: EchoEntityService) async {
+        // Generate quest specific to the Echo type
+        let questParameters = QuestParameters(
+            questType: echo.echoComponent?.type.questType ?? "exploration",
+            difficulty: 1,
+            location: "Current Area",
+            questGiver: echo.name,
+            suggestedRewards: nil
+        )
+        
+        do {
+            let quest = try await aiOrchestra.generateQuest(parameters: questParameters)
+            
+            // Present quest to player
+            await presentQuest(quest, from: echo)
+        } catch {
+            print("Failed to generate quest: \(error)")
+        }
+    }
+    
+    private func teachMelody(from echo: EchoEntityService) async {
+        guard let echoComponent = echo.echoComponent else { return }
         
         // Each Echo teaches different melodies
         let melody: Melody
@@ -216,6 +251,29 @@ class EchoEngine: ObservableObject {
         }
     }
     
+    private func toggleCompanion(_ echo: EchoEntityService) async {
+        // Toggle companion mode for the Echo
+        if let state = echoStates[echo.id] {
+            if state.companionTarget != nil {
+                // Stop being companion
+                echoStates[echo.id]?.companionTarget = nil
+                echoStates[echo.id]?.activity = .idle
+                
+                let dialogue = createFarewellDialogue(for: echo.echoComponent?.type ?? .lumi)
+                await echo.speak(dialogue)
+            } else {
+                // Start being companion
+                if let playerAvatar = getAvatarSystem()?.localAvatar {
+                    echoStates[echo.id]?.companionTarget = playerAvatar.id
+                    echoStates[echo.id]?.activity = .moving
+                    
+                    let dialogue = createCompanionDialogue(for: echo.echoComponent?.type ?? .lumi)
+                    await echo.speak(dialogue)
+                }
+            }
+        }
+    }
+    
     // MARK: - Behavior System
     private func createBehaviorTree(for echoType: EchoType) -> BehaviorTree {
         let tree = BehaviorTree()
@@ -226,10 +284,10 @@ class EchoEngine: ObservableObject {
             tree.root = SelectorNode(children: [
                 SequenceNode(children: [
                     ConditionNode { state in state.nearbyEntitiesNeedHelp },
-                    ActionNode { echo in await echo.moveToNearestSadEntity() },
-                    ActionNode { echo in await echo.offerEncouragement() }
+                    ActionNode { echo in await self.handleLumiHelp(echo) },
+                    ActionNode { echo in await self.handleLumiEncouragement(echo) }
                 ]),
-                ActionNode { echo in await echo.wanderPlayfully() }
+                ActionNode { echo in await self.handleLumiWander(echo) }
             ])
             
         case .kai:
@@ -237,9 +295,9 @@ class EchoEngine: ObservableObject {
             tree.root = SelectorNode(children: [
                 SequenceNode(children: [
                     ConditionNode { state in state.playerHasQuestion },
-                    ActionNode { echo in await echo.provideAnalysis() }
+                    ActionNode { echo in await self.handleKaiAnalysis(echo) }
                 ]),
-                ActionNode { echo in await echo.studyEnvironment() }
+                ActionNode { echo in await self.handleKaiStudy(echo) }
             ])
             
         case .terra:
@@ -247,9 +305,9 @@ class EchoEngine: ObservableObject {
             tree.root = SelectorNode(children: [
                 SequenceNode(children: [
                     ConditionNode { state in state.nearbyEntitiesDamaged },
-                    ActionNode { echo in await echo.healNearbyEntities() }
+                    ActionNode { echo in await self.handleTerraHealing(echo) }
                 ]),
-                ActionNode { echo in await echo.tendToNature() }
+                ActionNode { echo in await self.handleTerraNurture(echo) }
             ])
             
         case .ignis:
@@ -257,9 +315,9 @@ class EchoEngine: ObservableObject {
             tree.root = SelectorNode(children: [
                 SequenceNode(children: [
                     ConditionNode { state in state.threatDetected },
-                    ActionNode { echo in await echo.defendArea() }
+                    ActionNode { echo in await self.handleIgnisDefense(echo) }
                 ]),
-                ActionNode { echo in await echo.rallyAllies() }
+                ActionNode { echo in await self.handleIgnisRally(echo) }
             ])
         }
         
@@ -279,7 +337,7 @@ class EchoEngine: ObservableObject {
     private func updateEchoBehaviors() async {
         for echo in activeEchoes {
             guard let state = echoStates[echo.id],
-                  let behavior = echo.components[AIBehaviorComponent.self] else { continue }
+                  let behavior = echo.behaviorComponent else { continue }
             
             // Execute behavior tree
             await behavior.behaviorTree.execute(echo: echo, state: state)
@@ -290,54 +348,52 @@ class EchoEngine: ObservableObject {
     }
     
     // MARK: - Visual Effects
-    private func createAppearanceEffect(for type: EchoType) -> Entity {
-        let effect = Entity()
+    private func createAppearanceEffect(for type: EchoType) -> VisualEffect {
+        let effect = VisualEffect()
         
-        var particles = ParticleEmitterComponent()
-        particles.birthRate = 200
-        particles.emitterShape = .sphere
-        particles.mainEmitter.lifeSpan = 1.0
+        var particleConfig = ParticleConfiguration()
+        particleConfig.birthRate = 200
+        particleConfig.emitterShape = .sphere
+        particleConfig.lifeSpan = 1.0
         
         // Customize per Echo
         switch type {
         case .lumi:
-            particles.mainEmitter.color = .evolving(
-                start: .single(.systemYellow),
-                end: .single(.white)
+            particleConfig.color = createColorEvolution(
+                start: CodableColor(red: 1.0, green: 0.9, blue: 0.0),
+                end: CodableColor(red: 1.0, green: 1.0, blue: 1.0)
             )
-            particles.mainEmitter.size = 0.02
+            particleConfig.size = 0.02
             
         case .kai:
-            particles.mainEmitter.color = .evolving(
-                start: .single(.systemBlue),
-                end: .single(.cyan)
+            particleConfig.color = createColorEvolution(
+                start: CodableColor(red: 0.0, green: 0.5, blue: 1.0),
+                end: CodableColor(red: 0.0, green: 1.0, blue: 1.0)
             )
-            particles.mainEmitter.size = 0.01
-            particles.mainEmitter.angularSpeed = .constant(360)
+            particleConfig.size = 0.01
+            particleConfig.angularSpeed = 360
             
         case .terra:
-            particles.mainEmitter.color = .evolving(
-                start: .single(.systemGreen),
-                end: .single(.systemBrown)
+            particleConfig.color = createColorEvolution(
+                start: CodableColor(red: 0.0, green: 0.8, blue: 0.0),
+                end: CodableColor(red: 0.4, green: 0.2, blue: 0.0)
             )
-            particles.mainEmitter.size = 0.03
+            particleConfig.size = 0.03
             
         case .ignis:
-            particles.mainEmitter.color = .evolving(
-                start: .single(.systemOrange),
-                end: .single(.systemRed)
+            particleConfig.color = createColorEvolution(
+                start: CodableColor(red: 1.0, green: 0.6, blue: 0.0),
+                end: CodableColor(red: 1.0, green: 0.0, blue: 0.0)
             )
-            particles.mainEmitter.size = 0.04
-            particles.mainEmitter.isEmitting = true
+            particleConfig.size = 0.04
         }
         
-        effect.components.set(particles)
-        
+        effect.particleConfig = particleConfig
         return effect
     }
     
     // MARK: - Helper Methods
-    private func getEcho(type: EchoType) -> EchoEntity? {
+    private func getEcho(type: EchoType) -> EchoEntityService? {
         switch type {
         case .lumi: return lumi
         case .kai: return kai
@@ -361,7 +417,7 @@ class EchoEngine: ObservableObject {
         return nil
     }
     
-    private func updateEchoAnimation(_ echo: EchoEntity, state: EchoState) {
+    private func updateEchoAnimation(_ echo: EchoEntityService, state: EchoState) {
         // Update animation based on activity
         switch state.activity {
         case .idle:
@@ -374,10 +430,272 @@ class EchoEngine: ObservableObject {
             echo.playAnimation(.demonstrating)
         }
     }
+    
+    private func playEchoGreeting(_ echo: EchoEntityService) async {
+        let greetingText: String
+        switch echo.echoComponent?.type {
+        case .lumi:
+            greetingText = "Hello! I'm Lumi! The light guides us forward together!"
+        case .kai:
+            greetingText = "Greetings. I am KAI. I'm here to help you understand the Song's mysteries."
+        case .terra:
+            greetingText = "Welcome, child of the Song. I am Terra, nurturer of all that grows."
+        case .ignis:
+            greetingText = "I am Ignis! Together we shall forge a path through any challenge!"
+        default:
+            greetingText = "Greetings, Songweaver."
+        }
+        
+        let dialogue = Dialogue(
+            text: greetingText,
+            emotion: .happy,
+            duration: 3.0,
+            audioURL: nil
+        )
+        
+        await echo.speak(dialogue)
+    }
+    
+    private func generateContextualDialogue(for echo: EchoEntityService, mood: EchoState.Mood) async -> Dialogue {
+        // Generate dialogue based on Echo type and mood
+        let text: String
+        let emotion: Emotion
+        
+        switch (echo.echoComponent?.type, mood) {
+        case (.lumi, .happy):
+            text = "Isn't this wonderful? I can feel the harmony growing stronger!"
+            emotion = .happy
+        case (.lumi, .concerned):
+            text = "Don't worry, friend. The Song will show us the way."
+            emotion = .concerned
+        case (.kai, .neutral):
+            text = "Interesting. The harmonic patterns here suggest ancient influences."
+            emotion = .neutral
+        case (.terra, .concerned):
+            text = "I sense disturbance in the natural flow. We must restore balance."
+            emotion = .concerned
+        case (.ignis, .excited):
+            text = "The fire in your heart burns bright! Let's channel that energy!"
+            emotion = .excited
+        default:
+            text = "The Song flows through all things, connecting us in harmony."
+            emotion = .neutral
+        }
+        
+        return Dialogue(
+            text: text,
+            emotion: emotion,
+            duration: 3.0,
+            audioURL: nil
+        )
+    }
+    
+    private func performTeachingSequence(echo: EchoEntityService, melody: Melody) async {
+        // Create visual representation of melody
+        let melodyVisual = createMelodyVisualization(melody)
+        await echo.addVisualEffect(melodyVisual)
+        
+        // Demonstrate melody pattern
+        await demonstrateMelodyPattern(echo, melody: melody)
+        
+        // Teaching dialogue
+        let teachingText = "Focus on the harmony within. Feel how the melody flows from your heart to the world."
+        let dialogue = Dialogue(
+            text: teachingText,
+            emotion: .neutral,
+            duration: 4.0,
+            audioURL: nil
+        )
+        await echo.speak(dialogue)
+        
+        // Cleanup
+        await echo.removeVisualEffect(melodyVisual)
+    }
+    
+    private func createMelodyVisualization(_ melody: Melody) -> VisualEffect {
+        let visual = VisualEffect()
+        visual.visualType = .melodyNotes
+        visual.primaryColor = melody.harmonyColor
+        visual.duration = 5.0
+        return visual
+    }
+    
+    private func demonstrateMelodyPattern(_ echo: EchoEntityService, melody: Melody) async {
+        // Play melody audio pattern with visual cues
+        let notes = generateMelodyNotes(for: melody.type)
+        
+        for note in notes {
+            // Visual pulse
+            await echo.pulseEffect()
+            
+            // Play note sound (would implement with spatial audio)
+            await playNote(frequency: note.frequency, duration: note.duration)
+            
+            // Wait
+            try? await Task.sleep(nanoseconds: UInt64(note.duration * 1_000_000_000))
+        }
+    }
+    
+    private func generateMelodyNotes(for type: MelodyType) -> [(frequency: Float, duration: TimeInterval)] {
+        switch type {
+        case .restoration:
+            return [
+                (440, 0.5),    // A4
+                (523, 0.5),    // C5
+                (659, 0.5),    // E5
+                (523, 0.5),    // C5
+                (440, 1.0)     // A4
+            ]
+        case .exploration:
+            return [
+                (392, 0.3),    // G4
+                (440, 0.3),    // A4
+                (494, 0.3),    // B4
+                (523, 0.3),    // C5
+                (587, 0.6)     // D5
+            ]
+        case .creation:
+            return [
+                (523, 0.4),    // C5
+                (659, 0.4),    // E5
+                (784, 0.4),    // G5
+                (659, 0.4),    // E5
+                (523, 0.8)     // C5
+            ]
+        default:
+            return [(440, 0.5)]
+        }
+    }
+    
+    private func playNote(frequency: Float, duration: TimeInterval) async {
+        // Generate and play spatial audio tone
+        // Implementation would use platform-specific audio APIs
+        print("Playing note at \(frequency) Hz for \(duration) seconds")
+    }
+    
+    private func presentQuest(_ quest: Quest, from echo: EchoEntityService) async {
+        let questText = "I have a task that might interest you: \(quest.title). \(quest.description)"
+        let dialogue = Dialogue(
+            text: questText,
+            emotion: .neutral,
+            duration: 6.0,
+            audioURL: nil
+        )
+        await echo.speak(dialogue)
+    }
+    
+    private func createCompanionDialogue(for type: EchoType) -> Dialogue {
+        let text: String
+        switch type {
+        case .lumi:
+            text = "Adventure together! I'll light the way!"
+        case .kai:
+            text = "I shall accompany you and provide analysis as needed."
+        case .terra:
+            text = "I will journey with you, tending to our needs along the path."
+        case .ignis:
+            text = "Together we are stronger! Let's forge ahead!"
+        }
+        
+        return Dialogue(
+            text: text,
+            emotion: .happy,
+            duration: 3.0,
+            audioURL: nil
+        )
+    }
+    
+    private func createFarewellDialogue(for type: EchoType) -> Dialogue {
+        let text: String
+        switch type {
+        case .lumi:
+            text = "Until we meet again, may the light guide your steps!"
+        case .kai:
+            text = "Farewell. Remember what you have learned."
+        case .terra:
+            text = "May you grow strong in all your journeys."
+        case .ignis:
+            text = "Keep the fire burning bright until we meet again!"
+        }
+        
+        return Dialogue(
+            text: text,
+            emotion: .neutral,
+            duration: 3.0,
+            audioURL: nil
+        )
+    }
+    
+    // MARK: - Behavior Action Handlers
+    private func handleLumiHelp(_ echo: EchoEntityService) async {
+        // Lumi-specific help behavior
+        await echo.moveToNearestEntity(filter: .needsHelp)
+    }
+    
+    private func handleLumiEncouragement(_ echo: EchoEntityService) async {
+        // Lumi offers encouragement
+        let dialogue = Dialogue(
+            text: "Don't lose hope! The Song still flows through you.",
+            emotion: .happy,
+            duration: 3.0,
+            audioURL: nil
+        )
+        await echo.speak(dialogue)
+    }
+    
+    private func handleLumiWander(_ echo: EchoEntityService) async {
+        // Lumi wanders playfully
+        await echo.wanderPlayfully()
+    }
+    
+    private func handleKaiAnalysis(_ echo: EchoEntityService) async {
+        // KAI provides analysis
+        let dialogue = Dialogue(
+            text: "My analysis indicates a 87.3% probability of harmony disruption in this sector.",
+            emotion: .neutral,
+            duration: 4.0,
+            audioURL: nil
+        )
+        await echo.speak(dialogue)
+    }
+    
+    private func handleKaiStudy(_ echo: EchoEntityService) async {
+        // KAI studies environment
+        await echo.studyEnvironment()
+    }
+    
+    private func handleTerraHealing(_ echo: EchoEntityService) async {
+        // Terra heals nearby entities
+        await echo.healNearbyEntities()
+    }
+    
+    private func handleTerraNurture(_ echo: EchoEntityService) async {
+        // Terra tends to nature
+        await echo.tendToNature()
+    }
+    
+    private func handleIgnisDefense(_ echo: EchoEntityService) async {
+        // Ignis defends area
+        await echo.defendArea()
+    }
+    
+    private func handleIgnisRally(_ echo: EchoEntityService) async {
+        // Ignis rallies allies
+        await echo.rallyAllies()
+    }
+    
+    // MARK: - Utility Methods
+    private func createPlatformColor(red: Float, green: Float, blue: Float, alpha: Float = 1.0) -> CodableColor {
+        return CodableColor(red: red, green: green, blue: blue, alpha: alpha)
+    }
+    
+    private func createColorEvolution(start: CodableColor, end: CodableColor) -> ColorEvolution {
+        return ColorEvolution(start: start, end: end)
+    }
 }
 
 // MARK: - Supporting Types
-enum EchoType: String {
+enum EchoType: String, CaseIterable {
     case lumi = "Lumi"
     case kai = "KAI"
     case terra = "Terra"
@@ -395,6 +713,32 @@ enum EchoType: String {
             return VoiceProfile(pitch: 1.0, speed: 1.15, timbre: .bold)
         }
     }
+    
+    var questType: String {
+        switch self {
+        case .lumi:
+            return "discovery"
+        case .kai:
+            return "knowledge"
+        case .terra:
+            return "restoration"
+        case .ignis:
+            return "action"
+        }
+    }
+    
+    var primaryColor: CodableColor {
+        switch self {
+        case .lumi:
+            return CodableColor(red: 1.0, green: 0.9, blue: 0.0)
+        case .kai:
+            return CodableColor(red: 0.0, green: 0.5, blue: 1.0)
+        case .terra:
+            return CodableColor(red: 0.0, green: 0.8, blue: 0.0)
+        case .ignis:
+            return CodableColor(red: 1.0, green: 0.6, blue: 0.0)
+        }
+    }
 }
 
 struct EchoState {
@@ -409,12 +753,18 @@ struct EchoState {
     enum EchoActivity {
         case idle, moving, interacting, teaching
     }
+    
+    // Behavior state properties
+    var nearbyEntitiesNeedHelp: Bool = false
+    var playerHasQuestion: Bool = false
+    var nearbyEntitiesDamaged: Bool = false
+    var threatDetected: Bool = false
 }
 
-struct EchoComponent: Component {
+struct EchoComponent {
     let type: EchoType
     let personality: PersonalityType
-    let primaryColor: UIColor
+    let primaryColor: CodableColor
     var knownMelodies: [Melody] = []
     var teachingCooldown: TimeInterval = 0
 }
@@ -490,105 +840,388 @@ enum GuidanceTopic {
     case quests
 }
 
-// MARK: - Echo Entity
-class EchoEntity: Entity {
+// MARK: - Echo Entity Service Class
+class EchoEntityService {
+    let id = UUID()
     let echoType: EchoType
-    let echoName: String
+    let name: String
+    
+    // Components (stored as properties instead of Entity components for service layer)
+    var echoComponent: EchoComponent?
+    var behaviorComponent: AIBehaviorComponent?
+    var dialogueComponent: DialogueComponent?
+    
+    // Transform properties
+    var position: SIMD3<Float> = SIMD3<Float>(0, 0, 0)
+    var scale: SIMD3<Float> = SIMD3<Float>(1, 1, 1)
+    var rotation: simd_quatf = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1, 0))
+    
+    // State
+    private var currentVisualEffects: [VisualEffect] = []
+    private var currentAnimation: EchoAnimation = .idle
     
     init(type: EchoType, name: String) {
         self.echoType = type
-        self.echoName = name
-        super.init()
-        
         self.name = name
     }
     
-    required init() {
-        fatalError("init() has not been implemented")
-    }
-    
     func setAppearance(_ appearance: EchoAppearance) async {
-        // Load mesh
-        do {
-            let mesh = try await MeshResource.load(named: appearance.meshName)
-            
-            // Create glowing material
-            var material = PhysicallyBasedMaterial()
-            material.baseColor = .color(.white)
-            material.emissiveColor = .color(echoType.primaryColor)
-            material.emissiveIntensity = appearance.glowIntensity
-            
-            self.components.set(ModelComponent(mesh: mesh, materials: [material]))
-            self.scale = appearance.baseScale
-            
-            // Add floating animation
-            startFloatingAnimation()
-        } catch {
-            print("Failed to load Echo appearance: \(error)")
-        }
+        // Load echo-specific appearance
+        // In a full implementation, this would configure the visual representation
+        print("Setting appearance for \(name) with mesh: \(appearance.meshName)")
     }
     
     func speak(_ dialogue: Dialogue) async {
-        // Create speech bubble
-        let bubble = SpeechBubbleEntity(text: dialogue.text)
-        bubble.position = [0, 1.5, 0] // Above echo
-        self.addChild(bubble)
+        // Play dialogue with speech synthesis
+        print("\(name): \(dialogue.text)")
         
-        // Play audio if available
-        if let audioURL = dialogue.audioURL {
-            let audioResource = try? await AudioFileResource.load(contentsOf: audioURL)
-            if let audio = audioResource {
-                self.playAudio(audio)
-            }
-        }
-        
-        // Remove bubble after duration
-        Task {
-            try await Task.sleep(nanoseconds: UInt64(dialogue.duration * 1_000_000_000))
-            bubble.removeFromParent()
-        }
+        // Wait for speech duration
+        try? await Task.sleep(nanoseconds: UInt64(dialogue.duration * 1_000_000_000))
     }
     
     func playAnimation(_ animation: EchoAnimation) {
-        // Play predefined animations
-        switch animation {
-        case .idle:
-            // Gentle bobbing
-            break
-        case .floating:
-            // Smooth floating movement
-            break
-        case .gesturing:
-            // Hand/appendage movements
-            break
-        case .demonstrating:
-            // Teaching animations
-            break
-        }
+        currentAnimation = animation
+        print("\(name) playing animation: \(animation)")
     }
     
-    private func startFloatingAnimation() {
-        // Create gentle floating motion
-        let floatUp = Transform(translation: self.position + [0, 0.1, 0])
-        let floatDown = Transform(translation: self.position - [0, 0.1, 0])
-        
-        // Animate up
-        self.move(to: floatUp, relativeTo: nil, duration: 2.0)
-        
-        // Continue floating
-        Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-            if self.position.y > self.position.y {
-                self.move(to: floatDown, relativeTo: nil, duration: 2.0)
-            } else {
-                self.move(to: floatUp, relativeTo: nil, duration: 2.0)
-            }
-        }
+    func addVisualEffect(_ effect: VisualEffect) async {
+           currentVisualEffects.append(effect)
+           print("\(name) adding visual effect: \(effect.visualType)")
+       }
+       
+       func removeVisualEffect(_ effect: VisualEffect) async {
+           if let index = currentVisualEffects.firstIndex(where: { $0.id == effect.id }) {
+               currentVisualEffects.remove(at: index)
+               print("\(name) removing visual effect: \(effect.visualType)")
+           }
+       }
+       
+       func animateTo(position: SIMD3<Float>, scale: SIMD3<Float>, duration: TimeInterval) async {
+           let startPosition = self.position
+           let startScale = self.scale
+           
+           print("\(name) animating to position: \(position), scale: \(scale) over \(duration) seconds")
+           
+           // Simulate animation over time
+           let steps = 10
+           let stepDuration = duration / Double(steps)
+           
+           for i in 0...steps {
+               let progress = Float(i) / Float(steps)
+               
+               // Interpolate position and scale
+               self.position = simd_mix(startPosition, position, progress)
+               self.scale = simd_mix(startScale, scale, progress)
+               
+               if i < steps {
+                   try? await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
+               }
+           }
+       }
+       
+       func pulseEffect() async {
+           let originalScale = scale
+           let pulseScale = originalScale * 1.2
+           
+           // Quick pulse animation
+           await animateTo(position: position, scale: pulseScale, duration: 0.1)
+           await animateTo(position: position, scale: originalScale, duration: 0.1)
+       }
+       
+       func moveToNearestEntity(filter: EntityFilter) async {
+           // Simulate finding and moving to nearest entity
+           let targetPosition = SIMD3<Float>(
+               position.x + Float.random(in: -5...5),
+               position.y,
+               position.z + Float.random(in: -5...5)
+           )
+           
+           print("\(name) moving to nearest entity with filter: \(filter)")
+           await animateTo(position: targetPosition, scale: scale, duration: 2.0)
+       }
+       
+       func wanderPlayfully() async {
+           // Random playful movement
+           let wanderPosition = SIMD3<Float>(
+               position.x + Float.random(in: -3...3),
+               position.y,
+               position.z + Float.random(in: -3...3)
+           )
+           
+           print("\(name) wandering playfully")
+           await animateTo(position: wanderPosition, scale: scale, duration: 3.0)
+       }
+       
+       func studyEnvironment() async {
+           print("\(name) studying environment")
+           playAnimation(.gesturing)
+           
+           // Simulate studying time
+           try? await Task.sleep(nanoseconds: 2_000_000_000)
+       }
+       
+       func healNearbyEntities() async {
+           print("\(name) healing nearby entities")
+           playAnimation(.gesturing)
+           
+           // Create healing effect
+           let healingEffect = VisualEffect()
+           healingEffect.visualType = .healingAura
+           healingEffect.primaryColor = CodableColor(red: 0.0, green: 1.0, blue: 0.0)
+           healingEffect.duration = 3.0
+           
+           await addVisualEffect(healingEffect)
+           try? await Task.sleep(nanoseconds: 3_000_000_000)
+           await removeVisualEffect(healingEffect)
+       }
+       
+       func tendToNature() async {
+           print("\(name) tending to nature")
+           playAnimation(.gesturing)
+           
+           // Create growth effect
+           let growthEffect = VisualEffect()
+           growthEffect.visualType = .plantGrowth
+           growthEffect.primaryColor = CodableColor(red: 0.0, green: 0.8, blue: 0.0)
+           growthEffect.duration = 5.0
+           
+           await addVisualEffect(growthEffect)
+           try? await Task.sleep(nanoseconds: 5_000_000_000)
+           await removeVisualEffect(growthEffect)
+       }
+       
+       func defendArea() async {
+           print("\(name) defending area")
+           playAnimation(.gesturing)
+           
+           // Create fire shield effect
+           let shieldEffect = VisualEffect()
+           shieldEffect.visualType = .fireShield
+           shieldEffect.primaryColor = CodableColor(red: 1.0, green: 0.6, blue: 0.0)
+           shieldEffect.duration = 5.0
+           
+           await addVisualEffect(shieldEffect)
+           try? await Task.sleep(nanoseconds: 5_000_000_000)
+           await removeVisualEffect(shieldEffect)
+       }
+       
+       func rallyAllies() async {
+           print("\(name) rallying allies")
+           playAnimation(.gesturing)
+           
+           // Create inspiration effect
+           let rallyEffect = VisualEffect()
+           rallyEffect.visualType = .inspirationAura
+           rallyEffect.primaryColor = CodableColor(red: 1.0, green: 0.8, blue: 0.0)
+           rallyEffect.duration = 4.0
+           
+           await addVisualEffect(rallyEffect)
+           try? await Task.sleep(nanoseconds: 4_000_000_000)
+           await removeVisualEffect(rallyEffect)
+       }
     }
-}
 
-enum EchoAnimation {
-    case idle
-    case floating
-    case gesturing
-    case demonstrating
-}
+    // MARK: - Behavior Tree Components
+    struct AIBehaviorComponent {
+       let behaviorTree: BehaviorTree
+    }
+
+    struct DialogueComponent {
+       let voiceProfile: VoiceProfile
+    }
+
+    // MARK: - Behavior Tree System
+    class BehaviorSystem {
+       // Behavior management functionality
+       func processEchoBehavior(_ echo: EchoEntityService, state: EchoState) async {
+           // Process Echo behavior based on current state
+           print("Processing behavior for \(echo.name) in state: \(state.activity)")
+       }
+    }
+
+    class BehaviorTree {
+       var root: BehaviorNode?
+       
+       func execute(echo: EchoEntityService, state: EchoState) async {
+           await root?.execute(echo: echo, state: state)
+       }
+    }
+
+    protocol BehaviorNode {
+       func execute(echo: EchoEntityService, state: EchoState) async -> Bool
+    }
+
+    class SelectorNode: BehaviorNode {
+       let children: [BehaviorNode]
+       
+       init(children: [BehaviorNode]) {
+           self.children = children
+       }
+       
+       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+           for child in children {
+               if await child.execute(echo: echo, state: state) {
+                   return true
+               }
+           }
+           return false
+       }
+    }
+
+    class SequenceNode: BehaviorNode {
+       let children: [BehaviorNode]
+       
+       init(children: [BehaviorNode]) {
+           self.children = children
+       }
+       
+       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+           for child in children {
+               if !await child.execute(echo: echo, state: state) {
+                   return false
+               }
+           }
+           return true
+       }
+    }
+
+    class ConditionNode: BehaviorNode {
+       let condition: (EchoState) -> Bool
+       
+       init(condition: @escaping (EchoState) -> Bool) {
+           self.condition = condition
+       }
+       
+       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+           return condition(state)
+       }
+    }
+
+    class ActionNode: BehaviorNode {
+       let action: (EchoEntityService) async -> Void
+       
+       init(action: @escaping (EchoEntityService) async -> Void) {
+           self.action = action
+       }
+       
+       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+           await action(echo)
+           return true
+       }
+    }
+
+    // MARK: - Visual Effects System
+    class VisualEffect {
+       let id = UUID()
+       var visualType: VisualEffectType = .particles
+       var primaryColor: CodableColor = CodableColor(red: 1.0, green: 1.0, blue: 1.0)
+       var duration: TimeInterval = 1.0
+       var particleConfig: ParticleConfiguration?
+       
+       init() {}
+    }
+
+    enum VisualEffectType {
+       case particles
+       case melodyNotes
+       case healingAura
+       case plantGrowth
+       case fireShield
+       case inspirationAura
+       case scanBeam
+       case hologram
+    }
+
+    struct ParticleConfiguration {
+       var birthRate: Float = 100
+       var emitterShape: EmitterShape = .sphere
+       var lifeSpan: TimeInterval = 1.0
+       var size: Float = 0.01
+       var angularSpeed: Float = 0
+       var color: ColorEvolution = ColorEvolution(
+           start: CodableColor(red: 1.0, green: 1.0, blue: 1.0),
+           end: CodableColor(red: 1.0, green: 1.0, blue: 1.0)
+       )
+    }
+
+    enum EmitterShape {
+       case sphere
+       case box
+       case cone
+       case torus
+    }
+
+    struct ColorEvolution {
+       let start: CodableColor
+       let end: CodableColor
+    }
+
+    enum EchoAnimation {
+       case idle
+       case floating
+       case gesturing
+       case demonstrating
+    }
+
+    enum EntityFilter {
+       case needsHelp
+       case damaged
+       case friendly
+       case hostile
+    }
+
+    // MARK: - Supporting Types from Other Services
+    struct Dialogue {
+       let text: String
+       let emotion: Emotion
+       let duration: TimeInterval
+       let audioURL: URL?
+    }
+
+    enum Emotion {
+       case happy
+       case sad
+       case angry
+       case fearful
+       case concerned
+       case excited
+       case neutral
+    }
+
+    struct QuestParameters {
+       let questType: String
+       let difficulty: Int
+       let location: String
+       let questGiver: String
+       let suggestedRewards: [QuestReward]?
+    }
+
+    // Placeholder types for external dependencies
+    struct PlayerState {
+       var currentLocation: String = "Unknown"
+       var harmonyLevel: Float = 1.0
+    }
+
+    struct WorldState {
+       var globalHarmony: Float = 1.0
+       var activeEvents: [String] = []
+    }
+
+    // MARK: - DialogueContext from AIOrchestra
+    struct DialogueContext {
+       let speaker: EchoType
+       let topic: GuidanceTopic
+       let playerState: PlayerState
+       let worldState: WorldState
+       let conversationId: UUID?
+       let emotion: Emotion?
+       
+       init(speaker: EchoType, topic: GuidanceTopic, playerState: PlayerState, worldState: WorldState, conversationId: UUID? = nil, emotion: Emotion? = nil) {
+           self.speaker = speaker
+           self.topic = topic
+           self.playerState = playerState
+           self.worldState = worldState
+           self.conversationId = conversationId
+           self.emotion = emotion
+       }
+    }

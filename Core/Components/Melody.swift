@@ -185,15 +185,6 @@ extension CodableColor {
     static let white = CodableColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     static let gray = CodableColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
     
-    /// Converts to SwiftUI Color for UI rendering
-    var swiftUIColor: Color {
-        return Color(
-            red: Double(red),
-            green: Double(green),
-            blue: Double(blue),
-            opacity: Double(alpha)
-        )
-    }
 }
 
 // MARK: - Melody Collection Helpers

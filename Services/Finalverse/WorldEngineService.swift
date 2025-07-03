@@ -1,8 +1,8 @@
 //
-//  WorldEngineService.swift
+//  Services/Finalverse/WorldEngineService.swift
 //  FinalStorm
 //
-//  Manages procedural world generation and dynamics
+//  Manages procedural world generation and dynamics - FIXED with proper imports
 //
 
 import Foundation
@@ -15,8 +15,15 @@ class WorldEngineService: ObservableObject {
     @Published var activeEvents: [WorldEvent] = []
     
     private let networkClient: FinalverseNetworkClient
-    private let metabolismSimulator = MetabolismSimulator()
-    private let providenceEngine = ProvidenceEngine()
+    
+    // Use the shared types from WorldTypes.swift
+    private lazy var metabolismSimulator: MetabolismSimulator = {
+        return MetabolismSimulator()
+    }()
+    
+    private lazy var providenceEngine: ProvidenceEngine = {
+        return ProvidenceEngine()
+    }()
     
     init() {
         self.networkClient = FinalverseNetworkClient(service: .worldEngine)
@@ -56,91 +63,11 @@ class WorldEngineService: ObservableObject {
     
     private func triggerWorldEvent(_ event: WorldEvent) async {
         // Implement world event triggering
+        print("Triggering world event: \(event.type) at \(event.location)")
     }
     
     func applyHarmony(_ harmony: Harmony) async {
         // Apply harmony effects to world
         await metabolismSimulator.applyHarmony(harmony)
-    }
-}
-
-// MARK: - Supporting Types
-struct WorldEvent: Identifiable {
-    let id = UUID()
-    let type: WorldEventType
-    let location: SIMD3<Float>
-    let duration: TimeInterval
-    let effects: [WorldEffect]
-}
-
-enum WorldEventType {
-    case celestialBloom
-    case silenceRift
-    case harmonyWave
-}
-
-struct WorldEffect {
-    let type: EffectType
-    let magnitude: Float
-    
-    enum EffectType {
-        case spawnEntity(String, Int)
-        case ambientParticles(String)
-        case terrainTransform(String)
-        case weatherOverride(Weather)
-    }
-}
-
-enum Weather {
-    case clear
-    case rain
-    case storm
-    case discordantStorm
-}
-
-class MetabolismSimulator {
-    private var globalState = MetabolismState()
-    
-    func calculateState() async -> MetabolismState {
-        // Simulate metabolism calculations
-        return globalState
-    }
-    
-    func applyHarmony(_ harmony: Harmony) async {
-        globalState.harmony += harmony.strength * 0.1
-        globalState.dissonance = max(0, globalState.dissonance - harmony.strength * 0.05)
-    }
-}
-
-struct MetabolismState {
-    var harmony: Float = 1.0
-    var dissonance: Float = 0.0
-    
-    var shouldTriggerEvent: Bool {
-        harmony > 1.5 || dissonance > 0.7
-    }
-}
-
-class ProvidenceEngine {
-    func generateEvent(for state: MetabolismState) async -> WorldEvent {
-        let eventType: WorldEventType
-        if state.harmony > 1.5 {
-            eventType = .celestialBloom
-        } else if state.dissonance > 0.7 {
-            eventType = .silenceRift
-        } else {
-            eventType = .harmonyWave
-        }
-        
-        return WorldEvent(
-            type: eventType,
-            location: SIMD3<Float>(
-                Float.random(in: -100...100),
-                0,
-                Float.random(in: -100...100)
-            ),
-            duration: 3600,
-            effects: []
-        )
     }
 }

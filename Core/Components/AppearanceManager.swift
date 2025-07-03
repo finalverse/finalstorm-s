@@ -6,6 +6,7 @@
 //
 
 import RealityKit
+import CoreFoundation
 
 class AppearanceManager {
     func generateMaterials(for appearance: AvatarAppearance) async throws -> [Material] {

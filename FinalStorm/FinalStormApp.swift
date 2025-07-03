@@ -1,14 +1,14 @@
 //
-//  FinalStormApp.swift
+//  FinalStorm/FinalStormApp.swift
 //  FinalStorm
+//
+//  Main app entry point with proper platform handling
 //
 
 import SwiftUI
 
 @main
 struct FinalStormApp: App {
-    // Remove the @main from other app files first!
-    
     #if !os(visionOS)
     @StateObject private var appState = AppStateManager()
     @StateObject private var networkManager = NetworkManager()
@@ -20,7 +20,7 @@ struct FinalStormApp: App {
     var body: some Scene {
         #if os(visionOS)
         WindowGroup {
-            ContentView()
+            ContentView_visionOS()
         }
         .windowStyle(.volumetric)
 
@@ -30,7 +30,7 @@ struct FinalStormApp: App {
         .immersionStyle(selection: .constant(.mixed), in: .mixed)
         #else
         WindowGroup {
-            ContentView()
+            MainContentView()
                 .environmentObject(appState)
                 .environmentObject(networkManager)
                 .environmentObject(worldManager)

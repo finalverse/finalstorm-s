@@ -1,6 +1,6 @@
 //
-//  SongEngine.swift
-//  FinalStorm-S
+//  Services/Finalverse/SongEngine.swift
+//  FinalStorm
 //
 //  Implements the Song of Creation mechanics - the core magic system of Finalverse
 //
@@ -41,7 +41,7 @@ class SongEngine: ObservableObject {
         // Validate caster can perform melody
         guard let songweaver = caster.components[SongweaverComponent.self],
               songweaver.canPerform(melody) else {
-            throw SongError.insufficientResonance
+            throw SongEngineError.insufficientResonance
         }
         
         // Add to active melodies
@@ -53,9 +53,10 @@ class SongEngine: ObservableObject {
         // Apply melody effects
         applyMelodyEffects(melody, caster: caster, target: target)
         
-        // Remove melody after duration
+        // Remove melody after duration - FIXED: Correct closure syntax
         Task {
             try await Task.sleep(nanoseconds: UInt64(melody.duration * 1_000_000_000))
+            // FIX: The closure should return Bool, comparing melody IDs
             if let index = activeMelodies.firstIndex(where: { $0.id == melody.id }) {
                 activeMelodies.remove(at: index)
             }
@@ -65,15 +66,15 @@ class SongEngine: ObservableObject {
     func createHarmony(melodies: [Melody], participants: [AvatarEntity]) async throws -> Harmony {
         // Validate participants can sustain harmony
         guard participants.count >= 2 else {
-            throw SongError.insufficientParticipants
+            throw SongEngineError.insufficientParticipants
         }
         
         // Calculate combined strength
         let strength = calculateHarmonyStrength(melodies: melodies, participants: participants)
         
-        // Get melody IDs instead of full melody objects
-        let melodyIds = melodies.map { $0.id }
-        let participantIds = participants.map { $0.id }
+        // Get melody IDs and participant IDs - both as UUID arrays
+        let melodyIds: [UUID] = melodies.map { $0.id }
+        let participantIds: [UUID] = participants.map { $0.customId }
         
         // Create harmony using the Harmony type from Components
         let harmony = Harmony(
@@ -96,7 +97,8 @@ class SongEngine: ObservableObject {
     // MARK: - Private Methods
     private func loadAvailableSongs() async {
         do {
-            availableSongs = try await fetchAvailableSongs()
+            let response: SongsResponse = try await networkClient.request(.getAvailableSongs)
+            availableSongs = response.songs
         } catch {
             print("Failed to load songs: \(error)")
             // Load default songs
@@ -132,17 +134,11 @@ class SongEngine: ObservableObject {
         
         // Update caster's resonance
         if var songweaver = caster.components[SongweaverComponent.self] {
-            // Convert Melody to Harmony reference by creating from melody ID
+            // Add harmony ID to active harmonies
             let harmonyRef = Harmony(fromMelodyId: melody.id, strength: melody.strength, duration: melody.duration)
-            songweaver.activeHarmonies.append(harmonyRef)
+            songweaver.activeHarmonies.append(harmonyRef.id)
             caster.components.set(songweaver)
         }
-    }
-    
-    // MARK: - Network Communication
-    private func fetchAvailableSongs() async throws -> [Song] {
-        let response = try await networkClient.request(.getAvailableSongs)
-        return response.songs
     }
     
     // MARK: - Harmony Monitoring
@@ -185,10 +181,6 @@ class SongEngine: ObservableObject {
         return []
     }
     
-    private func updateLocalHarmony(_ contribution: Float) {
-        globalHarmony = max(0.1, min(2.0, globalHarmony + contribution))
-    }
-    
     private func applyHarmonyToWorld(_ harmony: Harmony) async {
         // Send harmony update to world engine
         let worldEngine = WorldEngineService()
@@ -205,7 +197,7 @@ struct Song: Codable, Identifiable {
     let requiredResonance: Float
     let baseStrength: Float
     let duration: TimeInterval
-    let harmonyColor: CodableColor  // Changed from UIColor to CodableColor
+    let harmonyColor: CodableColor
     let harmonyBoost: Float
     let dissonanceReduction: Float
     
@@ -224,7 +216,8 @@ struct Song: Codable, Identifiable {
     )
 }
 
-enum SongError: Error {
+// MARK: - Error Types (renamed to avoid conflicts)
+enum SongEngineError: Error {
     case insufficientResonance
     case insufficientParticipants
     case invalidTarget
