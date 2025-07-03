@@ -11,9 +11,24 @@ class AppearanceManager {
     func generateMaterials(for appearance: AvatarAppearance) async throws -> [Material] {
         var materials: [Material] = []
         
-        // Skin material
+        // Skin material using direct color values
         var skinMaterial = PhysicallyBasedMaterial()
-        skinMaterial.baseColor = .color(appearance.skinTone.toUIColor())
+        let skinColors = appearance.skinTone.toColorValues()
+        
+        #if os(visionOS) || os(iOS) || os(macOS)
+        skinMaterial.baseColor = PhysicallyBasedMaterial.BaseColor(
+            tint: .init(red: CGFloat(skinColors.red),
+                       green: CGFloat(skinColors.green),
+                       blue: CGFloat(skinColors.blue),
+                       alpha: 1.0)
+        )
+        #else
+        // Fallback for other platforms
+        skinMaterial.baseColor = PhysicallyBasedMaterial.BaseColor(
+            tint: .white
+        )
+        #endif
+        
         skinMaterial.roughness = 0.7
         skinMaterial.metallic = 0.0
         materials.append(skinMaterial)
@@ -33,35 +48,24 @@ class AppearanceManager {
         return baseMesh
     }
     
-    private func createClothingMaterial(for item: ClothingItem) -> Material {
+    private func createClothingMaterial(for item: AvatarAppearance.ClothingItem) -> Material {
         var material = PhysicallyBasedMaterial()
         
-        // Set color based on clothing type
-        switch item.type {
-        case .top:
-            material.baseColor = .color(.systemBlue)
-        case .bottom:
-            material.baseColor = .color(.systemGray)
-        case .shoes:
-            material.baseColor = .color(.black)
-        case .accessory:
-            material.baseColor = .color(.systemPurple)
-        }
+        #if os(visionOS) || os(iOS) || os(macOS)
+        material.baseColor = PhysicallyBasedMaterial.BaseColor(
+            tint: .init(red: CGFloat(item.primaryColor.red),
+                       green: CGFloat(item.primaryColor.green),
+                       blue: CGFloat(item.primaryColor.blue),
+                       alpha: CGFloat(item.primaryColor.alpha))
+        )
+        #else
+        // Fallback
+        material.baseColor = PhysicallyBasedMaterial.BaseColor(tint: .white)
+        #endif
         
         material.roughness = 0.8
         material.metallic = 0.1
         
         return material
-    }
-}
-
-extension CodableColor {
-    func toUIColor() -> UIColor {
-        return UIColor(
-            red: CGFloat(red),
-            green: CGFloat(green),
-            blue: CGFloat(blue),
-            alpha: CGFloat(alpha)
-        )
     }
 }

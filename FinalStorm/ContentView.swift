@@ -2,8 +2,6 @@
 //  ContentView.swift
 //  FinalStorm
 //
-//  Main content view that delegates to platform-specific implementations
-//
 
 import SwiftUI
 
@@ -17,8 +15,4 @@ struct ContentView: View {
         ContentView_visionOS()
         #endif
     }
-}
-
-#Preview {
-    ContentView()
 }

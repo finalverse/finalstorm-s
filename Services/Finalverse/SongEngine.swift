@@ -20,157 +20,91 @@ class SongEngine: ObservableObject {
     private let audioEngine: SongweavingAudioEngine
     private var harmonyCancellable: AnyCancellable?
     
+    // MARK: - Initialization
     init() {
         self.networkClient = FinalverseNetworkClient(service: .songEngine)
         self.audioEngine = SongweavingAudioEngine()
     }
     
-    // MARK: - Initialization
+    // MARK: - Public Methods
     func initialize() async {
-        // Connect to Finalverse Song Engine service
         do {
             try await networkClient.connect()
-            
-            // Load available songs from server
-            availableSongs = try await fetchAvailableSongs()
-            
-            // Start harmony monitoring
+            await loadAvailableSongs()
             startHarmonyMonitoring()
         } catch {
             print("Failed to initialize Song Engine: \(error)")
         }
     }
     
-    // MARK: - Songweaving
-    func weaveSong(_ song: Song, caster: AvatarEntity, target: Entity?) async throws {
-        // Validate caster has required resonance
+    func castMelody(_ melody: Melody, by caster: Entity, target: Entity? = nil) async throws {
+        // Validate caster can perform melody
         guard let songweaver = caster.components[SongweaverComponent.self],
-              songweaver.resonanceLevel.totalResonance >= song.requiredResonance else {
+              songweaver.canPerform(melody) else {
             throw SongError.insufficientResonance
         }
         
-        // Create melody from song
-        let melody = createMelody(from: song, caster: caster)
+        // Add to active melodies
+        activeMelodies.append(melody)
         
-        // Play audio representation
+        // Play audio
         await audioEngine.playMelody(melody)
         
-        // Apply visual effects
-        let visualEffect = createVisualEffect(for: melody)
-        caster.addChild(visualEffect)
+        // Apply melody effects
+        applyMelodyEffects(melody, caster: caster, target: target)
         
-        // Send to server for validation and world state update
-        let response = try await networkClient.request(
-            .weaveSong(songId: song.id, casterId: caster.id, targetId: target?.id)
-        )
-        
-        // Apply effects based on server response
-        if response.success {
-            applyMelodyEffects(melody, caster: caster, target: target)
-            
-            // Update local harmony
-            updateLocalHarmony(melody.harmonyContribution)
-        }
-        
-        // Clean up visual effect after duration
+        // Remove melody after duration
         Task {
             try await Task.sleep(nanoseconds: UInt64(melody.duration * 1_000_000_000))
-            visualEffect.removeFromParent()
+            if let index = activeMelodies.firstIndex(where: { $0.id == melody.id }) {
+                activeMelodies.remove(at: index)
+            }
         }
     }
     
-    // MARK: - Harmony System
-    func createHarmony(_ melodies: [Melody], participants: [AvatarEntity]) async throws -> Harmony {
-        // Validate all participants can contribute
-        let validParticipants = participants.filter { avatar in
-            guard let songweaver = avatar.components[SongweaverComponent.self] else { return false }
-            return melodies.allSatisfy { melody in
-                songweaver.canPerform(melody)
-            }
-        }
-        
-        guard validParticipants.count >= melodies.count else {
+    func createHarmony(melodies: [Melody], participants: [AvatarEntity]) async throws -> Harmony {
+        // Validate participants can sustain harmony
+        guard participants.count >= 2 else {
             throw SongError.insufficientParticipants
         }
         
-        // Calculate harmony strength based on participant resonance
-        let harmonyStrength = calculateHarmonyStrength(melodies: melodies, participants: validParticipants)
+        // Calculate combined strength
+        let strength = calculateHarmonyStrength(melodies: melodies, participants: participants)
         
-        // Create harmony effect
+        // Get melody IDs instead of full melody objects
+        let melodyIds = melodies.map { $0.id }
+        let participantIds = participants.map { $0.id }
+        
+        // Create harmony using the Harmony type from Components
         let harmony = Harmony(
-            id: UUID(),
-            melodies: melodies,
-            participants: validParticipants.map { $0.id },
-            strength: harmonyStrength,
-            duration: 60.0 // 1 minute base duration
+            melodies: melodyIds,
+            participants: participantIds,
+            strength: strength,
+            duration: 30.0 // Base duration
         )
         
-        // Apply harmony to world
+        // Apply harmony effects to world
         await applyHarmonyToWorld(harmony)
         
         return harmony
     }
     
-    // MARK: - Effect Creation
-    private func createMelody(from song: Song, caster: AvatarEntity) -> Melody {
-        return Melody(
-            id: UUID(),
-            type: song.melodyType,
-            strength: song.baseStrength * caster.resonanceMultiplier,
-            duration: song.duration,
-            harmonyColor: song.harmonyColor,
-            requiredResonance: song.requiredResonance,
-            harmonyBoost: song.harmonyBoost,
-            dissonanceReduction: song.dissonanceReduction
-        )
+    func silenceMelody(_ melodyId: UUID) {
+        activeMelodies.removeAll { $0.id == melodyId }
     }
     
-    private func createVisualEffect(for melody: Melody) -> Entity {
-        let effect = Entity()
-        
-        // Add particle system
-        var particles = ParticleEmitterComponent()
-        particles.emitterShape = .sphere
-        particles.emitterPosition = [0, 1, 0] // Above caster
-        particles.birthRate = 100
-        particles.mainEmitter.lifeSpan = 2.0
-        particles.mainEmitter.size = 0.05
-        
-        // Color based on melody type
-        let startColor: UIColor
-        let endColor: UIColor
-        
-        switch melody.type {
-        case .restoration:
-            startColor = .systemGreen
-            endColor = .systemMint
-        case .exploration:
-            startColor = .systemBlue
-            endColor = .systemCyan
-        case .creation:
-            startColor = .systemPurple
-            endColor = .systemPink
+    // MARK: - Private Methods
+    private func loadAvailableSongs() async {
+        do {
+            availableSongs = try await fetchAvailableSongs()
+        } catch {
+            print("Failed to load songs: \(error)")
+            // Load default songs
+            availableSongs = [Song.restorationMelody]
         }
-        
-        particles.mainEmitter.color = .evolving(
-            start: .single(startColor),
-            end: .single(endColor.withAlphaComponent(0))
-        )
-        
-        // Add light source
-        let light = PointLight()
-        light.color = startColor
-        light.intensity = 1000
-        light.attenuationRadius = 5.0
-        
-        effect.components.set(particles)
-        effect.components.set(PointLightComponent(light: light))
-        
-        return effect
     }
     
-    // MARK: - Effect Application
-    private func applyMelodyEffects(_ melody: Melody, caster: AvatarEntity, target: Entity?) {
+    private func applyMelodyEffects(_ melody: Melody, caster: Entity, target: Entity?) {
         // Apply to target if specified
         if let target = target {
             if var harmony = target.components[HarmonyComponent.self] {
@@ -198,7 +132,9 @@ class SongEngine: ObservableObject {
         
         // Update caster's resonance
         if var songweaver = caster.components[SongweaverComponent.self] {
-            songweaver.activeHarmonies.append(Harmony(from: melody))
+            // Convert Melody to Harmony reference by creating from melody ID
+            let harmonyRef = Harmony(fromMelodyId: melody.id, strength: melody.strength, duration: melody.duration)
+            songweaver.activeHarmonies.append(harmonyRef)
             caster.components.set(songweaver)
         }
     }
@@ -269,7 +205,7 @@ struct Song: Codable, Identifiable {
     let requiredResonance: Float
     let baseStrength: Float
     let duration: TimeInterval
-    let harmonyColor: UIColor
+    let harmonyColor: CodableColor  // Changed from UIColor to CodableColor
     let harmonyBoost: Float
     let dissonanceReduction: Float
     
@@ -282,63 +218,10 @@ struct Song: Codable, Identifiable {
         requiredResonance: 10,
         baseStrength: 1.0,
         duration: 3.0,
-        harmonyColor: .systemGreen,
+        harmonyColor: .green,
         harmonyBoost: 0.1,
         dissonanceReduction: 0.2
     )
-}
-
-struct Melody: Identifiable {
-    let id: UUID
-    let type: MelodyType
-    var strength: Float
-    let duration: TimeInterval
-    let harmonyColor: UIColor
-    let requiredResonance: Float
-    let harmonyBoost: Float
-    let dissonanceReduction: Float
-    
-    var harmonyContribution: Float {
-        harmonyBoost * strength
-    }
-}
-
-enum MelodyType: String, Codable {
-    case restoration
-    case exploration
-    case creation
-    
-    var effectRadius: Float {
-        switch self {
-        case .restoration: return 10.0
-        case .exploration: return 15.0
-        case .creation: return 20.0
-        }
-    }
-}
-
-struct Harmony: Identifiable {
-    let id: UUID
-    let melodies: [Melody]
-    let participants: [UUID]
-    let strength: Float
-    let duration: TimeInterval
-    
-    init(id: UUID, melodies: [Melody], participants: [UUID], strength: Float, duration: TimeInterval) {
-        self.id = id
-        self.melodies = melodies
-        self.participants = participants
-        self.strength = strength
-        self.duration = duration
-    }
-    
-    init(from melody: Melody) {
-        self.id = UUID()
-        self.melodies = [melody]
-        self.participants = []
-        self.strength = melody.strength
-        self.duration = melody.duration
-    }
 }
 
 enum SongError: Error {
@@ -346,15 +229,4 @@ enum SongError: Error {
     case insufficientParticipants
     case invalidTarget
     case songOnCooldown
-}
-
-struct HarmonyEffect {
-    let type: MelodyType
-    let strength: Float
-    let duration: TimeInterval
-    let appliedAt: Date = Date()
-    
-    var isActive: Bool {
-        Date().timeIntervalSince(appliedAt) < duration
-    }
 }

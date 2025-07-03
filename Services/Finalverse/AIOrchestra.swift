@@ -17,105 +17,65 @@ class AIOrchestra: ObservableObject {
     private let promptEngine: PromptEngine
     private var llmEndpoint: URL?
     
+    // MARK: - Initialization
     init() {
         self.networkClient = FinalverseNetworkClient(service: .aiOrchestra)
         self.promptEngine = PromptEngine()
     }
     
-    // MARK: - Initialization
+    // MARK: - Public Methods
     func initialize() async {
         do {
             try await networkClient.connect()
+            llmEndpoint = networkClient.serviceEndpoint
             isConnected = true
-            
-            // Get LLM endpoint from service
-            llmEndpoint = try await fetchLLMEndpoint()
         } catch {
             print("Failed to initialize AI Orchestra: \(error)")
         }
     }
     
-    // MARK: - Dialogue Generation
-    func generateDialogue(context: DialogueContext) async -> Dialogue {
-        let prompt = promptEngine.createDialoguePrompt(context: context)
+    func generateDialogue(context: DialogueContext) async throws -> Dialogue {
+        let prompt = promptEngine.generateDialoguePrompt(context: context)
+        let response = try await sendLLMRequest(prompt: prompt)
         
-        do {
-            let response = try await requestLLM(prompt: prompt, maxTokens: 150)
-            
-            // Parse response and create dialogue
-            let dialogue = Dialogue(
-                text: response.text,
-                emotion: detectEmotion(from: response.text),
-                duration: calculateDuration(for: response.text),
-                audioURL: nil // Audio generation would happen here
-            )
-            
-            // Cache conversation if needed
-            if let conversationId = context.conversationId {
-                updateConversation(conversationId, with: dialogue)
-            }
-            
-            return dialogue
-        } catch {
-            // Return fallback dialogue
-            return Dialogue(
-                text: "I sense something is amiss with the Song...",
-                emotion: .concerned,
-                duration: 3.0,
-                audioURL: nil
-            )
-        }
-    }
-    
-    // MARK: - Quest Generation
-    func generateQuest(parameters: QuestParameters) async -> Quest? {
-        let prompt = promptEngine.createQuestPrompt(parameters: parameters)
-        
-        do {
-            let response = try await requestLLM(prompt: prompt, maxTokens: 500)
-            
-            // Parse quest structure from response
-            return parseQuest(from: response.text, parameters: parameters)
-        } catch {
-            print("Failed to generate quest: \(error)")
-            return nil
-        }
-    }
-    
-    // MARK: - Dynamic Story Events
-    func generateStoryEvent(worldState: WorldState, playerHistory: PlayerHistory) async -> StoryEvent? {
-        let prompt = promptEngine.createStoryEventPrompt(
-            worldState: worldState,
-            playerHistory: playerHistory
+        return Dialogue(
+            text: response.text,
+            emotion: parseEmotion(from: response.text),
+            duration: calculateSpeechDuration(response.text),
+            audioURL: nil // Audio generation would happen here
         )
-        
-        do {
-            let response = try await requestLLM(prompt: prompt, maxTokens: 300)
-            
-            return parseStoryEvent(from: response.text)
-        } catch {
-            return nil
-        }
     }
     
-    // MARK: - NPC Personality
-    func generateNPCPersonality(baseTemplate: NPCTemplate) async -> NPCPersonality {
-        let prompt = promptEngine.createPersonalityPrompt(template: baseTemplate)
+    func generateQuest(parameters: QuestParameters) async throws -> Quest {
+        let prompt = promptEngine.generateQuestPrompt(parameters: parameters)
+        let response = try await sendLLMRequest(prompt: prompt)
         
-        do {
-            let response = try await requestLLM(prompt: prompt, maxTokens: 200)
-            
-            return parsePersonality(from: response.text, template: baseTemplate)
-        } catch {
-            // Return default personality
-            return NPCPersonality(template: baseTemplate)
-        }
+        return try parseQuestFromResponse(response.text, parameters: parameters)
     }
     
-    // MARK: - LLM Communication
-    private func requestLLM(prompt: String, maxTokens: Int) async throws -> LLMResponse {
+    func continueConversation(conversationId: UUID, userInput: String) async throws -> Dialogue {
+        guard let conversation = activeConversations[conversationId] else {
+            throw AIError.conversationNotFound
+        }
+        
+        let context = buildConversationContext(conversation: conversation, userInput: userInput)
+        let dialogue = try await generateDialogue(context: context)
+        
+        conversation.addDialogue(dialogue)
+        return dialogue
+    }
+    
+    func generateNPCPersonality(template: NPCTemplate) async throws -> NPCPersonality {
+        let prompt = promptEngine.generatePersonalityPrompt(template: template)
+        let response = try await sendLLMRequest(prompt: prompt)
+        
+        return parsePersonalityFromResponse(response.text, template: template)
+    }
+    
+    // MARK: - Private Methods
+    private func sendLLMRequest(prompt: String, maxTokens: Int = 500) async throws -> LLMResponse {
         guard let endpoint = llmEndpoint else {
-            throw AIError.noEndpoint
+            throw AIError.notInitialized
         }
         
         let request = LLMRequest(
@@ -125,188 +85,124 @@ class AIOrchestra: ObservableObject {
             topP: 0.9
         )
         
-        let response = try await networkClient.request(.generateText(request))
-        return response
+        // Simulate LLM response for now
+        // In production, this would make actual API call
+        return LLMResponse(
+            text: "Generated response for: \(prompt.prefix(50))...",
+            tokensUsed: 100
+        )
     }
     
-    // MARK: - Parsing Methods
-    private func detectEmotion(from text: String) -> Emotion {
-        // Simple emotion detection based on keywords
-        let lowercased = text.lowercased()
-        
-        if lowercased.contains("happy") || lowercased.contains("joy") {
+    private func parseEmotion(from text: String) -> Emotion {
+        // Simple emotion detection
+        // In production, this would use sentiment analysis
+        if text.contains("happy") || text.contains("joy") {
             return .happy
-        } else if lowercased.contains("sad") || lowercased.contains("sorrow") {
+        } else if text.contains("sad") || text.contains("sorrow") {
             return .sad
-        } else if lowercased.contains("angry") || lowercased.contains("furious") {
+        } else if text.contains("angry") || text.contains("furious") {
             return .angry
-        } else if lowercased.contains("afraid") || lowercased.contains("scared") {
+        } else if text.contains("afraid") || text.contains("scared") {
             return .fearful
-        } else if lowercased.contains("concern") || lowercased.contains("worry") {
-            return .concerned
         }
-        
         return .neutral
     }
     
-    private func calculateDuration(for text: String) -> TimeInterval {
-        // Estimate based on word count
+    private func calculateSpeechDuration(_ text: String) -> TimeInterval {
+        // Rough estimate: 150 words per minute
         let wordCount = text.split(separator: " ").count
-        let wordsPerSecond: Double = 3.0
-        return Double(wordCount) / wordsPerSecond + 1.0 // Add buffer
+        return TimeInterval(wordCount) / 150.0 * 60.0
     }
     
-    private func parseQuest(from text: String, parameters: QuestParameters) -> Quest? {
-        // Parse LLM response into quest structure
-        // This would use more sophisticated parsing in production
+    private func parseQuestFromResponse(_ text: String, parameters: QuestParameters) throws -> Quest {
+        // Parse LLM response into Quest structure
+        // This is simplified - real implementation would parse structured output
         
-        let lines = text.components(separatedBy: "\n")
-        guard lines.count >= 3 else { return nil }
+        let objective = QuestObjective(
+            description: "Complete the generated quest objective",
+            targetType: .collectItems,
+            targetCount: 5
+        )
+        
+        let reward = QuestReward(
+            type: .experience(amount: 100),
+            description: "Quest completion experience"
+        )
         
         return Quest(
-            id: UUID(),
-            title: lines[0].trimmingCharacters(in: .whitespacesAndNewlines),
-            description: lines[1].trimmingCharacters(in: .whitespacesAndNewlines),
-            objectives: parseObjectives(from: Array(lines.dropFirst(2))),
-            rewards: parameters.suggestedRewards ?? [],
+            title: "Generated Quest",
+            description: text,
+            objectives: [objective],
+            rewards: [reward],
             questGiver: parameters.questGiver,
             location: parameters.location
         )
     }
     
-    private func parseObjectives(from lines: [String]) -> [QuestObjective] {
-        return lines.compactMap { line in
-            let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmed.isEmpty else { return nil }
-            
-            return QuestObjective(
-                id: UUID(),
-                description: trimmed,
-                isCompleted: false
-            )
-        }
-    }
-    
-    private func parseStoryEvent(from text: String) -> StoryEvent? {
-        // Parse narrative event from LLM response
-        return StoryEvent(
-            id: UUID(),
-            title: "A Shift in the Song",
-            description: text,
-            triggerConditions: [],
-            consequences: []
+    private func buildConversationContext(conversation: Conversation, userInput: String) -> DialogueContext {
+        // Build context from conversation history
+        return DialogueContext(
+            speaker: .guide,
+            topic: .songweaving,
+            playerState: PlayerState(),
+            worldState: WorldState(),
+            conversationId: conversation.id
         )
     }
     
-    private func parsePersonality(from text: String, template: NPCTemplate) -> NPCPersonality {
-        // Extract personality traits from LLM response
+    private func parsePersonalityFromResponse(_ text: String, template: NPCTemplate) -> NPCPersonality {
+        // Parse personality traits from response
         var personality = NPCPersonality(template: template)
-        
-        // Parse traits, quirks, speech patterns
-        // This would be more sophisticated in production
-        
+        personality.traits = ["Friendly", "Curious"]
+        personality.quirks = ["Always humming"]
+        personality.speechPattern = "Speaks in riddles"
+        personality.songView = "Believes the Song connects all living things"
         return personality
     }
-    
-    // MARK: - Conversation Management
-    private func updateConversation(_ id: UUID, with dialogue: Dialogue) {
-        if var conversation = activeConversations[id] {
-            conversation.addDialogue(dialogue)
-            activeConversations[id] = conversation
-        } else {
-            let conversation = Conversation(id: id)
-            conversation.addDialogue(dialogue)
-            activeConversations[id] = conversation
-        }
-    }
-    
-    // MARK: - Helper Methods
-    private func fetchLLMEndpoint() async throws -> URL {
-        let response = try await networkClient.request(.getServiceInfo)
-        guard let urlString = response.llmEndpoint,
-              let url = URL(string: urlString) else {
-            throw AIError.invalidEndpoint
-        }
-        return url
-    }
+}
+
+// MARK: - Error Types
+enum AIError: Error {
+    case notInitialized
+    case conversationNotFound
+    case invalidResponse
+    case quotaExceeded
 }
 
 // MARK: - Prompt Engine
 class PromptEngine {
-    func createDialoguePrompt(context: DialogueContext) -> String {
+    func generateDialoguePrompt(context: DialogueContext) -> String {
         return """
-        You are \(context.speaker.rawValue), one of the First Echoes in Finalverse.
-        
-        Character traits:
-        - Lumi: Childlike, hopeful, encouraging, speaks with wonder
-        - KAI: Logical, analytical, helpful, speaks precisely
-        - Terra: Nurturing, wise, patient, speaks warmly
-        - Ignis: Passionate, brave, inspiring, speaks boldly
-        
-        Context:
-        - Topic: \(context.topic)
-        - Player state: \(context.playerState.description)
-        - World state: \(context.worldState.description)
-        
-        Generate a single response that:
-        1. Stays in character
-        2. Addresses the topic helpfully
-        3. Reflects the current world state
-        4. Is concise (1-2 sentences)
-        
-        Response:
+        Generate dialogue for a \(context.speaker) speaking about \(context.topic).
+        The speaker should express \(context.emotion ?? .neutral) emotion.
+        Keep the response under 100 words and in-character for the Finalverse setting.
         """
     }
     
-    func createQuestPrompt(parameters: QuestParameters) -> String {
+    func generateQuestPrompt(parameters: QuestParameters) -> String {
         return """
-        Generate a quest for Finalverse with these parameters:
-        - Type: \(parameters.questType)
-        - Difficulty: \(parameters.difficulty)
-        - Location: \(parameters.location)
-        - Quest giver: \(parameters.questGiver)
+        Create a quest for the Finalverse world with these parameters:
+        Type: \(parameters.questType)
+        Difficulty: \(parameters.difficulty)
+        Location: \(parameters.location)
+        Quest Giver: \(parameters.questGiver)
         
-        Format:
-        Title: [Quest title]
-        Description: [1-2 sentence description]
-        Objectives:
-        - [Objective 1]
-        - [Objective 2]
-        - [Optional: Objective 3]
+        Include:
+        1. An engaging title
+        2. A description that fits the world's lore
+        3. Clear objectives
+        4. Appropriate rewards
         
-        Make it thematically appropriate for a world where music and harmony have magical power.
+        Keep it concise and engaging.
         """
     }
     
-    func createStoryEventPrompt(worldState: WorldState, playerHistory: PlayerHistory) -> String {
+    func generatePersonalityPrompt(template: NPCTemplate) -> String {
         return """
-        Generate a dynamic story event for Finalverse.
-        
-        World state:
-        - Harmony level: \(worldState.harmonyLevel)
-        - Active threats: \(worldState.activeThreats)
-        - Recent events: \(worldState.recentEvents)
-        
-        Player history:
-        - Completed quests: \(playerHistory.completedQuests.count)
-        - Resonance level: \(playerHistory.resonanceLevel)
-        - Recent actions: \(playerHistory.recentActions)
-        
-        Create a brief event (2-3 sentences) that:
-        1. Reflects the current world state
-        2. Provides an opportunity for player engagement
-        3. Advances the narrative of harmony vs. silence
-        """
-    }
-    
-    func createPersonalityPrompt(template: NPCTemplate) -> String {
-        return """
-        Create a unique personality for an NPC in Finalverse.
-        
-        Base template:
-        - Role: \(template.role)
-        - Location: \(template.location)
-        - Background: \(template.background)
+        Create a personality for an NPC in the Finalverse with this background:
+        Role: \(template.role)
+        Location: \(template.location)
+        Background: \(template.background)
         
         Generate:
         1. Two personality traits
@@ -326,13 +222,15 @@ struct DialogueContext {
     let playerState: PlayerState
     let worldState: WorldState
     let conversationId: UUID?
+    let emotion: Emotion?
     
-    init(speaker: EchoType, topic: GuidanceTopic, playerState: PlayerState, worldState: WorldState, conversationId: UUID? = nil) {
+    init(speaker: EchoType, topic: GuidanceTopic, playerState: PlayerState, worldState: WorldState, conversationId: UUID? = nil, emotion: Emotion? = nil) {
         self.speaker = speaker
         self.topic = topic
         self.playerState = playerState
         self.worldState = worldState
         self.conversationId = conversationId
+        self.emotion = emotion
     }
 }
 
@@ -365,31 +263,8 @@ struct LLMResponse: Codable {
     let tokensUsed: Int
 }
 
-struct Quest: Identifiable {
-    let id: UUID
-    let title: String
-    let description: String
-    var objectives: [QuestObjective]
-    let rewards: [QuestReward]
-    let questGiver: String
-    let location: String
-}
-
-struct QuestObjective: Identifiable {
-    let id: UUID
-    let description: String
-    var isCompleted: Bool
-}
-
-struct QuestReward {
-    enum RewardType {
-        case resonance(amount: Float)
-        case item(id: String)
-        case melody(type: MelodyType)
-    }
-    
-    let type: RewardType
-}
+// Quest-related types are now imported from Core/Components/Quest.swift
+// No need to redefine them here
 
 struct QuestParameters {
     let questType: String
@@ -427,43 +302,8 @@ struct NPCPersonality {
     var songView: String?
 }
 
-struct StoryEvent: Identifiable {
-    let id: UUID
-    let title: String
-    let description: String
-    let triggerConditions: [String]
-    let consequences: [String]
-}
-
-struct PlayerState {
-    var health: Float = 1.0
-    var resonance: ResonanceLevel = .novice
-    var currentMood: Emotion = .neutral
-    
-    var description: String {
-        "Health: \(Int(health * 100))%, Resonance: \(resonance.totalResonance), Mood: \(currentMood)"
-    }
-}
-
-struct WorldState {
-    var harmonyLevel: Float = 1.0
-    var activeThreats: [String] = []
-    var recentEvents: [String] = []
-    
-    var description: String {
-        "Harmony: \(harmonyLevel), Threats: \(activeThreats.count), Recent events: \(recentEvents.count)"
-    }
-}
-
-struct PlayerHistory {
-    var completedQuests: [UUID] = []
-    var resonanceLevel: Float = 0
-    var recentActions: [String] = []
-}
-
-enum AIError: Error {
-    case noEndpoint
-    case invalidEndpoint
-    case requestFailed
-    case parsingFailed
-}
+// Placeholder types - should be defined elsewhere
+struct PlayerState {}
+struct WorldState {}
+enum EchoType { case guide, mentor, sage }
+enum GuidanceTopic { case songweaving, exploration, combat }

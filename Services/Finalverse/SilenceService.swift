@@ -2,11 +2,11 @@
 //  SilenceService.swift
 //  FinalStorm
 //
-//  Manages the antagonistic Silence force
+//  Manages corruption and silence mechanics
 //
 
 import Foundation
-import Combine
+import simd  // Add this import for simd_distance
 
 @MainActor
 class SilenceService: ObservableObject {
