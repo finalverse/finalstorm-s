@@ -1,14 +1,14 @@
 //
-//  finalstorm_sApp.swift
-//  finalstorm-s
+//  FinalStorm_iOSApp.swift
+//  FinalStorm-iOS
 //
-//  Created by Wenyan Qin on 2025-07-02.
+//  Created by Wenyan Qin on 2025-07-03.
 //
 
 import SwiftUI
 
 @main
-struct finalstorm_sApp: App {
+struct FinalStorm_iOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

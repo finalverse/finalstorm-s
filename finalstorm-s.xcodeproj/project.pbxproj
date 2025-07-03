@@ -6,23 +6,165 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B4CE864B2E15225700ED541D /* AvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864A2E15225700ED541D /* AvatarSystem.swift */; };
+		B4CE864E2E15228A00ED541D /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
+		B4CE86512E15417800ED541D /* SongEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86502E15417800ED541D /* SongEngine.swift */; };
+		B4CE86532E1541A000ED541D /* EchoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86522E1541A000ED541D /* EchoEngine.swift */; };
+		B4CE86552E1541DB00ED541D /* AIOrchestra.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86542E1541DB00ED541D /* AIOrchestra.swift */; };
+		B4CE86572E15420C00ED541D /* ContentView_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86562E15420C00ED541D /* ContentView_iOS.swift */; };
+		B4CE86592E1542C300ED541D /* ContentView_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86582E1542C300ED541D /* ContentView_macOS.swift */; };
+		B4CE868C2E1588FE00ED541D /* ContentView_visionOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE868B2E1588FE00ED541D /* ContentView_visionOS.swift */; };
+		B4CE868E2E1589E800ED541D /* BaseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE868D2E1589E800ED541D /* BaseEntity.swift */; };
+		B4CE86902E158A1A00ED541D /* AvatarEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE868F2E158A1A00ED541D /* AvatarEntity.swift */; };
+		B4CE86922E158A4E00ED541D /* ObjectEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86912E158A4E00ED541D /* ObjectEntity.swift */; };
+		B4CE86942E158A7C00ED541D /* EchoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86932E158A7C00ED541D /* EchoEntity.swift */; };
+		B4CE86982E158B7800ED541D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B4CE86972E158B7800ED541D /* README.md */; };
+		B4CE869A2E1594DE00ED541D /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86992E1594DE00ED541D /* AppStateManager.swift */; };
+		B4CE869C2E15950A00ED541D /* FinalverseServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */; };
+		B4CE869E2E15952900ED541D /* HarmonyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869D2E15952900ED541D /* HarmonyService.swift */; };
+		B4CE86A02E15954200ED541D /* StoryEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869F2E15954200ED541D /* StoryEngine.swift */; };
+		B4CE86A22E15955F00ED541D /* WorldEngineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A12E15955F00ED541D /* WorldEngineService.swift */; };
+		B4CE86A42E15957D00ED541D /* SymphonyEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */; };
+		B4CE86A62E15959D00ED541D /* SilenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A52E15959D00ED541D /* SilenceService.swift */; };
+		B4CE86A82E1595B700ED541D /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A72E1595B700ED541D /* NetworkManager.swift */; };
+		B4CE86AA2E1595D300ED541D /* FinalverseNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */; };
+		B4CE86AD2E1595F500ED541D /* MiniMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86AC2E1595F500ED541D /* MiniMapView.swift */; };
+		B4CE86AF2E15960C00ED541D /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86AE2E15960C00ED541D /* InventoryView.swift */; };
+		B4CE86B12E16093100ED541D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B02E16093100ED541D /* ChatView.swift */; };
+		B4CE86B32E16095900ED541D /* BodyShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B22E16095900ED541D /* BodyShape.swift */; };
+		B4CE86B62E160F7500ED541D /* AnimationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B52E160F7500ED541D /* AnimationSystem.swift */; };
+		B4CE86B82E160F9000ED541D /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B72E160F9000ED541D /* AppearanceManager.swift */; };
+		B4CE86BA2E160FAD00ED541D /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
+		B4CE86BC2E160FD200ED541D /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
+		B4CE86BE2E160FF600ED541D /* VoiceProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */; };
+		B4CE86C02E16101200ED541D /* Harmony.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BF2E16101200ED541D /* Harmony.swift */; };
+		B4CE86C22E16103600ED541D /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C12E16103600ED541D /* Quest.swift */; };
+		B4CE86C42E16105000ED541D /* Melody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C32E16105000ED541D /* Melody.swift */; };
+		B4CE86C62E16106B00ED541D /* Biome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C52E16106B00ED541D /* Biome.swift */; };
+		B4CE86C82E16108D00ED541D /* SpeechBubbleEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */; };
+		B4CE86CA2E1610C200ED541D /* HolographicUIPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */; };
+		B4CE86CC2E1610FE00ED541D /* ImmersiveWorldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86CB2E1610FE00ED541D /* ImmersiveWorldView.swift */; };
+		B4CE86CE2E16114400ED541D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4CE86CD2E16114400ED541D /* Info.plist */; };
+		B4CE86D02E1611C300ED541D /* ActionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86CF2E1611C300ED541D /* ActionBarView.swift */; };
+		B4CE86D22E1611DE00ED541D /* TerrainPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */; };
+		B4CE86D42E1611FF00ED541D /* ObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D32E1611FF00ED541D /* ObjectData.swift */; };
+		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		B4CE86152E1510C300ED541D /* finalstorm-s.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "finalstorm-s.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4CE86312E1517C700ED541D /* FinalStorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalStorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
+		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
+		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
+		B4CE86522E1541A000ED541D /* EchoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoEngine.swift; sourceTree = "<group>"; };
+		B4CE86542E1541DB00ED541D /* AIOrchestra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIOrchestra.swift; sourceTree = "<group>"; };
+		B4CE86562E15420C00ED541D /* ContentView_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView_iOS.swift; sourceTree = "<group>"; };
+		B4CE86582E1542C300ED541D /* ContentView_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView_macOS.swift; sourceTree = "<group>"; };
+		B4CE868B2E1588FE00ED541D /* ContentView_visionOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView_visionOS.swift; sourceTree = "<group>"; };
+		B4CE868D2E1589E800ED541D /* BaseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseEntity.swift; sourceTree = "<group>"; };
+		B4CE868F2E158A1A00ED541D /* AvatarEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarEntity.swift; sourceTree = "<group>"; };
+		B4CE86912E158A4E00ED541D /* ObjectEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectEntity.swift; sourceTree = "<group>"; };
+		B4CE86932E158A7C00ED541D /* EchoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoEntity.swift; sourceTree = "<group>"; };
+		B4CE86972E158B7800ED541D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B4CE86992E1594DE00ED541D /* AppStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateManager.swift; sourceTree = "<group>"; };
+		B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalverseServicesManager.swift; sourceTree = "<group>"; };
+		B4CE869D2E15952900ED541D /* HarmonyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyService.swift; sourceTree = "<group>"; };
+		B4CE869F2E15954200ED541D /* StoryEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryEngine.swift; sourceTree = "<group>"; };
+		B4CE86A12E15955F00ED541D /* WorldEngineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldEngineService.swift; sourceTree = "<group>"; };
+		B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymphonyEngine.swift; sourceTree = "<group>"; };
+		B4CE86A52E15959D00ED541D /* SilenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilenceService.swift; sourceTree = "<group>"; };
+		B4CE86A72E1595B700ED541D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalverseNetworkClient.swift; sourceTree = "<group>"; };
+		B4CE86AC2E1595F500ED541D /* MiniMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapView.swift; sourceTree = "<group>"; };
+		B4CE86AE2E15960C00ED541D /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
+		B4CE86B02E16093100ED541D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		B4CE86B22E16095900ED541D /* BodyShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyShape.swift; sourceTree = "<group>"; };
+		B4CE86B52E160F7500ED541D /* AnimationSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationSystem.swift; sourceTree = "<group>"; };
+		B4CE86B72E160F9000ED541D /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
+		B4CE86B92E160FAD00ED541D /* SceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
+		B4CE86BB2E160FD200ED541D /* RegionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionManager.swift; sourceTree = "<group>"; };
+		B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceProfile.swift; sourceTree = "<group>"; };
+		B4CE86BF2E16101200ED541D /* Harmony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Harmony.swift; sourceTree = "<group>"; };
+		B4CE86C12E16103600ED541D /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
+		B4CE86C32E16105000ED541D /* Melody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Melody.swift; sourceTree = "<group>"; };
+		B4CE86C52E16106B00ED541D /* Biome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biome.swift; sourceTree = "<group>"; };
+		B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleEntity.swift; sourceTree = "<group>"; };
+		B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolographicUIPanel.swift; sourceTree = "<group>"; };
+		B4CE86CB2E1610FE00ED541D /* ImmersiveWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveWorldView.swift; sourceTree = "<group>"; };
+		B4CE86CD2E16114400ED541D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B4CE86CF2E1611C300ED541D /* ActionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarView.swift; sourceTree = "<group>"; };
+		B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainPatch.swift; sourceTree = "<group>"; };
+		B4CE86D32E1611FF00ED541D /* ObjectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectData.swift; sourceTree = "<group>"; };
+		B4CE86D92E16151F00ED541D /* FinalStorm-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FinalStorm-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4CE86E82E16154300ED541D /* FinalStorm-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FinalStorm-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4CE86F82E16159A00ED541D /* FinalStorm-visionOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FinalStorm-visionOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4CE86FB2E16159B00ED541D /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B4CE870B2E16159C00ED541D /* Exceptions for "FinalStorm-visionOS" folder in "FinalStorm-visionOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B4CE86F72E16159A00ED541D /* FinalStorm-visionOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B4CE86172E1510C300ED541D /* finalstorm-s */ = {
+		B4CE86322E1517C700ED541D /* FinalStorm */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "finalstorm-s";
+			path = FinalStorm;
+			sourceTree = "<group>";
+		};
+		B4CE86DA2E16151F00ED541D /* FinalStorm-iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "FinalStorm-iOS";
+			sourceTree = "<group>";
+		};
+		B4CE86E92E16154300ED541D /* FinalStorm-macOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "FinalStorm-macOS";
+			sourceTree = "<group>";
+		};
+		B4CE86F92E16159A00ED541D /* FinalStorm-visionOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B4CE870B2E16159C00ED541D /* Exceptions for "FinalStorm-visionOS" folder in "FinalStorm-visionOS" target */,
+			);
+			path = "FinalStorm-visionOS";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		B4CE86122E1510C300ED541D /* Frameworks */ = {
+		B4CE862E2E1517C700ED541D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86D62E16151F00ED541D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86E52E16154300ED541D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86F52E16159A00ED541D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +174,21 @@
 		B4CE860C2E1510C300ED541D = {
 			isa = PBXGroup;
 			children = (
-				B4CE86172E1510C300ED541D /* finalstorm-s */,
+				B4CE86972E158B7800ED541D /* README.md */,
+				B4CE86462E151EE200ED541D /* visionOS */,
+				B4CE86452E151ED400ED541D /* macOS */,
+				B4CE86442E151ECC00ED541D /* iOS */,
+				B4CE86432E151EBE00ED541D /* Resources */,
+				B4CE86422E151EB500ED541D /* Entities */,
+				B4CE86412E151EA900ED541D /* UI */,
+				B4CE86402E151E8E00ED541D /* Networking */,
+				B4CE863F2E151E8300ED541D /* Services */,
+				B4CE863E2E151E7700ED541D /* Core */,
+				B4CE86322E1517C700ED541D /* FinalStorm */,
+				B4CE86DA2E16151F00ED541D /* FinalStorm-iOS */,
+				B4CE86E92E16154300ED541D /* FinalStorm-macOS */,
+				B4CE86F92E16159A00ED541D /* FinalStorm-visionOS */,
+				B4CE86FA2E16159B00ED541D /* Packages */,
 				B4CE86162E1510C300ED541D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,34 +196,256 @@
 		B4CE86162E1510C300ED541D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B4CE86152E1510C300ED541D /* finalstorm-s.app */,
+				B4CE86312E1517C700ED541D /* FinalStorm.app */,
+				B4CE86D92E16151F00ED541D /* FinalStorm-iOS.app */,
+				B4CE86E82E16154300ED541D /* FinalStorm-macOS.app */,
+				B4CE86F82E16159A00ED541D /* FinalStorm-visionOS.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B4CE863E2E151E7700ED541D /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86B42E160F4300ED541D /* Components */,
+				B4CE864C2E15227400ED541D /* World */,
+				B4CE86492E15220F00ED541D /* Avatar */,
+				B4CE86992E1594DE00ED541D /* AppStateManager.swift */,
+				B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B4CE863F2E151E8300ED541D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE864F2E15416100ED541D /* Finalverse */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B4CE86402E151E8E00ED541D /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86A72E1595B700ED541D /* NetworkManager.swift */,
+				B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		B4CE86412E151EA900ED541D /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86AB2E1595E400ED541D /* Components */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B4CE86422E151EB500ED541D /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE868D2E1589E800ED541D /* BaseEntity.swift */,
+				B4CE868F2E158A1A00ED541D /* AvatarEntity.swift */,
+				B4CE86912E158A4E00ED541D /* ObjectEntity.swift */,
+				B4CE86932E158A7C00ED541D /* EchoEntity.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		B4CE86432E151EBE00ED541D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86CD2E16114400ED541D /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B4CE86442E151ECC00ED541D /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86562E15420C00ED541D /* ContentView_iOS.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		B4CE86452E151ED400ED541D /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86582E1542C300ED541D /* ContentView_macOS.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		B4CE86462E151EE200ED541D /* visionOS */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE868B2E1588FE00ED541D /* ContentView_visionOS.swift */,
+				B4CE86CB2E1610FE00ED541D /* ImmersiveWorldView.swift */,
+			);
+			path = visionOS;
+			sourceTree = "<group>";
+		};
+		B4CE86492E15220F00ED541D /* Avatar */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE864A2E15225700ED541D /* AvatarSystem.swift */,
+			);
+			path = Avatar;
+			sourceTree = "<group>";
+		};
+		B4CE864C2E15227400ED541D /* World */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE864D2E15228A00ED541D /* WorldManager.swift */,
+				B4CE86B92E160FAD00ED541D /* SceneManager.swift */,
+				B4CE86BB2E160FD200ED541D /* RegionManager.swift */,
+				B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */,
+				B4CE86D32E1611FF00ED541D /* ObjectData.swift */,
+			);
+			path = World;
+			sourceTree = "<group>";
+		};
+		B4CE864F2E15416100ED541D /* Finalverse */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86502E15417800ED541D /* SongEngine.swift */,
+				B4CE86522E1541A000ED541D /* EchoEngine.swift */,
+				B4CE86542E1541DB00ED541D /* AIOrchestra.swift */,
+				B4CE869D2E15952900ED541D /* HarmonyService.swift */,
+				B4CE869F2E15954200ED541D /* StoryEngine.swift */,
+				B4CE86A12E15955F00ED541D /* WorldEngineService.swift */,
+				B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */,
+				B4CE86A52E15959D00ED541D /* SilenceService.swift */,
+			);
+			path = Finalverse;
+			sourceTree = "<group>";
+		};
+		B4CE86AB2E1595E400ED541D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86AC2E1595F500ED541D /* MiniMapView.swift */,
+				B4CE86AE2E15960C00ED541D /* InventoryView.swift */,
+				B4CE86B02E16093100ED541D /* ChatView.swift */,
+				B4CE86CF2E1611C300ED541D /* ActionBarView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B4CE86B42E160F4300ED541D /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86B22E16095900ED541D /* BodyShape.swift */,
+				B4CE86B52E160F7500ED541D /* AnimationSystem.swift */,
+				B4CE86B72E160F9000ED541D /* AppearanceManager.swift */,
+				B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */,
+				B4CE86BF2E16101200ED541D /* Harmony.swift */,
+				B4CE86C12E16103600ED541D /* Quest.swift */,
+				B4CE86C32E16105000ED541D /* Melody.swift */,
+				B4CE86C52E16106B00ED541D /* Biome.swift */,
+				B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */,
+				B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B4CE86FA2E16159B00ED541D /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86FB2E16159B00ED541D /* RealityKitContent */,
+			);
+			path = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B4CE86142E1510C300ED541D /* finalstorm-s */ = {
+		B4CE86302E1517C700ED541D /* FinalStorm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B4CE86222E1510C600ED541D /* Build configuration list for PBXNativeTarget "finalstorm-s" */;
+			buildConfigurationList = B4CE863D2E1517CB00ED541D /* Build configuration list for PBXNativeTarget "FinalStorm" */;
 			buildPhases = (
-				B4CE86112E1510C300ED541D /* Sources */,
-				B4CE86122E1510C300ED541D /* Frameworks */,
-				B4CE86132E1510C300ED541D /* Resources */,
+				B4CE862D2E1517C700ED541D /* Sources */,
+				B4CE862E2E1517C700ED541D /* Frameworks */,
+				B4CE862F2E1517C700ED541D /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				B4CE86172E1510C300ED541D /* finalstorm-s */,
+				B4CE86322E1517C700ED541D /* FinalStorm */,
 			);
-			name = "finalstorm-s";
+			name = FinalStorm;
 			packageProductDependencies = (
 			);
-			productName = "finalstorm-s";
-			productReference = B4CE86152E1510C300ED541D /* finalstorm-s.app */;
+			productName = FinalStorm;
+			productReference = B4CE86312E1517C700ED541D /* FinalStorm.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B4CE86D82E16151F00ED541D /* FinalStorm-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4CE86E12E16152100ED541D /* Build configuration list for PBXNativeTarget "FinalStorm-iOS" */;
+			buildPhases = (
+				B4CE86D52E16151F00ED541D /* Sources */,
+				B4CE86D62E16151F00ED541D /* Frameworks */,
+				B4CE86D72E16151F00ED541D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B4CE86DA2E16151F00ED541D /* FinalStorm-iOS */,
+			);
+			name = "FinalStorm-iOS";
+			packageProductDependencies = (
+			);
+			productName = "FinalStorm-iOS";
+			productReference = B4CE86D92E16151F00ED541D /* FinalStorm-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B4CE86E72E16154300ED541D /* FinalStorm-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4CE86F12E16154500ED541D /* Build configuration list for PBXNativeTarget "FinalStorm-macOS" */;
+			buildPhases = (
+				B4CE86E42E16154300ED541D /* Sources */,
+				B4CE86E52E16154300ED541D /* Frameworks */,
+				B4CE86E62E16154300ED541D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B4CE86E92E16154300ED541D /* FinalStorm-macOS */,
+			);
+			name = "FinalStorm-macOS";
+			packageProductDependencies = (
+			);
+			productName = "FinalStorm-macOS";
+			productReference = B4CE86E82E16154300ED541D /* FinalStorm-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B4CE86F72E16159A00ED541D /* FinalStorm-visionOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4CE870C2E16159C00ED541D /* Build configuration list for PBXNativeTarget "FinalStorm-visionOS" */;
+			buildPhases = (
+				B4CE86F42E16159A00ED541D /* Sources */,
+				B4CE86F52E16159A00ED541D /* Frameworks */,
+				B4CE86F62E16159A00ED541D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B4CE86F92E16159A00ED541D /* FinalStorm-visionOS */,
+			);
+			name = "FinalStorm-visionOS";
+			packageProductDependencies = (
+				B4CE86FC2E16159B00ED541D /* RealityKitContent */,
+			);
+			productName = "FinalStorm-visionOS";
+			productReference = B4CE86F82E16159A00ED541D /* FinalStorm-visionOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -80,7 +458,16 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
-					B4CE86142E1510C300ED541D = {
+					B4CE86302E1517C700ED541D = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					B4CE86D82E16151F00ED541D = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					B4CE86E72E16154300ED541D = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					B4CE86F72E16159A00ED541D = {
 						CreatedOnToolsVersion = 16.3;
 					};
 				};
@@ -99,13 +486,39 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B4CE86142E1510C300ED541D /* finalstorm-s */,
+				B4CE86302E1517C700ED541D /* FinalStorm */,
+				B4CE86D82E16151F00ED541D /* FinalStorm-iOS */,
+				B4CE86E72E16154300ED541D /* FinalStorm-macOS */,
+				B4CE86F72E16159A00ED541D /* FinalStorm-visionOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		B4CE86132E1510C300ED541D /* Resources */ = {
+		B4CE862F2E1517C700ED541D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B4CE86982E158B7800ED541D /* README.md in Resources */,
+				B4CE86CE2E16114400ED541D /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86D72E16151F00ED541D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86E62E16154300ED541D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86F62E16159A00ED541D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -115,7 +528,68 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B4CE86112E1510C300ED541D /* Sources */ = {
+		B4CE862D2E1517C700ED541D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B4CE86C22E16103600ED541D /* Quest.swift in Sources */,
+				B4CE86CA2E1610C200ED541D /* HolographicUIPanel.swift in Sources */,
+				B4CE86D22E1611DE00ED541D /* TerrainPatch.swift in Sources */,
+				B4CE86D42E1611FF00ED541D /* ObjectData.swift in Sources */,
+				B4CE86A82E1595B700ED541D /* NetworkManager.swift in Sources */,
+				B4CE86B32E16095900ED541D /* BodyShape.swift in Sources */,
+				B4CE869E2E15952900ED541D /* HarmonyService.swift in Sources */,
+				B4CE868C2E1588FE00ED541D /* ContentView_visionOS.swift in Sources */,
+				B4CE86AF2E15960C00ED541D /* InventoryView.swift in Sources */,
+				B4CE86B12E16093100ED541D /* ChatView.swift in Sources */,
+				B4CE86532E1541A000ED541D /* EchoEngine.swift in Sources */,
+				B4CE864E2E15228A00ED541D /* WorldManager.swift in Sources */,
+				B4CE86552E1541DB00ED541D /* AIOrchestra.swift in Sources */,
+				B4CE864B2E15225700ED541D /* AvatarSystem.swift in Sources */,
+				B4CE86572E15420C00ED541D /* ContentView_iOS.swift in Sources */,
+				B4CE86AA2E1595D300ED541D /* FinalverseNetworkClient.swift in Sources */,
+				B4CE86C02E16101200ED541D /* Harmony.swift in Sources */,
+				B4CE86CC2E1610FE00ED541D /* ImmersiveWorldView.swift in Sources */,
+				B4CE86AD2E1595F500ED541D /* MiniMapView.swift in Sources */,
+				B4CE86BC2E160FD200ED541D /* RegionManager.swift in Sources */,
+				B4CE86592E1542C300ED541D /* ContentView_macOS.swift in Sources */,
+				B4CE86942E158A7C00ED541D /* EchoEntity.swift in Sources */,
+				B4CE86A02E15954200ED541D /* StoryEngine.swift in Sources */,
+				B4CE86A22E15955F00ED541D /* WorldEngineService.swift in Sources */,
+				B4CE86512E15417800ED541D /* SongEngine.swift in Sources */,
+				B4CE86C62E16106B00ED541D /* Biome.swift in Sources */,
+				B4CE86C42E16105000ED541D /* Melody.swift in Sources */,
+				B4CE86B82E160F9000ED541D /* AppearanceManager.swift in Sources */,
+				B4CE86A62E15959D00ED541D /* SilenceService.swift in Sources */,
+				B4CE869C2E15950A00ED541D /* FinalverseServicesManager.swift in Sources */,
+				B4CE86C82E16108D00ED541D /* SpeechBubbleEntity.swift in Sources */,
+				B4CE86902E158A1A00ED541D /* AvatarEntity.swift in Sources */,
+				B4CE86BE2E160FF600ED541D /* VoiceProfile.swift in Sources */,
+				B4CE86A42E15957D00ED541D /* SymphonyEngine.swift in Sources */,
+				B4CE86922E158A4E00ED541D /* ObjectEntity.swift in Sources */,
+				B4CE86B62E160F7500ED541D /* AnimationSystem.swift in Sources */,
+				B4CE86BA2E160FAD00ED541D /* SceneManager.swift in Sources */,
+				B4CE869A2E1594DE00ED541D /* AppStateManager.swift in Sources */,
+				B4CE868E2E1589E800ED541D /* BaseEntity.swift in Sources */,
+				B4CE86D02E1611C300ED541D /* ActionBarView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86D52E16151F00ED541D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86E42E16154300ED541D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4CE86F42E16159A00ED541D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -241,7 +715,7 @@
 			};
 			name = Release;
 		};
-		B4CE86232E1510C600ED541D /* Debug */ = {
+		B4CE863B2E1517CB00ED541D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -269,7 +743,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.finalstorm-s";
+				PRODUCT_BUNDLE_IDENTIFIER = com.finalverse.FinalStorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -281,7 +755,7 @@
 			};
 			name = Debug;
 		};
-		B4CE86242E1510C600ED541D /* Release */ = {
+		B4CE863C2E1517CB00ED541D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -309,7 +783,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.finalstorm-s";
+				PRODUCT_BUNDLE_IDENTIFIER = com.finalverse.FinalStorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -317,6 +791,180 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.4;
+			};
+			name = Release;
+		};
+		B4CE86E22E16152100ED541D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2F3E73M8TT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.FinalStorm-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B4CE86E32E16152100ED541D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2F3E73M8TT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.FinalStorm-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B4CE86F22E16154500ED541D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "FinalStorm-macOS/FinalStorm_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2F3E73M8TT;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.FinalStorm-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B4CE86F32E16154500ED541D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "FinalStorm-macOS/FinalStorm_macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2F3E73M8TT;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.FinalStorm-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B4CE870D2E16159C00ED541D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2F3E73M8TT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.FinalStorm-visionOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				XROS_DEPLOYMENT_TARGET = 2.4;
+			};
+			name = Debug;
+		};
+		B4CE870E2E16159C00ED541D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2F3E73M8TT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.finalverse.FinalStorm-visionOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				VALIDATE_PRODUCT = YES;
 				XROS_DEPLOYMENT_TARGET = 2.4;
 			};
 			name = Release;
@@ -333,16 +981,50 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B4CE86222E1510C600ED541D /* Build configuration list for PBXNativeTarget "finalstorm-s" */ = {
+		B4CE863D2E1517CB00ED541D /* Build configuration list for PBXNativeTarget "FinalStorm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				B4CE86232E1510C600ED541D /* Debug */,
-				B4CE86242E1510C600ED541D /* Release */,
+				B4CE863B2E1517CB00ED541D /* Debug */,
+				B4CE863C2E1517CB00ED541D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4CE86E12E16152100ED541D /* Build configuration list for PBXNativeTarget "FinalStorm-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4CE86E22E16152100ED541D /* Debug */,
+				B4CE86E32E16152100ED541D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4CE86F12E16154500ED541D /* Build configuration list for PBXNativeTarget "FinalStorm-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4CE86F22E16154500ED541D /* Debug */,
+				B4CE86F32E16154500ED541D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B4CE870C2E16159C00ED541D /* Build configuration list for PBXNativeTarget "FinalStorm-visionOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4CE870D2E16159C00ED541D /* Debug */,
+				B4CE870E2E16159C00ED541D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B4CE86FC2E16159B00ED541D /* RealityKitContent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealityKitContent;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B4CE860D2E1510C300ED541D /* Project object */;
 }

@@ -1,6 +1,6 @@
 //
 //  SpinComponent.swift
-//  finalstorm-s
+//  FinalStorm
 //
 //  Created by Wenyan Qin on 2025-07-02.
 //
