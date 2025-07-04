@@ -3,12 +3,13 @@
 //  FinalStorm-S
 //
 //  Manages the First Echoes (Lumi, KAI, Terra, Ignis) and other AI-driven NPCs
-//  This service coordinates Echo behavior, interactions, and teaching sequences
+//  FIXED: Remove duplicate type definitions, use shared types
 //
 
 import Foundation
 import RealityKit
 import Combine
+
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -264,7 +265,7 @@ class EchoEngine: ObservableObject {
             } else {
                 // Start being companion
                 if let playerAvatar = getAvatarSystem()?.localAvatar {
-                    echoStates[echo.id]?.companionTarget = playerAvatar.id
+                    echoStates[echo.id]?.companionTarget = playerAvatar.customId
                     echoStates[echo.id]?.activity = .moving
                     
                     let dialogue = createCompanionDialogue(for: echo.echoComponent?.type ?? .lumi)
@@ -392,7 +393,7 @@ class EchoEngine: ObservableObject {
         return effect
     }
     
-    // MARK: - Helper Methods
+    // MARK: - Helper Methods (continued in next part due to length)
     private func getEcho(type: EchoType) -> EchoEntityService? {
         switch type {
         case .lumi: return lumi
@@ -694,53 +695,7 @@ class EchoEngine: ObservableObject {
     }
 }
 
-// MARK: - Supporting Types
-enum EchoType: String, CaseIterable {
-    case lumi = "Lumi"
-    case kai = "KAI"
-    case terra = "Terra"
-    case ignis = "Ignis"
-    
-    var voiceProfile: VoiceProfile {
-        switch self {
-        case .lumi:
-            return VoiceProfile(pitch: 1.3, speed: 1.1, timbre: .bright)
-        case .kai:
-            return VoiceProfile(pitch: 0.9, speed: 0.95, timbre: .digital)
-        case .terra:
-            return VoiceProfile(pitch: 0.7, speed: 0.85, timbre: .warm)
-        case .ignis:
-            return VoiceProfile(pitch: 1.0, speed: 1.15, timbre: .bold)
-        }
-    }
-    
-    var questType: String {
-        switch self {
-        case .lumi:
-            return "discovery"
-        case .kai:
-            return "knowledge"
-        case .terra:
-            return "restoration"
-        case .ignis:
-            return "action"
-        }
-    }
-    
-    var primaryColor: CodableColor {
-        switch self {
-        case .lumi:
-            return CodableColor(red: 1.0, green: 0.9, blue: 0.0)
-        case .kai:
-            return CodableColor(red: 0.0, green: 0.5, blue: 1.0)
-        case .terra:
-            return CodableColor(red: 0.0, green: 0.8, blue: 0.0)
-        case .ignis:
-            return CodableColor(red: 1.0, green: 0.6, blue: 0.0)
-        }
-    }
-}
-
+// MARK: - Supporting Types (Echo-specific types that aren't duplicated elsewhere)
 struct EchoState {
     var mood: Mood
     var activity: EchoActivity
@@ -789,57 +744,6 @@ enum PersonalityType {
     }
 }
 
-struct EchoAppearance {
-    let meshName: String
-    let baseScale: SIMD3<Float>
-    let glowIntensity: Float
-    let particleType: ParticleType
-    
-    static let lumiAppearance = EchoAppearance(
-        meshName: "lumi_model",
-        baseScale: SIMD3<Float>(0.3, 0.3, 0.3),
-        glowIntensity: 2.0,
-        particleType: .sparkles
-    )
-    
-    static let kaiAppearance = EchoAppearance(
-        meshName: "kai_model",
-        baseScale: SIMD3<Float>(0.5, 0.5, 0.5),
-        glowIntensity: 1.5,
-        particleType: .data
-    )
-    
-    static let terraAppearance = EchoAppearance(
-        meshName: "terra_model",
-        baseScale: SIMD3<Float>(0.8, 0.8, 0.8),
-        glowIntensity: 1.0,
-        particleType: .leaves
-    )
-    
-    static let ignisAppearance = EchoAppearance(
-        meshName: "ignis_model",
-        baseScale: SIMD3<Float>(0.6, 0.6, 0.6),
-        glowIntensity: 3.0,
-        particleType: .fire
-    )
-}
-
-enum ParticleType {
-    case sparkles
-    case data
-    case leaves
-    case fire
-}
-
-enum GuidanceTopic {
-    case firstSteps
-    case songweaving
-    case exploration
-    case combat
-    case lore
-    case quests
-}
-
 // MARK: - Echo Entity Service Class
 class EchoEntityService {
     let id = UUID()
@@ -885,343 +789,280 @@ class EchoEntityService {
     }
     
     func addVisualEffect(_ effect: VisualEffect) async {
-           currentVisualEffects.append(effect)
-           print("\(name) adding visual effect: \(effect.visualType)")
-       }
-       
-       func removeVisualEffect(_ effect: VisualEffect) async {
-           if let index = currentVisualEffects.firstIndex(where: { $0.id == effect.id }) {
-               currentVisualEffects.remove(at: index)
-               print("\(name) removing visual effect: \(effect.visualType)")
-           }
-       }
-       
-       func animateTo(position: SIMD3<Float>, scale: SIMD3<Float>, duration: TimeInterval) async {
-           let startPosition = self.position
-           let startScale = self.scale
-           
-           print("\(name) animating to position: \(position), scale: \(scale) over \(duration) seconds")
-           
-           // Simulate animation over time
-           let steps = 10
-           let stepDuration = duration / Double(steps)
-           
-           for i in 0...steps {
-               let progress = Float(i) / Float(steps)
-               
-               // Interpolate position and scale
-               self.position = simd_mix(startPosition, position, progress)
-               self.scale = simd_mix(startScale, scale, progress)
-               
-               if i < steps {
-                   try? await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
-               }
-           }
-       }
-       
-       func pulseEffect() async {
-           let originalScale = scale
-           let pulseScale = originalScale * 1.2
-           
-           // Quick pulse animation
-           await animateTo(position: position, scale: pulseScale, duration: 0.1)
-           await animateTo(position: position, scale: originalScale, duration: 0.1)
-       }
-       
-       func moveToNearestEntity(filter: EntityFilter) async {
-           // Simulate finding and moving to nearest entity
-           let targetPosition = SIMD3<Float>(
-               position.x + Float.random(in: -5...5),
-               position.y,
-               position.z + Float.random(in: -5...5)
-           )
-           
-           print("\(name) moving to nearest entity with filter: \(filter)")
-           await animateTo(position: targetPosition, scale: scale, duration: 2.0)
-       }
-       
-       func wanderPlayfully() async {
-           // Random playful movement
-           let wanderPosition = SIMD3<Float>(
-               position.x + Float.random(in: -3...3),
-               position.y,
-               position.z + Float.random(in: -3...3)
-           )
-           
-           print("\(name) wandering playfully")
-           await animateTo(position: wanderPosition, scale: scale, duration: 3.0)
-       }
-       
-       func studyEnvironment() async {
-           print("\(name) studying environment")
-           playAnimation(.gesturing)
-           
-           // Simulate studying time
-           try? await Task.sleep(nanoseconds: 2_000_000_000)
-       }
-       
-       func healNearbyEntities() async {
-           print("\(name) healing nearby entities")
-           playAnimation(.gesturing)
-           
-           // Create healing effect
-           let healingEffect = VisualEffect()
-           healingEffect.visualType = .healingAura
-           healingEffect.primaryColor = CodableColor(red: 0.0, green: 1.0, blue: 0.0)
-           healingEffect.duration = 3.0
-           
-           await addVisualEffect(healingEffect)
-           try? await Task.sleep(nanoseconds: 3_000_000_000)
-           await removeVisualEffect(healingEffect)
-       }
-       
-       func tendToNature() async {
-           print("\(name) tending to nature")
-           playAnimation(.gesturing)
-           
-           // Create growth effect
-           let growthEffect = VisualEffect()
-           growthEffect.visualType = .plantGrowth
-           growthEffect.primaryColor = CodableColor(red: 0.0, green: 0.8, blue: 0.0)
-           growthEffect.duration = 5.0
-           
-           await addVisualEffect(growthEffect)
-           try? await Task.sleep(nanoseconds: 5_000_000_000)
-           await removeVisualEffect(growthEffect)
-       }
-       
-       func defendArea() async {
-           print("\(name) defending area")
-           playAnimation(.gesturing)
-           
-           // Create fire shield effect
-           let shieldEffect = VisualEffect()
-           shieldEffect.visualType = .fireShield
-           shieldEffect.primaryColor = CodableColor(red: 1.0, green: 0.6, blue: 0.0)
-           shieldEffect.duration = 5.0
-           
-           await addVisualEffect(shieldEffect)
-           try? await Task.sleep(nanoseconds: 5_000_000_000)
-           await removeVisualEffect(shieldEffect)
-       }
-       
-       func rallyAllies() async {
-           print("\(name) rallying allies")
-           playAnimation(.gesturing)
-           
-           // Create inspiration effect
-           let rallyEffect = VisualEffect()
-           rallyEffect.visualType = .inspirationAura
-           rallyEffect.primaryColor = CodableColor(red: 1.0, green: 0.8, blue: 0.0)
-           rallyEffect.duration = 4.0
-           
-           await addVisualEffect(rallyEffect)
-           try? await Task.sleep(nanoseconds: 4_000_000_000)
-           await removeVisualEffect(rallyEffect)
-       }
+        currentVisualEffects.append(effect)
+        print("\(name) adding visual effect: \(effect.visualType)")
     }
+    
+    func removeVisualEffect(_ effect: VisualEffect) async {
+        if let index = currentVisualEffects.firstIndex(where: { $0.id == effect.id }) {
+            currentVisualEffects.remove(at: index)
+            print("\(name) removing visual effect: \(effect.visualType)")
+        }
+    }
+    
+    func animateTo(position: SIMD3<Float>, scale: SIMD3<Float>, duration: TimeInterval) async {
+        let startPosition = self.position
+        let startScale = self.scale
+        
+        print("\(name) animating to position: \(position), scale: \(scale) over \(duration) seconds")
+        
+        // Simulate animation over time
+        let steps = 10
+        let stepDuration = duration / Double(steps)
+        
+        for i in 0...steps {
+            let progress = Float(i) / Float(steps)
+            
+            // Interpolate position and scale
+            self.position = simd_mix(startPosition, position, progress)
+            self.scale = simd_mix(startScale, scale, progress)
+            
+            if i < steps {
+                try? await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
+            }
+        }
+    }
+    
+    func pulseEffect() async {
+        let originalScale = scale
+        let pulseScale = originalScale * 1.2
+        
+        // Quick pulse animation
+        await animateTo(position: position, scale: pulseScale, duration: 0.1)
+        await animateTo(position: position, scale: originalScale, duration: 0.1)
+    }
+    
+    func moveToNearestEntity(filter: EntityFilter) async {
+        // Simulate finding and moving to nearest entity
+        let targetPosition = SIMD3<Float>(
+            position.x + Float.random(in: -5...5),
+            position.y,
+            position.z + Float.random(in: -5...5)
+        )
+        
+        print("\(name) moving to nearest entity with filter: \(filter)")
+        await animateTo(position: targetPosition, scale: scale, duration: 2.0)
+    }
+    
+    func wanderPlayfully() async {
+        // Random playful movement
+        let wanderPosition = SIMD3<Float>(
+            position.x + Float.random(in: -3...3),
+            position.y,
+            position.z + Float.random(in: -3...3)
+        )
+        
+        print("\(name) wandering playfully")
+        await animateTo(position: wanderPosition, scale: scale, duration: 3.0)
+    }
+    
+    func studyEnvironment() async {
+        print("\(name) studying environment")
+        playAnimation(.gesturing)
+        
+        // Simulate studying time
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
+    }
+    
+    func healNearbyEntities() async {
+        print("\(name) healing nearby entities")
+        playAnimation(.gesturing)
+        
+        // Create healing effect
+        let healingEffect = VisualEffect()
+        healingEffect.visualType = .healingAura
+        healingEffect.primaryColor = CodableColor(red: 0.0, green: 1.0, blue: 0.0)
+        healingEffect.duration = 3.0
+        
+        await addVisualEffect(healingEffect)
+        try? await Task.sleep(nanoseconds: 3_000_000_000)
+        await removeVisualEffect(healingEffect)
+    }
+    
+    func tendToNature() async {
+        print("\(name) tending to nature")
+        playAnimation(.gesturing)
+        
+        // Create growth effect
+        let growthEffect = VisualEffect()
+        growthEffect.visualType = .plantGrowth
+        growthEffect.primaryColor = CodableColor(red: 0.0, green: 0.8, blue: 0.0)
+        growthEffect.duration = 5.0
+        
+        await addVisualEffect(growthEffect)
+        try? await Task.sleep(nanoseconds: 5_000_000_000)
+        await removeVisualEffect(growthEffect)
+    }
+    
+    func defendArea() async {
+        print("\(name) defending area")
+        playAnimation(.gesturing)
+        
+        // Create fire shield effect
+        let shieldEffect = VisualEffect()
+        shieldEffect.visualType = .fireShield
+        shieldEffect.primaryColor = CodableColor(red: 1.0, green: 0.6, blue: 0.0)
+        shieldEffect.duration = 5.0
+        
+        await addVisualEffect(shieldEffect)
+        try? await Task.sleep(nanoseconds: 5_000_000_000)
+        await removeVisualEffect(shieldEffect)
+    }
+    
+    func rallyAllies() async {
+        print("\(name) rallying allies")
+        playAnimation(.gesturing)
+        
+        // Create inspiration effect
+        let rallyEffect = VisualEffect()
+        rallyEffect.visualType = .inspirationAura
+        rallyEffect.primaryColor = CodableColor(red: 1.0, green: 0.8, blue: 0.0)
+        rallyEffect.duration = 4.0
+        
+        await addVisualEffect(rallyEffect)
+        try? await Task.sleep(nanoseconds: 4_000_000_000)
+        await removeVisualEffect(rallyEffect)
+    }
+}
 
-    // MARK: - Behavior Tree Components
-    struct AIBehaviorComponent {
-       let behaviorTree: BehaviorTree
-    }
+// MARK: - Behavior Tree Components
+struct AIBehaviorComponent {
+    let behaviorTree: BehaviorTree
+}
 
-    struct DialogueComponent {
-       let voiceProfile: VoiceProfile
-    }
+struct DialogueComponent {
+    let voiceProfile: VoiceProfile
+}
 
-    // MARK: - Behavior Tree System
-    class BehaviorSystem {
-       // Behavior management functionality
-       func processEchoBehavior(_ echo: EchoEntityService, state: EchoState) async {
-           // Process Echo behavior based on current state
-           print("Processing behavior for \(echo.name) in state: \(state.activity)")
-       }
+// MARK: - Behavior Tree System
+class BehaviorSystem {
+    // Behavior management functionality
+    func processEchoBehavior(_ echo: EchoEntityService, state: EchoState) async {
+        // Process Echo behavior based on current state
+        print("Processing behavior for \(echo.name) in state: \(state.activity)")
     }
+}
 
-    class BehaviorTree {
-       var root: BehaviorNode?
-       
-       func execute(echo: EchoEntityService, state: EchoState) async {
-           await root?.execute(echo: echo, state: state)
-       }
+class BehaviorTree {
+    var root: BehaviorNode?
+    
+    func execute(echo: EchoEntityService, state: EchoState) async {
+        await root?.execute(echo: echo, state: state)
     }
+}
 
-    protocol BehaviorNode {
-       func execute(echo: EchoEntityService, state: EchoState) async -> Bool
-    }
+protocol BehaviorNode {
+    func execute(echo: EchoEntityService, state: EchoState) async -> Bool
+}
 
-    class SelectorNode: BehaviorNode {
-       let children: [BehaviorNode]
-       
-       init(children: [BehaviorNode]) {
-           self.children = children
-       }
-       
-       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
-           for child in children {
-               if await child.execute(echo: echo, state: state) {
-                   return true
-               }
-           }
-           return false
-       }
+class SelectorNode: BehaviorNode {
+    let children: [BehaviorNode]
+    
+    init(children: [BehaviorNode]) {
+        self.children = children
     }
+    
+    func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+        for child in children {
+            if await child.execute(echo: echo, state: state) {
+                return true
+            }
+        }
+        return false
+    }
+}
 
-    class SequenceNode: BehaviorNode {
-       let children: [BehaviorNode]
-       
-       init(children: [BehaviorNode]) {
-           self.children = children
-       }
-       
-       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
-           for child in children {
-               if !await child.execute(echo: echo, state: state) {
-                   return false
-               }
-           }
-           return true
-       }
+class SequenceNode: BehaviorNode {
+    let children: [BehaviorNode]
+    
+    init(children: [BehaviorNode]) {
+        self.children = children
     }
+    
+    func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+        for child in children {
+            if !await child.execute(echo: echo, state: state) {
+                return false
+            }
+        }
+        return true
+    }
+}
 
-    class ConditionNode: BehaviorNode {
-       let condition: (EchoState) -> Bool
-       
-       init(condition: @escaping (EchoState) -> Bool) {
-           self.condition = condition
-       }
-       
-       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
-           return condition(state)
-       }
+class ConditionNode: BehaviorNode {
+    let condition: (EchoState) -> Bool
+    
+    init(condition: @escaping (EchoState) -> Bool) {
+        self.condition = condition
     }
+    
+    func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+        return condition(state)
+    }
+}
 
-    class ActionNode: BehaviorNode {
-       let action: (EchoEntityService) async -> Void
-       
-       init(action: @escaping (EchoEntityService) async -> Void) {
-           self.action = action
-       }
-       
-       func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
-           await action(echo)
-           return true
-       }
+class ActionNode: BehaviorNode {
+    let action: (EchoEntityService) async -> Void
+    
+    init(action: @escaping (EchoEntityService) async -> Void) {
+        self.action = action
     }
+    
+    func execute(echo: EchoEntityService, state: EchoState) async -> Bool {
+        await action(echo)
+        return true
+    }
+}
 
-    // MARK: - Visual Effects System
-    class VisualEffect {
-       let id = UUID()
-       var visualType: VisualEffectType = .particles
-       var primaryColor: CodableColor = CodableColor(red: 1.0, green: 1.0, blue: 1.0)
-       var duration: TimeInterval = 1.0
-       var particleConfig: ParticleConfiguration?
-       
-       init() {}
-    }
+// MARK: - Visual Effects System
+class VisualEffect {
+    let id = UUID()
+    var visualType: VisualEffectType = .particles
+    var primaryColor: CodableColor = CodableColor(red: 1.0, green: 1.0, blue: 1.0)
+    var duration: TimeInterval = 1.0
+    var particleConfig: ParticleConfiguration?
+    
+    init() {}
+}
 
-    enum VisualEffectType {
-       case particles
-       case melodyNotes
-       case healingAura
-       case plantGrowth
-       case fireShield
-       case inspirationAura
-       case scanBeam
-       case hologram
-    }
+enum VisualEffectType {
+    case particles
+    case melodyNotes
+    case healingAura
+    case plantGrowth
+    case fireShield
+    case inspirationAura
+    case scanBeam
+    case hologram
+}
 
-    struct ParticleConfiguration {
-       var birthRate: Float = 100
-       var emitterShape: EmitterShape = .sphere
-       var lifeSpan: TimeInterval = 1.0
-       var size: Float = 0.01
-       var angularSpeed: Float = 0
-       var color: ColorEvolution = ColorEvolution(
-           start: CodableColor(red: 1.0, green: 1.0, blue: 1.0),
-           end: CodableColor(red: 1.0, green: 1.0, blue: 1.0)
-       )
-    }
+struct ParticleConfiguration {
+    var birthRate: Float = 100
+    var emitterShape: EmitterShape = .sphere
+    var lifeSpan: TimeInterval = 1.0
+    var size: Float = 0.01
+    var angularSpeed: Float = 0
+    var color: ColorEvolution = ColorEvolution(
+        start: CodableColor(red: 1.0, green: 1.0, blue: 1.0),
+        end: CodableColor(red: 1.0, green: 1.0, blue: 1.0)
+    )
+}
 
-    enum EmitterShape {
-       case sphere
-       case box
-       case cone
-       case torus
-    }
+enum EmitterShape {
+    case sphere
+    case box
+    case cone
+    case torus
+}
 
-    struct ColorEvolution {
-       let start: CodableColor
-       let end: CodableColor
-    }
+struct ColorEvolution {
+    let start: CodableColor
+    let end: CodableColor
+}
 
-    enum EchoAnimation {
-       case idle
-       case floating
-       case gesturing
-       case demonstrating
-    }
-
-    enum EntityFilter {
-       case needsHelp
-       case damaged
-       case friendly
-       case hostile
-    }
-
-    // MARK: - Supporting Types from Other Services
-    struct Dialogue {
-       let text: String
-       let emotion: Emotion
-       let duration: TimeInterval
-       let audioURL: URL?
-    }
-
-    enum Emotion {
-       case happy
-       case sad
-       case angry
-       case fearful
-       case concerned
-       case excited
-       case neutral
-    }
-
-    struct QuestParameters {
-       let questType: String
-       let difficulty: Int
-       let location: String
-       let questGiver: String
-       let suggestedRewards: [QuestReward]?
-    }
-
-    // Placeholder types for external dependencies
-    struct PlayerState {
-       var currentLocation: String = "Unknown"
-       var harmonyLevel: Float = 1.0
-    }
-
-    struct WorldState {
-       var globalHarmony: Float = 1.0
-       var activeEvents: [String] = []
-    }
-
-    // MARK: - DialogueContext from AIOrchestra
-    struct DialogueContext {
-       let speaker: EchoType
-       let topic: GuidanceTopic
-       let playerState: PlayerState
-       let worldState: WorldState
-       let conversationId: UUID?
-       let emotion: Emotion?
-       
-       init(speaker: EchoType, topic: GuidanceTopic, playerState: PlayerState, worldState: WorldState, conversationId: UUID? = nil, emotion: Emotion? = nil) {
-           self.speaker = speaker
-           self.topic = topic
-           self.playerState = playerState
-           self.worldState = worldState
-           self.conversationId = conversationId
-           self.emotion = emotion
-       }
-    }
+enum EntityFilter {
+    case needsHelp
+    case damaged
+    case friendly
+    case hostile
+}

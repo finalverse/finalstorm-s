@@ -1,13 +1,15 @@
 //
-//  AIOrchestra.swift
+//  Services/Finalverse/AIOrchestra.swift
 //  FinalStorm-S
 //
 //  Integrates LLM services for dynamic dialogue, quest generation, and narrative
+//  FIXED: Import shared types instead of redefining them
 //
 
 import Foundation
 import Combine
 
+@MainActor
 class AIOrchestra: ObservableObject {
     // MARK: - Properties
     @Published var isConnected = false
@@ -142,7 +144,7 @@ class AIOrchestra: ObservableObject {
     private func buildConversationContext(conversation: Conversation, userInput: String) -> DialogueContext {
         // Build context from conversation history
         return DialogueContext(
-            speaker: .guide,
+            speaker: .lumi, // Default to Lumi for conversation building
             topic: .songweaving,
             playerState: PlayerState(),
             worldState: WorldState(),
@@ -214,96 +216,3 @@ class PromptEngine {
         """
     }
 }
-
-// MARK: - Supporting Types
-struct DialogueContext {
-    let speaker: EchoType
-    let topic: GuidanceTopic
-    let playerState: PlayerState
-    let worldState: WorldState
-    let conversationId: UUID?
-    let emotion: Emotion?
-    
-    init(speaker: EchoType, topic: GuidanceTopic, playerState: PlayerState, worldState: WorldState, conversationId: UUID? = nil, emotion: Emotion? = nil) {
-        self.speaker = speaker
-        self.topic = topic
-        self.playerState = playerState
-        self.worldState = worldState
-        self.conversationId = conversationId
-        self.emotion = emotion
-    }
-}
-
-struct Dialogue {
-    let text: String
-    let emotion: Emotion
-    let duration: TimeInterval
-    let audioURL: URL?
-}
-
-enum Emotion {
-    case happy
-    case sad
-    case angry
-    case fearful
-    case concerned
-    case excited
-    case neutral
-}
-
-struct LLMRequest: Codable {
-    let prompt: String
-    let maxTokens: Int
-    let temperature: Double
-    let topP: Double
-}
-
-struct LLMResponse: Codable {
-    let text: String
-    let tokensUsed: Int
-}
-
-// Quest-related types are now imported from Core/Components/Quest.swift
-// No need to redefine them here
-
-struct QuestParameters {
-    let questType: String
-    let difficulty: Int
-    let location: String
-    let questGiver: String
-    let suggestedRewards: [QuestReward]?
-}
-
-class Conversation {
-    let id: UUID
-    var dialogues: [Dialogue] = []
-    var participants: [String] = []
-    
-    init(id: UUID) {
-        self.id = id
-    }
-    
-    func addDialogue(_ dialogue: Dialogue) {
-        dialogues.append(dialogue)
-    }
-}
-
-struct NPCTemplate {
-    let role: String
-    let location: String
-    let background: String
-}
-
-struct NPCPersonality {
-    let template: NPCTemplate
-    var traits: [String] = []
-    var quirks: [String] = []
-    var speechPattern: String?
-    var songView: String?
-}
-
-// Placeholder types - should be defined elsewhere
-struct PlayerState {}
-struct WorldState {}
-enum EchoType { case guide, mentor, sage }
-enum GuidanceTopic { case songweaving, exploration, combat }

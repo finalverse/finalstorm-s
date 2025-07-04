@@ -1,11 +1,18 @@
 //
-//  EchoEntity.swift
+//  Entities/EchoEntity.swift
 //  FinalStorm-S
 //
-//  First Echoes entity implementation
+//  First Echoes entity implementation - FIXED
 //
 
+import Foundation
 import RealityKit
+
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 class EchoEntity: BaseEntity {
     let echoType: EchoType
@@ -64,21 +71,6 @@ class EchoEntity: BaseEntity {
             translation: position - [0, floatHeight, 0]
         )
         
-        // Create animation sequence
-        let upAnimation = FromToByAnimation(
-            from: floatDown,
-            to: floatUp,
-            duration: floatDuration / 2,
-            bindTarget: .transform
-        )
-        
-        let downAnimation = FromToByAnimation(
-            from: floatUp,
-            to: floatDown,
-            duration: floatDuration / 2,
-            bindTarget: .transform
-        )
-        
         // This would be implemented with proper animation sequencing
         Task {
             while parent != nil {
@@ -119,19 +111,34 @@ class EchoEntity: BaseEntity {
     private func createEchoMaterial() -> Material {
         var material = UnlitMaterial()
         
-        let color: UIColor
+        let color: CodableColor
         switch echoType {
         case .lumi:
-            color = .systemYellow
+            color = CodableColor(red: 1.0, green: 0.9, blue: 0.0, alpha: 0.8)
         case .kai:
-            color = .systemBlue
+            color = CodableColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 0.8)
         case .terra:
-            color = .systemGreen
+            color = CodableColor(red: 0.0, green: 0.8, blue: 0.0, alpha: 0.8)
         case .ignis:
-            color = .systemOrange
+            color = CodableColor(red: 1.0, green: 0.6, blue: 0.0, alpha: 0.8)
         }
         
-        material.color = .init(tint: color.withAlphaComponent(0.8))
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor(
+            red: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: CGFloat(color.alpha)
+        ))
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor(
+            red: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: CGFloat(color.alpha)
+        ))
+        #endif
+        
         material.blending = .transparent(opacity: .init(floatLiteral: 0.8))
         
         return material
@@ -185,20 +192,20 @@ class EchoEntity: BaseEntity {
     }
     
     private func addEchoLight(intensity: Float) {
-        let lightColor: UIColor
+        let lightColor: CodableColor
         switch echoType {
         case .lumi:
-            lightColor = .systemYellow
+            lightColor = CodableColor(red: 1.0, green: 0.9, blue: 0.0)
         case .kai:
-            lightColor = .systemBlue
+            lightColor = CodableColor(red: 0.0, green: 0.5, blue: 1.0)
         case .terra:
-            lightColor = .systemGreen
+            lightColor = CodableColor(red: 0.0, green: 0.8, blue: 0.0)
         case .ignis:
-            lightColor = .systemOrange
+            lightColor = CodableColor(red: 1.0, green: 0.6, blue: 0.0)
         }
         
         let light = PointLight()
-        light.color = lightColor
+        light.color = lightColor.platformUIColor
         light.intensity = intensity * 1000
         light.attenuationRadius = 5.0
         
@@ -243,21 +250,20 @@ class EchoEntity: BaseEntity {
         bubble.addChild(background)
         
         // Text mesh
-        if let textMesh = MeshResource.generateText(
+        let textMesh = MeshResource.generateText(
             text,
             extrusionDepth: 0.01,
             font: .systemFont(ofSize: 0.1),
             containerFrame: CGRect(x: -0.9, y: -0.2, width: 1.8, height: 0.4),
             alignment: .center,
             lineBreakMode: .byWordWrapping
-        ) {
-            let textEntity = ModelEntity(
-                mesh: textMesh,
-                materials: [UnlitMaterial(color: .black)]
-            )
-            textEntity.position = [0, 0, 0.01]
-            bubble.addChild(textEntity)
-        }
+        )
+        let textEntity = ModelEntity(
+            mesh: textMesh,
+            materials: [createTextMaterial()]
+        )
+        textEntity.position = [0, 0, 0.01]
+        bubble.addChild(textEntity)
         
         // Billboard behavior to face camera
         bubble.components.set(BillboardComponent())
@@ -267,8 +273,26 @@ class EchoEntity: BaseEntity {
     
     private func createBubbleMaterial() -> Material {
         var material = UnlitMaterial()
-        material.color = .init(tint: .white.withAlphaComponent(0.9))
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor.white.withAlphaComponent(0.9))
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.white.withAlphaComponent(0.9))
+        #endif
+        
         material.blending = .transparent(opacity: .init(floatLiteral: 0.9))
+        return material
+    }
+    
+    private func createTextMaterial() -> Material {
+        var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor.black)
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.black)
+        #endif
+        
         return material
     }
     
@@ -364,20 +388,42 @@ class EchoEntity: BaseEntity {
         return visual
     }
     
-    private func createMusicalNote(color: UIColor) -> Entity {
+    private func createMusicalNote(color: CodableColor) -> Entity {
         let note = ModelEntity(
             mesh: .generateSphere(radius: 0.05),
-            materials: [UnlitMaterial(color: color)]
+            materials: [createNoteUnlitMaterial(color: color)]
         )
         
         // Add glow
         note.components.set(PointLightComponent(
-            color: .init(color),
+            color: color.platformUIColor,
             intensity: 100,
             attenuationRadius: 0.5
         ))
         
         return note
+    }
+    
+    private func createNoteUnlitMaterial(color: CodableColor) -> UnlitMaterial {
+        var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor(
+            red: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: CGFloat(color.alpha)
+        ))
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor(
+            red: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: CGFloat(color.alpha)
+        ))
+        #endif
+        
+        return material
     }
     
     private func demonstrateMelodyPattern(_ melody: Melody) async {
@@ -422,12 +468,29 @@ class EchoEntity: BaseEntity {
                 (659, 0.4),    // E5
                 (523, 0.8)     // C5
             ]
+        case .protection:
+            return [
+                (349, 0.6),    // F4
+                (440, 0.6),    // A4
+                (523, 0.6),    // C5
+                (440, 0.6),    // A4
+                (349, 0.6)     // F4
+            ]
+        case .transformation:
+            return [
+                (466, 0.3),    // A#4
+                (554, 0.3),    // C#5
+                (698, 0.3),    // F5
+                (831, 0.3),    // G#5
+                (698, 0.6)     // F5
+            ]
         }
     }
     
     private func playNote(frequency: Float, duration: TimeInterval) {
         // Generate and play tone
         // This would use spatial audio
+        print("Playing note at \(frequency) Hz for \(duration) seconds")
     }
     
     private func pulseEffect() {
@@ -624,7 +687,7 @@ class EchoEntity: BaseEntity {
         for _ in 0..<10 {
             let point = ModelEntity(
                 mesh: .generateSphere(radius: 0.02),
-                materials: [UnlitMaterial(color: .cyan)]
+                materials: [createCyanUnlitMaterial()]
             )
             point.position = [
                 Float.random(in: -0.4...0.4),
@@ -639,8 +702,26 @@ class EchoEntity: BaseEntity {
     
     private func createHologramMaterial() -> Material {
         var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
         material.color = .init(tint: UIColor.cyan.withAlphaComponent(0.3))
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.cyan.withAlphaComponent(0.3))
+        #endif
+        
         material.blending = .transparent(opacity: .init(floatLiteral: 0.3))
+        return material
+    }
+    
+    private func createCyanUnlitMaterial() -> UnlitMaterial {
+        var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor.cyan)
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.cyan)
+        #endif
+        
         return material
     }
     
@@ -650,7 +731,7 @@ class EchoEntity: BaseEntity {
         // Scanning beam
         let beam = ModelEntity(
             mesh: .generateCylinder(height: 3, radius: 0.01),
-            materials: [UnlitMaterial(color: .blue)]
+            materials: [createBlueUnlitMaterial()]
         )
         beam.position = [0, 0, 1.5]
         beam.orientation = simd_quatf(angle: .pi / 2, axis: [1, 0, 0])
@@ -670,13 +751,25 @@ class EchoEntity: BaseEntity {
         return scan
     }
     
+    private func createBlueUnlitMaterial() -> UnlitMaterial {
+        var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor.blue)
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.blue)
+        #endif
+        
+        return material
+    }
+    
     private func createHealingAura() -> Entity {
         let aura = Entity()
         
         // Green glow sphere
         let sphere = ModelEntity(
             mesh: .generateSphere(radius: 3),
-            materials: [createAuraMaterial(color: .green)]
+            materials: [createAuraMaterial(color: CodableColor(red: 0.0, green: 1.0, blue: 0.0, alpha: 0.2))]
         )
         aura.addChild(sphere)
         
@@ -695,9 +788,25 @@ class EchoEntity: BaseEntity {
         return aura
     }
     
-    private func createAuraMaterial(color: UIColor) -> Material {
+    private func createAuraMaterial(color: CodableColor) -> Material {
         var material = UnlitMaterial()
-        material.color = .init(tint: color.withAlphaComponent(0.2))
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor(
+            red: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: CGFloat(color.alpha)
+        ))
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor(
+            red: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: CGFloat(color.alpha)
+        ))
+        #endif
+        
         material.blending = .transparent(opacity: .init(floatLiteral: 0.2))
         return material
     }
@@ -766,7 +875,7 @@ class EchoEntity: BaseEntity {
         // Fire ring
         let ring = ModelEntity(
             mesh: .generateTorus(meanRadius: 2, tubeRadius: 0.1),
-            materials: [UnlitMaterial(color: .orange)]
+            materials: [createOrangeUnlitMaterial()]
         )
         ring.position = [0, 0.5, 0]
         shield.addChild(ring)
@@ -788,7 +897,7 @@ class EchoEntity: BaseEntity {
         
         shield.components.set(particles)
         
-        // Rotation
+        // Rotation animation
         let rotation = FromToByAnimation(
             by: Transform(rotation: simd_quatf(angle: 2 * .pi, axis: [0, 1, 0])),
             duration: 3,
@@ -800,6 +909,18 @@ class EchoEntity: BaseEntity {
         }
         
         return shield
+    }
+    
+    private func createOrangeUnlitMaterial() -> UnlitMaterial {
+        var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
+        material.color = .init(tint: UIColor.orange)
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.orange)
+        #endif
+        
+        return material
     }
     
     private func createRallyEffect() -> Entity {
@@ -832,7 +953,13 @@ class EchoEntity: BaseEntity {
     
     private func createBannerMaterial() -> Material {
         var material = UnlitMaterial()
+        
+        #if canImport(UIKit)
         material.color = .init(tint: UIColor.systemOrange.withAlphaComponent(0.8))
+        #elseif canImport(AppKit)
+        material.color = .init(tint: NSColor.systemOrange.withAlphaComponent(0.8))
+        #endif
+        
         material.blending = .transparent(opacity: .init(floatLiteral: 0.8))
         return material
     }
@@ -852,23 +979,76 @@ class EchoEntity: BaseEntity {
     }
     
     func playAnimation(_ animation: EchoAnimation) {
-        // Animation implementation
-        // This would load and play specific animations
+        // Animation implementation based on echo type and animation type
+        switch animation {
+        case .idle:
+            // Continue floating animation (already running)
+            break
+            
+        case .gesturing:
+            // Create gesture animation - wave arms or pulse
+            let gestureScale = Transform(scale: scale * 1.1)
+            move(to: gestureScale, relativeTo: nil, duration: 0.5)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.move(to: Transform(scale: self?.scale ?? [1, 1, 1]), relativeTo: nil, duration: 0.5)
+            }
+            
+        case .floating:
+            // Enhanced floating for movement
+            let enhancedFloat = Transform(
+                scale: scale,
+                rotation: orientation * simd_quatf(angle: .pi / 4, axis: [0, 0, 1]),
+                translation: position
+            )
+            move(to: enhancedFloat, relativeTo: nil, duration: 1.0)
+            
+        case .teaching:
+            // Special teaching animation with spinning
+            let teachingRotation = Transform(
+                rotation: orientation * simd_quatf(angle: .pi, axis: [0, 1, 0])
+            )
+            move(to: teachingRotation, relativeTo: nil, duration: 2.0)
+            
+        case .excited:
+            // Rapid pulsing animation
+            for i in 0..<3 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.3) { [weak self] in
+                    self?.pulseEffect()
+                }
+            }
+        }
     }
-}
+ }
 
-// MARK: - Extensions
-extension Notification.Name {
+ // MARK: - Extensions
+ extension Notification.Name {
     static let echoInteracted = Notification.Name("echoInteracted")
-}
+ }
 
-// MARK: - Supporting Components
-struct BillboardComponent: Component {
+ // MARK: - Supporting Components
+ struct BillboardComponent: Component {
     // Makes entity always face camera
-}
+    // Implementation would be handled by RealityKit's billboard system
+ }
 
-struct SpatialAudioComponent: Component {
-    let melody: Melody
-    let volume: Float = 1.0
-    let falloffDistance: Float = 10.0
-}
+ // MARK: - Extension for CodableColor Platform Support
+ extension CodableColor {
+    var platformUIColor: UIColor {
+        #if canImport(UIKit)
+        return UIColor(
+            red: CGFloat(red),
+            green: CGFloat(green),
+            blue: CGFloat(blue),
+            alpha: CGFloat(alpha)
+        )
+        #elseif canImport(AppKit)
+        return NSColor(
+            red: CGFloat(red),
+            green: CGFloat(green),
+            blue: CGFloat(blue),
+            alpha: CGFloat(alpha)
+        )
+        #endif
+    }
+ }

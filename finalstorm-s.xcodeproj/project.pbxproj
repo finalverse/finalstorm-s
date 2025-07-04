@@ -138,6 +138,45 @@
 		B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
 		B437BD6E2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
 		B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
+		B437BD712E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
+		B437BD722E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
+		B437BD732E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
+		B437BD792E1824400045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD782E1824400045436F /* SharedTypes.swift */; };
+		B437BD7A2E1824400045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD782E1824400045436F /* SharedTypes.swift */; };
+		B437BD7B2E1824400045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD782E1824400045436F /* SharedTypes.swift */; };
+		B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
+		B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
+		B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
+		B437BD822E182B1F0045436F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD812E182B1F0045436F /* LoginService.swift */; };
+		B437BD832E182B1F0045436F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD812E182B1F0045436F /* LoginService.swift */; };
+		B437BD842E182B1F0045436F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD812E182B1F0045436F /* LoginService.swift */; };
+		B437BD862E182C590045436F /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD852E182C590045436F /* AssetService.swift */; };
+		B437BD872E182C590045436F /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD852E182C590045436F /* AssetService.swift */; };
+		B437BD882E182C590045436F /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD852E182C590045436F /* AssetService.swift */; };
+		B437BD8B2E182C9B0045436F /* InventorySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD8A2E182C9B0045436F /* InventorySystem.swift */; };
+		B437BD8C2E182C9B0045436F /* InventorySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD8A2E182C9B0045436F /* InventorySystem.swift */; };
+		B437BD8D2E182C9B0045436F /* InventorySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD8A2E182C9B0045436F /* InventorySystem.swift */; };
+		B437BD8F2E182D4D0045436F /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD8E2E182D4D0045436F /* AssetManager.swift */; };
+		B437BD902E182D4D0045436F /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD8E2E182D4D0045436F /* AssetManager.swift */; };
+		B437BD912E182D4D0045436F /* AssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD8E2E182D4D0045436F /* AssetManager.swift */; };
+		B437BD932E182D770045436F /* ItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD922E182D770045436F /* ItemRenderer.swift */; };
+		B437BD942E182D770045436F /* ItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD922E182D770045436F /* ItemRenderer.swift */; };
+		B437BD952E182D770045436F /* ItemRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD922E182D770045436F /* ItemRenderer.swift */; };
+		B437BD982E182DD80045436F /* SpatialAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD972E182DD80045436F /* SpatialAudioEngine.swift */; };
+		B437BD992E182DD80045436F /* SpatialAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD972E182DD80045436F /* SpatialAudioEngine.swift */; };
+		B437BD9A2E182DD80045436F /* SpatialAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD972E182DD80045436F /* SpatialAudioEngine.swift */; };
+		B437BD9C2E182DF90045436F /* SongweavingAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD9B2E182DF90045436F /* SongweavingAudio.swift */; };
+		B437BD9D2E182DF90045436F /* SongweavingAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD9B2E182DF90045436F /* SongweavingAudio.swift */; };
+		B437BD9E2E182DF90045436F /* SongweavingAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD9B2E182DF90045436F /* SongweavingAudio.swift */; };
+		B437BDA02E182E3A0045436F /* EnvironmentalAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */; };
+		B437BDA12E182E3A0045436F /* EnvironmentalAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */; };
+		B437BDA22E182E3A0045436F /* EnvironmentalAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */; };
+		B437BDA42E186B670045436F /* AudioTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA32E186B670045436F /* AudioTypes.swift */; };
+		B437BDA52E186B670045436F /* AudioTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA32E186B670045436F /* AudioTypes.swift */; };
+		B437BDA62E186B670045436F /* AudioTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA32E186B670045436F /* AudioTypes.swift */; };
+		B437BDA82E1871B40045436F /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA72E1871B40045436F /* AudioManager.swift */; };
+		B437BDA92E1871B40045436F /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA72E1871B40045436F /* AudioManager.swift */; };
+		B437BDAA2E1871B40045436F /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA72E1871B40045436F /* AudioManager.swift */; };
 		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -152,6 +191,19 @@
 		B422787E2E16E55400559A0B /* ResonanceLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResonanceLevel.swift; sourceTree = "<group>"; };
 		B437BD672E1700EB0045436F /* WorldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTypes.swift; sourceTree = "<group>"; };
 		B437BD6C2E1705100045436F /* MeshSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshSystem.swift; sourceTree = "<group>"; };
+		B437BD702E170B2F0045436F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B437BD782E1824400045436F /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		B437BD7D2E182A520045436F /* OpenSimProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSimProtocol.swift; sourceTree = "<group>"; };
+		B437BD812E182B1F0045436F /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		B437BD852E182C590045436F /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
+		B437BD8A2E182C9B0045436F /* InventorySystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventorySystem.swift; sourceTree = "<group>"; };
+		B437BD8E2E182D4D0045436F /* AssetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetManager.swift; sourceTree = "<group>"; };
+		B437BD922E182D770045436F /* ItemRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRenderer.swift; sourceTree = "<group>"; };
+		B437BD972E182DD80045436F /* SpatialAudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialAudioEngine.swift; sourceTree = "<group>"; };
+		B437BD9B2E182DF90045436F /* SongweavingAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongweavingAudio.swift; sourceTree = "<group>"; };
+		B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentalAudio.swift; sourceTree = "<group>"; };
+		B437BDA32E186B670045436F /* AudioTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTypes.swift; sourceTree = "<group>"; };
+		B437BDA72E1871B40045436F /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
 		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
 		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
@@ -273,8 +325,41 @@
 			isa = PBXGroup;
 			children = (
 				B437BD6C2E1705100045436F /* MeshSystem.swift */,
+				B437BD702E170B2F0045436F /* README.md */,
 			);
 			path = Graphics;
+			sourceTree = "<group>";
+		};
+		B437BD7C2E182A050045436F /* OpenSim */ = {
+			isa = PBXGroup;
+			children = (
+				B437BD7D2E182A520045436F /* OpenSimProtocol.swift */,
+				B437BD812E182B1F0045436F /* LoginService.swift */,
+				B437BD852E182C590045436F /* AssetService.swift */,
+			);
+			path = OpenSim;
+			sourceTree = "<group>";
+		};
+		B437BD892E182C840045436F /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				B437BD8A2E182C9B0045436F /* InventorySystem.swift */,
+				B437BD8E2E182D4D0045436F /* AssetManager.swift */,
+				B437BD922E182D770045436F /* ItemRenderer.swift */,
+			);
+			path = Inventory;
+			sourceTree = "<group>";
+		};
+		B437BD962E182DC80045436F /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				B437BD972E182DD80045436F /* SpatialAudioEngine.swift */,
+				B437BD9B2E182DF90045436F /* SongweavingAudio.swift */,
+				B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */,
+				B437BDA32E186B670045436F /* AudioTypes.swift */,
+				B437BDA72E1871B40045436F /* AudioManager.swift */,
+			);
+			path = Audio;
 			sourceTree = "<group>";
 		};
 		B4CE860C2E1510C300ED541D = {
@@ -322,6 +407,9 @@
 		B4CE863F2E151E8300ED541D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B437BD962E182DC80045436F /* Audio */,
+				B437BD892E182C840045436F /* Inventory */,
+				B437BD7C2E182A050045436F /* OpenSim */,
 				B4CE864F2E15416100ED541D /* Finalverse */,
 			);
 			path = Services;
@@ -456,6 +544,7 @@
 				B42278762E16A22700559A0B /* AvatarComponents.swift */,
 				B422787A2E16A8D400559A0B /* CodableColor.swift */,
 				B422787E2E16E55400559A0B /* ResonanceLevel.swift */,
+				B437BD782E1824400045436F /* SharedTypes.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -576,6 +665,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BD732E170B2F0045436F /* README.md in Resources */,
 				B42277C22E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -584,6 +674,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BD722E170B2F0045436F /* README.md in Resources */,
 				B42277C92E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,6 +683,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BD712E170B2F0045436F /* README.md in Resources */,
 				B42277EB2E1651CD00559A0B /* Info.plist in Resources */,
 				B42277D92E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
@@ -604,12 +696,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BD992E182DD80045436F /* SpatialAudioEngine.swift in Sources */,
 				B42278102E16538400559A0B /* BaseEntity.swift in Sources */,
+				B437BD8C2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42278112E16538400559A0B /* AvatarEntity.swift in Sources */,
 				B42278122E16538400559A0B /* ObjectEntity.swift in Sources */,
+				B437BD9C2E182DF90045436F /* SongweavingAudio.swift in Sources */,
+				B437BD882E182C590045436F /* AssetService.swift in Sources */,
 				B42278132E16538400559A0B /* EchoEntity.swift in Sources */,
 				B42278142E16538400559A0B /* MiniMapView.swift in Sources */,
 				B42278792E16A22700559A0B /* AvatarComponents.swift in Sources */,
+				B437BD822E182B1F0045436F /* LoginService.swift in Sources */,
 				B42278152E16538400559A0B /* InventoryView.swift in Sources */,
 				B42278162E16538400559A0B /* ChatView.swift in Sources */,
 				B42278172E16538400559A0B /* ActionBarView.swift in Sources */,
@@ -617,9 +714,12 @@
 				B42278182E16538400559A0B /* NetworkManager.swift in Sources */,
 				B42278192E16538400559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B422781A2E16538400559A0B /* SongEngine.swift in Sources */,
+				B437BDA92E1871B40045436F /* AudioManager.swift in Sources */,
 				B422781B2E16538400559A0B /* EchoEngine.swift in Sources */,
 				B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */,
 				B422781C2E16538400559A0B /* AIOrchestra.swift in Sources */,
+				B437BD902E182D4D0045436F /* AssetManager.swift in Sources */,
+				B437BD7A2E1824400045436F /* SharedTypes.swift in Sources */,
 				B422781D2E16538400559A0B /* HarmonyService.swift in Sources */,
 				B422781E2E16538400559A0B /* StoryEngine.swift in Sources */,
 				B422781F2E16538400559A0B /* WorldEngineService.swift in Sources */,
@@ -628,9 +728,11 @@
 				B42278222E16538400559A0B /* BodyShape.swift in Sources */,
 				B42278232E16538400559A0B /* AnimationSystem.swift in Sources */,
 				B42278242E16538400559A0B /* AppearanceManager.swift in Sources */,
+				B437BDA52E186B670045436F /* AudioTypes.swift in Sources */,
 				B42278252E16538400559A0B /* VoiceProfile.swift in Sources */,
 				B42278262E16538400559A0B /* Harmony.swift in Sources */,
 				B437BD692E1700EB0045436F /* WorldTypes.swift in Sources */,
+				B437BD932E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278272E16538400559A0B /* Quest.swift in Sources */,
 				B42278282E16538400559A0B /* Melody.swift in Sources */,
 				B42278292E16538400559A0B /* Biome.swift in Sources */,
@@ -640,11 +742,13 @@
 				B422782D2E16538400559A0B /* SceneManager.swift in Sources */,
 				B422782E2E16538400559A0B /* RegionManager.swift in Sources */,
 				B422782F2E16538400559A0B /* TerrainPatch.swift in Sources */,
+				B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278302E16538400559A0B /* ObjectData.swift in Sources */,
 				B42278312E16538400559A0B /* AvatarSystem.swift in Sources */,
 				B42278322E16538400559A0B /* AppStateManager.swift in Sources */,
 				B42278332E16538400559A0B /* FinalverseServicesManager.swift in Sources */,
 				B42277E72E16512400559A0B /* ContentView_iOS.swift in Sources */,
+				B437BDA12E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
 				B422787B2E16A8D400559A0B /* CodableColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -653,12 +757,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BD982E182DD80045436F /* SpatialAudioEngine.swift in Sources */,
 				B42277EC2E16536C00559A0B /* BaseEntity.swift in Sources */,
+				B437BD8D2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42277ED2E16536C00559A0B /* AvatarEntity.swift in Sources */,
 				B42277EE2E16536C00559A0B /* ObjectEntity.swift in Sources */,
+				B437BD9E2E182DF90045436F /* SongweavingAudio.swift in Sources */,
+				B437BD872E182C590045436F /* AssetService.swift in Sources */,
 				B42277EF2E16536C00559A0B /* EchoEntity.swift in Sources */,
 				B42277F02E16536C00559A0B /* MiniMapView.swift in Sources */,
 				B42278772E16A22700559A0B /* AvatarComponents.swift in Sources */,
+				B437BD832E182B1F0045436F /* LoginService.swift in Sources */,
 				B42277F12E16536C00559A0B /* InventoryView.swift in Sources */,
 				B42277F22E16536C00559A0B /* ChatView.swift in Sources */,
 				B42277F32E16536C00559A0B /* ActionBarView.swift in Sources */,
@@ -666,9 +775,12 @@
 				B42277F42E16536C00559A0B /* NetworkManager.swift in Sources */,
 				B42277F52E16536C00559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B42277F62E16536C00559A0B /* SongEngine.swift in Sources */,
+				B437BDAA2E1871B40045436F /* AudioManager.swift in Sources */,
 				B42277F72E16536C00559A0B /* EchoEngine.swift in Sources */,
 				B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */,
 				B42277F82E16536C00559A0B /* AIOrchestra.swift in Sources */,
+				B437BD8F2E182D4D0045436F /* AssetManager.swift in Sources */,
+				B437BD7B2E1824400045436F /* SharedTypes.swift in Sources */,
 				B42277F92E16536C00559A0B /* HarmonyService.swift in Sources */,
 				B42277FA2E16536C00559A0B /* StoryEngine.swift in Sources */,
 				B42277FB2E16536C00559A0B /* WorldEngineService.swift in Sources */,
@@ -677,9 +789,11 @@
 				B42277FE2E16536C00559A0B /* BodyShape.swift in Sources */,
 				B42277FF2E16536C00559A0B /* AnimationSystem.swift in Sources */,
 				B42278002E16536C00559A0B /* AppearanceManager.swift in Sources */,
+				B437BDA42E186B670045436F /* AudioTypes.swift in Sources */,
 				B42278012E16536C00559A0B /* VoiceProfile.swift in Sources */,
 				B42278022E16536C00559A0B /* Harmony.swift in Sources */,
 				B437BD682E1700EB0045436F /* WorldTypes.swift in Sources */,
+				B437BD942E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278032E16536C00559A0B /* Quest.swift in Sources */,
 				B42278042E16536C00559A0B /* Melody.swift in Sources */,
 				B42278052E16536C00559A0B /* Biome.swift in Sources */,
@@ -689,11 +803,13 @@
 				B42278092E16536C00559A0B /* SceneManager.swift in Sources */,
 				B422780A2E16536C00559A0B /* RegionManager.swift in Sources */,
 				B422780B2E16536C00559A0B /* TerrainPatch.swift in Sources */,
+				B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B422780C2E16536C00559A0B /* ObjectData.swift in Sources */,
 				B422780D2E16536C00559A0B /* AvatarSystem.swift in Sources */,
 				B422780E2E16536C00559A0B /* AppStateManager.swift in Sources */,
 				B422780F2E16536C00559A0B /* FinalverseServicesManager.swift in Sources */,
 				B422787C2E16A8D400559A0B /* CodableColor.swift in Sources */,
+				B437BDA02E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
 				B42277E82E16512B00559A0B /* ContentView_macOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -702,8 +818,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BD862E182C590045436F /* AssetService.swift in Sources */,
 				B42278342E16539300559A0B /* BaseEntity.swift in Sources */,
 				B42278352E16539300559A0B /* AvatarEntity.swift in Sources */,
+				B437BDA62E186B670045436F /* AudioTypes.swift in Sources */,
 				B42278362E16539300559A0B /* ObjectEntity.swift in Sources */,
 				B42278372E16539300559A0B /* EchoEntity.swift in Sources */,
 				B42278382E16539300559A0B /* MiniMapView.swift in Sources */,
@@ -714,19 +832,27 @@
 				B422783C2E16539300559A0B /* NetworkManager.swift in Sources */,
 				B422783D2E16539300559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B422783E2E16539300559A0B /* SongEngine.swift in Sources */,
+				B437BDA82E1871B40045436F /* AudioManager.swift in Sources */,
 				B437BD6A2E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B422783F2E16539300559A0B /* EchoEngine.swift in Sources */,
+				B437BDA22E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
 				B42278402E16539300559A0B /* AIOrchestra.swift in Sources */,
 				B42278412E16539300559A0B /* HarmonyService.swift in Sources */,
 				B42278422E16539300559A0B /* StoryEngine.swift in Sources */,
 				B42278432E16539300559A0B /* WorldEngineService.swift in Sources */,
 				B42278442E16539300559A0B /* SymphonyEngine.swift in Sources */,
+				B437BD912E182D4D0045436F /* AssetManager.swift in Sources */,
+				B437BD952E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278452E16539300559A0B /* SilenceService.swift in Sources */,
 				B42278462E16539300559A0B /* BodyShape.swift in Sources */,
 				B42278472E16539300559A0B /* AnimationSystem.swift in Sources */,
+				B437BD8B2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42278482E16539300559A0B /* AppearanceManager.swift in Sources */,
 				B42278492E16539300559A0B /* VoiceProfile.swift in Sources */,
+				B437BD842E182B1F0045436F /* LoginService.swift in Sources */,
 				B422784A2E16539300559A0B /* Harmony.swift in Sources */,
+				B437BD9D2E182DF90045436F /* SongweavingAudio.swift in Sources */,
+				B437BD9A2E182DD80045436F /* SpatialAudioEngine.swift in Sources */,
 				B422784B2E16539300559A0B /* Quest.swift in Sources */,
 				B422784C2E16539300559A0B /* Melody.swift in Sources */,
 				B422784D2E16539300559A0B /* Biome.swift in Sources */,
@@ -741,7 +867,9 @@
 				B42278542E16539300559A0B /* ObjectData.swift in Sources */,
 				B42278552E16539300559A0B /* AvatarSystem.swift in Sources */,
 				B42278562E16539300559A0B /* AppStateManager.swift in Sources */,
+				B437BD792E1824400045436F /* SharedTypes.swift in Sources */,
 				B422787D2E16A8D400559A0B /* CodableColor.swift in Sources */,
+				B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278572E16539300559A0B /* FinalverseServicesManager.swift in Sources */,
 				B42277E92E16513600559A0B /* ImmersiveWorldView.swift in Sources */,
 				B42277EA2E16513600559A0B /* ContentView_visionOS.swift in Sources */,
