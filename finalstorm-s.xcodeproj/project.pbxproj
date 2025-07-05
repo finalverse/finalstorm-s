@@ -33,16 +33,8 @@
 		B42277FB2E16536C00559A0B /* WorldEngineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A12E15955F00ED541D /* WorldEngineService.swift */; };
 		B42277FC2E16536C00559A0B /* SymphonyEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */; };
 		B42277FD2E16536C00559A0B /* SilenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A52E15959D00ED541D /* SilenceService.swift */; };
-		B42277FE2E16536C00559A0B /* BodyShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B22E16095900ED541D /* BodyShape.swift */; };
 		B42277FF2E16536C00559A0B /* AnimationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B52E160F7500ED541D /* AnimationSystem.swift */; };
 		B42278002E16536C00559A0B /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B72E160F9000ED541D /* AppearanceManager.swift */; };
-		B42278012E16536C00559A0B /* VoiceProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */; };
-		B42278022E16536C00559A0B /* Harmony.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BF2E16101200ED541D /* Harmony.swift */; };
-		B42278032E16536C00559A0B /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C12E16103600ED541D /* Quest.swift */; };
-		B42278042E16536C00559A0B /* Melody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C32E16105000ED541D /* Melody.swift */; };
-		B42278052E16536C00559A0B /* Biome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C52E16106B00ED541D /* Biome.swift */; };
-		B42278062E16536C00559A0B /* SpeechBubbleEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */; };
-		B42278072E16536C00559A0B /* HolographicUIPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */; };
 		B42278082E16536C00559A0B /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
 		B42278092E16536C00559A0B /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
 		B422780A2E16536C00559A0B /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
@@ -69,16 +61,8 @@
 		B422781F2E16538400559A0B /* WorldEngineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A12E15955F00ED541D /* WorldEngineService.swift */; };
 		B42278202E16538400559A0B /* SymphonyEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */; };
 		B42278212E16538400559A0B /* SilenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A52E15959D00ED541D /* SilenceService.swift */; };
-		B42278222E16538400559A0B /* BodyShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B22E16095900ED541D /* BodyShape.swift */; };
 		B42278232E16538400559A0B /* AnimationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B52E160F7500ED541D /* AnimationSystem.swift */; };
 		B42278242E16538400559A0B /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B72E160F9000ED541D /* AppearanceManager.swift */; };
-		B42278252E16538400559A0B /* VoiceProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */; };
-		B42278262E16538400559A0B /* Harmony.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BF2E16101200ED541D /* Harmony.swift */; };
-		B42278272E16538400559A0B /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C12E16103600ED541D /* Quest.swift */; };
-		B42278282E16538400559A0B /* Melody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C32E16105000ED541D /* Melody.swift */; };
-		B42278292E16538400559A0B /* Biome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C52E16106B00ED541D /* Biome.swift */; };
-		B422782A2E16538400559A0B /* SpeechBubbleEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */; };
-		B422782B2E16538400559A0B /* HolographicUIPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */; };
 		B422782C2E16538400559A0B /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
 		B422782D2E16538400559A0B /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
 		B422782E2E16538400559A0B /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
@@ -105,16 +89,8 @@
 		B42278432E16539300559A0B /* WorldEngineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A12E15955F00ED541D /* WorldEngineService.swift */; };
 		B42278442E16539300559A0B /* SymphonyEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */; };
 		B42278452E16539300559A0B /* SilenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A52E15959D00ED541D /* SilenceService.swift */; };
-		B42278462E16539300559A0B /* BodyShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B22E16095900ED541D /* BodyShape.swift */; };
 		B42278472E16539300559A0B /* AnimationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B52E160F7500ED541D /* AnimationSystem.swift */; };
 		B42278482E16539300559A0B /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B72E160F9000ED541D /* AppearanceManager.swift */; };
-		B42278492E16539300559A0B /* VoiceProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */; };
-		B422784A2E16539300559A0B /* Harmony.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BF2E16101200ED541D /* Harmony.swift */; };
-		B422784B2E16539300559A0B /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C12E16103600ED541D /* Quest.swift */; };
-		B422784C2E16539300559A0B /* Melody.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C32E16105000ED541D /* Melody.swift */; };
-		B422784D2E16539300559A0B /* Biome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C52E16106B00ED541D /* Biome.swift */; };
-		B422784E2E16539300559A0B /* SpeechBubbleEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */; };
-		B422784F2E16539300559A0B /* HolographicUIPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */; };
 		B42278502E16539300559A0B /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
 		B42278512E16539300559A0B /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
 		B42278522E16539300559A0B /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
@@ -123,15 +99,6 @@
 		B42278552E16539300559A0B /* AvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864A2E15225700ED541D /* AvatarSystem.swift */; };
 		B42278562E16539300559A0B /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86992E1594DE00ED541D /* AppStateManager.swift */; };
 		B42278572E16539300559A0B /* FinalverseServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */; };
-		B42278772E16A22700559A0B /* AvatarComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42278762E16A22700559A0B /* AvatarComponents.swift */; };
-		B42278782E16A22700559A0B /* AvatarComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42278762E16A22700559A0B /* AvatarComponents.swift */; };
-		B42278792E16A22700559A0B /* AvatarComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42278762E16A22700559A0B /* AvatarComponents.swift */; };
-		B422787B2E16A8D400559A0B /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787A2E16A8D400559A0B /* CodableColor.swift */; };
-		B422787C2E16A8D400559A0B /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787A2E16A8D400559A0B /* CodableColor.swift */; };
-		B422787D2E16A8D400559A0B /* CodableColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787A2E16A8D400559A0B /* CodableColor.swift */; };
-		B422787F2E16E55400559A0B /* ResonanceLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787E2E16E55400559A0B /* ResonanceLevel.swift */; };
-		B42278802E16E55400559A0B /* ResonanceLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787E2E16E55400559A0B /* ResonanceLevel.swift */; };
-		B42278812E16E55400559A0B /* ResonanceLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B422787E2E16E55400559A0B /* ResonanceLevel.swift */; };
 		B437BD682E1700EB0045436F /* WorldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD672E1700EB0045436F /* WorldTypes.swift */; };
 		B437BD692E1700EB0045436F /* WorldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD672E1700EB0045436F /* WorldTypes.swift */; };
 		B437BD6A2E1700EB0045436F /* WorldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD672E1700EB0045436F /* WorldTypes.swift */; };
@@ -141,9 +108,6 @@
 		B437BD712E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
 		B437BD722E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
 		B437BD732E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
-		B437BD792E1824400045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD782E1824400045436F /* SharedTypes.swift */; };
-		B437BD7A2E1824400045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD782E1824400045436F /* SharedTypes.swift */; };
-		B437BD7B2E1824400045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD782E1824400045436F /* SharedTypes.swift */; };
 		B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
 		B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
 		B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
@@ -177,6 +141,18 @@
 		B437BDA82E1871B40045436F /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA72E1871B40045436F /* AudioManager.swift */; };
 		B437BDA92E1871B40045436F /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA72E1871B40045436F /* AudioManager.swift */; };
 		B437BDAA2E1871B40045436F /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDA72E1871B40045436F /* AudioManager.swift */; };
+		B437BDB12E18E97A0045436F /* ComponentTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB02E18E97A0045436F /* ComponentTypes.swift */; };
+		B437BDB22E18E97A0045436F /* ComponentTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB02E18E97A0045436F /* ComponentTypes.swift */; };
+		B437BDB32E18E97A0045436F /* ComponentTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB02E18E97A0045436F /* ComponentTypes.swift */; };
+		B437BDB52E18E99F0045436F /* AvatarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB42E18E99F0045436F /* AvatarTypes.swift */; };
+		B437BDB62E18E99F0045436F /* AvatarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB42E18E99F0045436F /* AvatarTypes.swift */; };
+		B437BDB72E18E99F0045436F /* AvatarTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB42E18E99F0045436F /* AvatarTypes.swift */; };
+		B437BDB92E18E9C60045436F /* GameplayTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB82E18E9C60045436F /* GameplayTypes.swift */; };
+		B437BDBA2E18E9C60045436F /* GameplayTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB82E18E9C60045436F /* GameplayTypes.swift */; };
+		B437BDBB2E18E9C60045436F /* GameplayTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDB82E18E9C60045436F /* GameplayTypes.swift */; };
+		B437BDBD2E18E9FD0045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDBC2E18E9FD0045436F /* SharedTypes.swift */; };
+		B437BDBE2E18E9FD0045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDBC2E18E9FD0045436F /* SharedTypes.swift */; };
+		B437BDBF2E18E9FD0045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDBC2E18E9FD0045436F /* SharedTypes.swift */; };
 		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -186,13 +162,9 @@
 		B42277C72E162B5A00559A0B /* FinalStorm_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FinalStorm_macOS.entitlements; sourceTree = "<group>"; };
 		B42277CD2E162B5A00559A0B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B42277D12E162B5A00559A0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B42278762E16A22700559A0B /* AvatarComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarComponents.swift; sourceTree = "<group>"; };
-		B422787A2E16A8D400559A0B /* CodableColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableColor.swift; sourceTree = "<group>"; };
-		B422787E2E16E55400559A0B /* ResonanceLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResonanceLevel.swift; sourceTree = "<group>"; };
 		B437BD672E1700EB0045436F /* WorldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTypes.swift; sourceTree = "<group>"; };
 		B437BD6C2E1705100045436F /* MeshSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshSystem.swift; sourceTree = "<group>"; };
 		B437BD702E170B2F0045436F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		B437BD782E1824400045436F /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
 		B437BD7D2E182A520045436F /* OpenSimProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSimProtocol.swift; sourceTree = "<group>"; };
 		B437BD812E182B1F0045436F /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		B437BD852E182C590045436F /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
@@ -204,6 +176,10 @@
 		B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentalAudio.swift; sourceTree = "<group>"; };
 		B437BDA32E186B670045436F /* AudioTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioTypes.swift; sourceTree = "<group>"; };
 		B437BDA72E1871B40045436F /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		B437BDB02E18E97A0045436F /* ComponentTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentTypes.swift; sourceTree = "<group>"; };
+		B437BDB42E18E99F0045436F /* AvatarTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarTypes.swift; sourceTree = "<group>"; };
+		B437BDB82E18E9C60045436F /* GameplayTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayTypes.swift; sourceTree = "<group>"; };
+		B437BDBC2E18E9FD0045436F /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
 		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
 		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
 		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
@@ -229,18 +205,10 @@
 		B4CE86AC2E1595F500ED541D /* MiniMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapView.swift; sourceTree = "<group>"; };
 		B4CE86AE2E15960C00ED541D /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		B4CE86B02E16093100ED541D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		B4CE86B22E16095900ED541D /* BodyShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyShape.swift; sourceTree = "<group>"; };
 		B4CE86B52E160F7500ED541D /* AnimationSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationSystem.swift; sourceTree = "<group>"; };
 		B4CE86B72E160F9000ED541D /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		B4CE86B92E160FAD00ED541D /* SceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneManager.swift; sourceTree = "<group>"; };
 		B4CE86BB2E160FD200ED541D /* RegionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionManager.swift; sourceTree = "<group>"; };
-		B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceProfile.swift; sourceTree = "<group>"; };
-		B4CE86BF2E16101200ED541D /* Harmony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Harmony.swift; sourceTree = "<group>"; };
-		B4CE86C12E16103600ED541D /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
-		B4CE86C32E16105000ED541D /* Melody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Melody.swift; sourceTree = "<group>"; };
-		B4CE86C52E16106B00ED541D /* Biome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biome.swift; sourceTree = "<group>"; };
-		B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleEntity.swift; sourceTree = "<group>"; };
-		B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolographicUIPanel.swift; sourceTree = "<group>"; };
 		B4CE86CB2E1610FE00ED541D /* ImmersiveWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveWorldView.swift; sourceTree = "<group>"; };
 		B4CE86CD2E16114400ED541D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4CE86CF2E1611C300ED541D /* ActionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarView.swift; sourceTree = "<group>"; };
@@ -353,10 +321,10 @@
 		B437BD962E182DC80045436F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				B437BDA32E186B670045436F /* AudioTypes.swift */,
 				B437BD972E182DD80045436F /* SpatialAudioEngine.swift */,
 				B437BD9B2E182DF90045436F /* SongweavingAudio.swift */,
 				B437BD9F2E182E3A0045436F /* EnvironmentalAudio.swift */,
-				B437BDA32E186B670045436F /* AudioTypes.swift */,
 				B437BDA72E1871B40045436F /* AudioManager.swift */,
 			);
 			path = Audio;
@@ -484,7 +452,10 @@
 		B4CE86492E15220F00ED541D /* Avatar */ = {
 			isa = PBXGroup;
 			children = (
+				B4CE86B72E160F9000ED541D /* AppearanceManager.swift */,
+				B437BDB42E18E99F0045436F /* AvatarTypes.swift */,
 				B4CE864A2E15225700ED541D /* AvatarSystem.swift */,
+				B4CE86B52E160F7500ED541D /* AnimationSystem.swift */,
 			);
 			path = Avatar;
 			sourceTree = "<group>";
@@ -531,20 +502,9 @@
 		B4CE86B42E160F4300ED541D /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B4CE86B22E16095900ED541D /* BodyShape.swift */,
-				B4CE86B52E160F7500ED541D /* AnimationSystem.swift */,
-				B4CE86B72E160F9000ED541D /* AppearanceManager.swift */,
-				B4CE86BD2E160FF600ED541D /* VoiceProfile.swift */,
-				B4CE86BF2E16101200ED541D /* Harmony.swift */,
-				B4CE86C12E16103600ED541D /* Quest.swift */,
-				B4CE86C32E16105000ED541D /* Melody.swift */,
-				B4CE86C52E16106B00ED541D /* Biome.swift */,
-				B4CE86C72E16108D00ED541D /* SpeechBubbleEntity.swift */,
-				B4CE86C92E1610C200ED541D /* HolographicUIPanel.swift */,
-				B42278762E16A22700559A0B /* AvatarComponents.swift */,
-				B422787A2E16A8D400559A0B /* CodableColor.swift */,
-				B422787E2E16E55400559A0B /* ResonanceLevel.swift */,
-				B437BD782E1824400045436F /* SharedTypes.swift */,
+				B437BDB02E18E97A0045436F /* ComponentTypes.swift */,
+				B437BDB82E18E9C60045436F /* GameplayTypes.swift */,
+				B437BDBC2E18E9FD0045436F /* SharedTypes.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -705,12 +665,10 @@
 				B437BD882E182C590045436F /* AssetService.swift in Sources */,
 				B42278132E16538400559A0B /* EchoEntity.swift in Sources */,
 				B42278142E16538400559A0B /* MiniMapView.swift in Sources */,
-				B42278792E16A22700559A0B /* AvatarComponents.swift in Sources */,
 				B437BD822E182B1F0045436F /* LoginService.swift in Sources */,
 				B42278152E16538400559A0B /* InventoryView.swift in Sources */,
 				B42278162E16538400559A0B /* ChatView.swift in Sources */,
 				B42278172E16538400559A0B /* ActionBarView.swift in Sources */,
-				B422787F2E16E55400559A0B /* ResonanceLevel.swift in Sources */,
 				B42278182E16538400559A0B /* NetworkManager.swift in Sources */,
 				B42278192E16538400559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B422781A2E16538400559A0B /* SongEngine.swift in Sources */,
@@ -719,37 +677,31 @@
 				B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */,
 				B422781C2E16538400559A0B /* AIOrchestra.swift in Sources */,
 				B437BD902E182D4D0045436F /* AssetManager.swift in Sources */,
-				B437BD7A2E1824400045436F /* SharedTypes.swift in Sources */,
 				B422781D2E16538400559A0B /* HarmonyService.swift in Sources */,
 				B422781E2E16538400559A0B /* StoryEngine.swift in Sources */,
 				B422781F2E16538400559A0B /* WorldEngineService.swift in Sources */,
 				B42278202E16538400559A0B /* SymphonyEngine.swift in Sources */,
 				B42278212E16538400559A0B /* SilenceService.swift in Sources */,
-				B42278222E16538400559A0B /* BodyShape.swift in Sources */,
 				B42278232E16538400559A0B /* AnimationSystem.swift in Sources */,
 				B42278242E16538400559A0B /* AppearanceManager.swift in Sources */,
 				B437BDA52E186B670045436F /* AudioTypes.swift in Sources */,
-				B42278252E16538400559A0B /* VoiceProfile.swift in Sources */,
-				B42278262E16538400559A0B /* Harmony.swift in Sources */,
+				B437BDB22E18E97A0045436F /* ComponentTypes.swift in Sources */,
 				B437BD692E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B437BD932E182D770045436F /* ItemRenderer.swift in Sources */,
-				B42278272E16538400559A0B /* Quest.swift in Sources */,
-				B42278282E16538400559A0B /* Melody.swift in Sources */,
-				B42278292E16538400559A0B /* Biome.swift in Sources */,
-				B422782A2E16538400559A0B /* SpeechBubbleEntity.swift in Sources */,
-				B422782B2E16538400559A0B /* HolographicUIPanel.swift in Sources */,
 				B422782C2E16538400559A0B /* WorldManager.swift in Sources */,
 				B422782D2E16538400559A0B /* SceneManager.swift in Sources */,
 				B422782E2E16538400559A0B /* RegionManager.swift in Sources */,
+				B437BDBD2E18E9FD0045436F /* SharedTypes.swift in Sources */,
+				B437BDB72E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B422782F2E16538400559A0B /* TerrainPatch.swift in Sources */,
 				B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278302E16538400559A0B /* ObjectData.swift in Sources */,
 				B42278312E16538400559A0B /* AvatarSystem.swift in Sources */,
 				B42278322E16538400559A0B /* AppStateManager.swift in Sources */,
+				B437BDB92E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B42278332E16538400559A0B /* FinalverseServicesManager.swift in Sources */,
 				B42277E72E16512400559A0B /* ContentView_iOS.swift in Sources */,
 				B437BDA12E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
-				B422787B2E16A8D400559A0B /* CodableColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,12 +718,10 @@
 				B437BD872E182C590045436F /* AssetService.swift in Sources */,
 				B42277EF2E16536C00559A0B /* EchoEntity.swift in Sources */,
 				B42277F02E16536C00559A0B /* MiniMapView.swift in Sources */,
-				B42278772E16A22700559A0B /* AvatarComponents.swift in Sources */,
 				B437BD832E182B1F0045436F /* LoginService.swift in Sources */,
 				B42277F12E16536C00559A0B /* InventoryView.swift in Sources */,
 				B42277F22E16536C00559A0B /* ChatView.swift in Sources */,
 				B42277F32E16536C00559A0B /* ActionBarView.swift in Sources */,
-				B42278812E16E55400559A0B /* ResonanceLevel.swift in Sources */,
 				B42277F42E16536C00559A0B /* NetworkManager.swift in Sources */,
 				B42277F52E16536C00559A0B /* FinalverseNetworkClient.swift in Sources */,
 				B42277F62E16536C00559A0B /* SongEngine.swift in Sources */,
@@ -780,35 +730,29 @@
 				B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */,
 				B42277F82E16536C00559A0B /* AIOrchestra.swift in Sources */,
 				B437BD8F2E182D4D0045436F /* AssetManager.swift in Sources */,
-				B437BD7B2E1824400045436F /* SharedTypes.swift in Sources */,
 				B42277F92E16536C00559A0B /* HarmonyService.swift in Sources */,
 				B42277FA2E16536C00559A0B /* StoryEngine.swift in Sources */,
 				B42277FB2E16536C00559A0B /* WorldEngineService.swift in Sources */,
 				B42277FC2E16536C00559A0B /* SymphonyEngine.swift in Sources */,
 				B42277FD2E16536C00559A0B /* SilenceService.swift in Sources */,
-				B42277FE2E16536C00559A0B /* BodyShape.swift in Sources */,
 				B42277FF2E16536C00559A0B /* AnimationSystem.swift in Sources */,
 				B42278002E16536C00559A0B /* AppearanceManager.swift in Sources */,
 				B437BDA42E186B670045436F /* AudioTypes.swift in Sources */,
-				B42278012E16536C00559A0B /* VoiceProfile.swift in Sources */,
-				B42278022E16536C00559A0B /* Harmony.swift in Sources */,
+				B437BDB32E18E97A0045436F /* ComponentTypes.swift in Sources */,
 				B437BD682E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B437BD942E182D770045436F /* ItemRenderer.swift in Sources */,
-				B42278032E16536C00559A0B /* Quest.swift in Sources */,
-				B42278042E16536C00559A0B /* Melody.swift in Sources */,
-				B42278052E16536C00559A0B /* Biome.swift in Sources */,
-				B42278062E16536C00559A0B /* SpeechBubbleEntity.swift in Sources */,
-				B42278072E16536C00559A0B /* HolographicUIPanel.swift in Sources */,
 				B42278082E16536C00559A0B /* WorldManager.swift in Sources */,
 				B42278092E16536C00559A0B /* SceneManager.swift in Sources */,
 				B422780A2E16536C00559A0B /* RegionManager.swift in Sources */,
+				B437BDBF2E18E9FD0045436F /* SharedTypes.swift in Sources */,
+				B437BDB52E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B422780B2E16536C00559A0B /* TerrainPatch.swift in Sources */,
 				B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B422780C2E16536C00559A0B /* ObjectData.swift in Sources */,
 				B422780D2E16536C00559A0B /* AvatarSystem.swift in Sources */,
 				B422780E2E16536C00559A0B /* AppStateManager.swift in Sources */,
+				B437BDBB2E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B422780F2E16536C00559A0B /* FinalverseServicesManager.swift in Sources */,
-				B422787C2E16A8D400559A0B /* CodableColor.swift in Sources */,
 				B437BDA02E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
 				B42277E82E16512B00559A0B /* ContentView_macOS.swift in Sources */,
 			);
@@ -826,7 +770,7 @@
 				B42278372E16539300559A0B /* EchoEntity.swift in Sources */,
 				B42278382E16539300559A0B /* MiniMapView.swift in Sources */,
 				B42278392E16539300559A0B /* InventoryView.swift in Sources */,
-				B42278782E16A22700559A0B /* AvatarComponents.swift in Sources */,
+				B437BDB62E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B422783A2E16539300559A0B /* ChatView.swift in Sources */,
 				B422783B2E16539300559A0B /* ActionBarView.swift in Sources */,
 				B422783C2E16539300559A0B /* NetworkManager.swift in Sources */,
@@ -844,31 +788,23 @@
 				B437BD912E182D4D0045436F /* AssetManager.swift in Sources */,
 				B437BD952E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278452E16539300559A0B /* SilenceService.swift in Sources */,
-				B42278462E16539300559A0B /* BodyShape.swift in Sources */,
 				B42278472E16539300559A0B /* AnimationSystem.swift in Sources */,
 				B437BD8B2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42278482E16539300559A0B /* AppearanceManager.swift in Sources */,
-				B42278492E16539300559A0B /* VoiceProfile.swift in Sources */,
 				B437BD842E182B1F0045436F /* LoginService.swift in Sources */,
-				B422784A2E16539300559A0B /* Harmony.swift in Sources */,
 				B437BD9D2E182DF90045436F /* SongweavingAudio.swift in Sources */,
 				B437BD9A2E182DD80045436F /* SpatialAudioEngine.swift in Sources */,
-				B422784B2E16539300559A0B /* Quest.swift in Sources */,
-				B422784C2E16539300559A0B /* Melody.swift in Sources */,
-				B422784D2E16539300559A0B /* Biome.swift in Sources */,
-				B422784E2E16539300559A0B /* SpeechBubbleEntity.swift in Sources */,
-				B422784F2E16539300559A0B /* HolographicUIPanel.swift in Sources */,
 				B42278502E16539300559A0B /* WorldManager.swift in Sources */,
 				B42278512E16539300559A0B /* SceneManager.swift in Sources */,
 				B42278522E16539300559A0B /* RegionManager.swift in Sources */,
+				B437BDB12E18E97A0045436F /* ComponentTypes.swift in Sources */,
 				B42278532E16539300559A0B /* TerrainPatch.swift in Sources */,
 				B437BD6E2E1705100045436F /* MeshSystem.swift in Sources */,
-				B42278802E16E55400559A0B /* ResonanceLevel.swift in Sources */,
 				B42278542E16539300559A0B /* ObjectData.swift in Sources */,
 				B42278552E16539300559A0B /* AvatarSystem.swift in Sources */,
 				B42278562E16539300559A0B /* AppStateManager.swift in Sources */,
-				B437BD792E1824400045436F /* SharedTypes.swift in Sources */,
-				B422787D2E16A8D400559A0B /* CodableColor.swift in Sources */,
+				B437BDBE2E18E9FD0045436F /* SharedTypes.swift in Sources */,
+				B437BDBA2E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278572E16539300559A0B /* FinalverseServicesManager.swift in Sources */,
 				B42277E92E16513600559A0B /* ImmersiveWorldView.swift in Sources */,

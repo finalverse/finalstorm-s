@@ -1,5 +1,5 @@
 //
-//  AnimationSystem.swift
+//  Core/Avatar/AnimationSystem.swift
 //  FinalStorm
 //
 //  Manages avatar animations

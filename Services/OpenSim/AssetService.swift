@@ -496,13 +496,6 @@ enum MeshFormat {
     case unknown
 }
 
-enum AudioFormat {
-    case ogg
-    case wav
-    case mp4
-    case unknown
-}
-
 // MARK: - Animation Data
 struct AnimationData {
     let bones: [BoneData]

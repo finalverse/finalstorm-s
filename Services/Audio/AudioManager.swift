@@ -2,8 +2,7 @@
 //  Services/Audio/AudioManager.swift
 //  FinalStorm
 //
-//  Main audio coordinator for the Finalverse audio system
-//  Manages all audio subsystems and provides unified interface
+//  Main audio coordinator - fixed to remove async call conflicts
 //
 
 import Foundation
@@ -68,7 +67,7 @@ class AudioManager: ObservableObject {
         performanceMonitoringTask = Task { [weak self] in
             while !Task.isCancelled {
                 await self?.updatePerformanceMetrics()
-                try? await Task.sleep(nanoseconds: 1_000_000_000) // Update every second
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
             }
         }
     }
@@ -78,7 +77,6 @@ class AudioManager: ObservableObject {
         
         performanceMetrics = engine.getPerformanceMetrics()
         
-        // Auto-enable performance mode if needed
         if performanceMetrics.cpuUsage > 0.8 && !performanceMode {
             enablePerformanceMode(true)
         }
@@ -238,7 +236,6 @@ class AudioManager: ObservableObject {
     }
     
     private func getEnvironmentalPerformanceInfo() -> EnvironmentalPerformanceInfo {
-        // Gather environmental audio performance data
         return EnvironmentalPerformanceInfo(
             activeAmbientSources: environmentalAudio?.ambientLoops.count ?? 0,
             activeWeatherSources: environmentalAudio?.weatherSounds.count ?? 0,
@@ -253,7 +250,6 @@ class AudioManager: ObservableObject {
     
     // MARK: - Scene Integration
     func onSceneChanged(to newScene: SceneType) {
-        // Automatically adjust audio settings based on scene
         let preset = getPresetForScene(newScene)
         applyEnvironmentalPreset(preset)
     }
@@ -310,27 +306,22 @@ class AudioManager: ObservableObject {
     // MARK: - Platform-Specific Features
     #if os(iOS) || os(visionOS)
     func configureForMobileDevice() {
-        // Optimize for mobile devices
         enablePerformanceMode(true)
         updateQualitySettings(.medium)
         
-        // Reduce concurrent sources
         songweavingAudio?.maxConcurrentMelodies = 4
         songweavingAudio?.maxConcurrentHarmonies = 2
     }
     
     func handleAudioSessionInterruption(_ notification: Notification) {
-        // Handle iOS audio session interruptions
         if let userInfo = notification.userInfo,
            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
            let type = AVAudioSessionInterruptionType(rawValue: typeValue) {
             
             switch type {
             case .began:
-                // Pause all audio
                 pauseAllAudio()
             case .ended:
-                // Resume audio if appropriate
                 if let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
                     let options = AVAudioSessionInterruptionOptions(rawValue: optionsValue)
                     if options.contains(.shouldResume) {
@@ -346,7 +337,6 @@ class AudioManager: ObservableObject {
     
     #if os(macOS)
     func configureForDesktop() {
-        // Optimize for desktop with more resources
         updateQualitySettings(.high)
         enablePerformanceMode(false)
     }
@@ -356,12 +346,10 @@ class AudioManager: ObservableObject {
     func pauseAllAudio() {
         songweavingAudio?.stopAllMelodies()
         songweavingAudio?.stopAllHarmonies()
-        // Environmental audio continues at reduced volume
         setCategoryVolume(.environment, volume: 0.2)
     }
     
     func resumeAllAudio() {
-        // Restore normal volumes
         for category in AudioCategory.allCases {
             setCategoryVolume(category, volume: category.defaultVolume)
         }
@@ -383,7 +371,11 @@ class AudioManager: ObservableObject {
         songweavingAudio?.stopAllMelodies()
         songweavingAudio?.stopAllHarmonies()
         environmentalAudio?.stopAllEnvironmentalAudio()
-        spatialAudioEngine?.shutdown()
+        
+        // Fixed: Use Task to call async shutdown from sync context
+        Task { @MainActor in
+            spatialAudioEngine?.shutdown()
+        }
         
         isInitialized = false
         
@@ -415,8 +407,8 @@ class AudioManager: ObservableObject {
     
     var overallHealthScore: Float {
         let cpuScore = 1.0 - baseMetrics.cpuUsage
-        let memoryScore = max(0, 1.0 - (baseMetrics.memoryUsage / 100.0)) // Assume 100MB is max acceptable
-        let sourceScore = max(0, 1.0 - Float(baseMetrics.activeSources) / 50.0) // 50 sources is considered high
+        let memoryScore = max(0, 1.0 - (baseMetrics.memoryUsage / 100.0))
+        let sourceScore = max(0, 1.0 - Float(baseMetrics.activeSources) / 50.0)
         
         return (cpuScore + memoryScore + sourceScore) / 3.0
     }
@@ -450,102 +442,3 @@ class AudioManager: ObservableObject {
     case exploration
     case performance
  }
-
- // MARK: - Extensions
- extension AudioQualitySettings: Codable {
-    enum CodingKeys: String, CodingKey {
-        case sampleRate, bitDepth, channels, bufferSize
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(sampleRate, forKey: .sampleRate)
-        try container.encode(bitDepth, forKey: .bitDepth)
-        try container.encode(channels, forKey: .channels)
-        try container.encode(bufferSize, forKey: .bufferSize)
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        sampleRate = try container.decode(Double.self, forKey: .sampleRate)
-        bitDepth = try container.decode(Int.self, forKey: .bitDepth)
-        channels = try container.decode(Int.self, forKey: .channels)
-        bufferSize = try container.decode(AVAudioFrameCount.self, forKey: .bufferSize)
-    }
- }
-
- extension EnvironmentalAudioPreset: Codable {
-    enum CodingKeys: String, CodingKey {
-        case name, biome, weather, timeOfDay, ambientVolume, weatherVolume
-        case enableRandomEvents, eventFrequency, qualitySettings, spatialProcessing
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encode(biome, forKey: .biome)
-        try container.encode(weather, forKey: .weather)
-        try container.encode(timeOfDay, forKey: .timeOfDay)
-        try container.encode(ambientVolume, forKey: .ambientVolume)
-        try container.encode(weatherVolume, forKey: .weatherVolume)
-        try container.encode(enableRandomEvents, forKey: .enableRandomEvents)
-        try container.encode(eventFrequency, forKey: .eventFrequency)
-        try container.encode(qualitySettings, forKey: .qualitySettings)
-        try container.encode(spatialProcessing, forKey: .spatialProcessing)
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        biome = try container.decode(BiomeType.self, forKey: .biome)
-        weather = try container.decode(WeatherType.self, forKey: .weather)
-        timeOfDay = try container.decode(TimeOfDay.self, forKey: .timeOfDay)
-        ambientVolume = try container.decode(Float.self, forKey: .ambientVolume)
-        weatherVolume = try container.decode(Float.self, forKey: .weatherVolume)
-        enableRandomEvents = try container.decode(Bool.self, forKey: .enableRandomEvents)
-        eventFrequency = try container.decode(TimeInterval.self, forKey: .eventFrequency)
-        qualitySettings = try container.decode(AudioQualitySettings.self, forKey: .qualitySettings)
-        spatialProcessing = try container.decode(Bool.self, forKey: .spatialProcessing)
-    }
- }
-
- // MARK: - Usage Example
- /*
- // Example usage in a game scene:
-
- class GameScene {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        Task {
-            // Initialize audio system
-            await AudioManager.shared.initialize(qualitySettings: .high)
-            
-            // Set up the scene
-            AudioManager.shared.setBiome(.forest)
-            AudioManager.shared.setWeather(.clear)
-            AudioManager.shared.setTimeOfDay(.day)
-            
-            // Set listener to player entity
-            AudioManager.shared.setListener(playerEntity)
-            
-            // Play background environmental preset
-            AudioManager.shared.applyEnvironmentalPreset(.peacefulForest)
-        }
-    }
-    
-    func onPlayerCastMelody(_ melody: Melody, at position: SIMD3<Float>) {
-        Task {
-            await AudioManager.shared.playMelody(melody, at: position, caster: playerEntity)
-        }
-    }
-    
-    func onWeatherChange(_ weather: WeatherType) {
-        AudioManager.shared.setWeather(weather, intensity: 0.8)
-    }
-    
-    func onPerformanceIssue() {
-        AudioManager.shared.enablePerformanceMode(true)
-    }
- }
- */

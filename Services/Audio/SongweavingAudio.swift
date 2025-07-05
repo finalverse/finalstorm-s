@@ -897,34 +897,6 @@ class SongweavingAudio: ObservableObject {
     }
  }
 
- // MARK: - Supporting Types and Extensions
- enum NexusLayer {
-    case core
-    case ring(Int)
- }
-
- enum AudioFormat {
-    case wav
-    case mp4
-    case ogg
-    case unknown
- }
-
- struct MelodyLine {
-    let notes: [MelodyNote]
-    let voice: Int
-    let volume: Float
- }
-
- struct SongweavingPerformanceInfo {
-    let activeMelodies: Int
-    let activeHarmonies: Int
-    let maxMelodies: Int
-    let maxHarmonies: Int
-    let synthesisLoad: Float
-    let memoryUsage: Float
- }
-
  // MARK: - Enhanced Audio Synthesis Classes
  class AudioSynthesizer {
     private let qualitySettings: AudioQualitySettings

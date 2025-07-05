@@ -1,5 +1,5 @@
 //
-//  AppearanceManager.swift
+//  Core/Avatar/AppearanceManager.swift
 //  FinalStorm
 //
 //  Manages avatar appearance and customization
