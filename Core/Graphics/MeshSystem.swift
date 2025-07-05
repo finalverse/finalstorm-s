@@ -2,52 +2,99 @@
 //  Core/Graphics/MeshSystem.swift
 //  FinalStorm
 //
-//  Sophisticated mesh management system for Finalverse
+//  World-class mesh management system with advanced caching, LOD, and optimization
 //
 
 import Foundation
 import RealityKit
 import simd
+import Combine
 
-// MARK: - Mesh Manager
+// MARK: - Advanced Mesh Manager
+
 @MainActor
-class MeshManager: ObservableObject {
-    static let shared = MeshManager()
+class MeshSystem: ObservableObject {
+    static let shared = MeshSystem()
     
-    private var meshCache: [String: MeshResource] = [:]
+    // MARK: - Published Properties
+    @Published var isLoading = false
+    @Published var loadingProgress: Float = 0.0
+    @Published var memoryUsage: Int = 0
+    @Published var cacheHitRate: Float = 0.0
+    @Published var activeMeshes: Int = 0
+    
+    // MARK: - Core Systems
+    private let meshCache = MeshCache()
+    private let materialCache = MaterialCache()
+    private let lodManager = LODManager()
+    private let proceduralGenerator = ProceduralMeshGenerator()
+    private let assetLoader = AssetLoader()
+    private let performanceMonitor = MeshPerformanceMonitor()
+    
+    // MARK: - Configuration
+    private var configuration = GraphicsConfiguration(
+        renderingPipeline: .adaptive,
+        qualityLevel: .high,
+        shadowQuality: .medium,
+        textureQuality: .full,
+        meshLODSettings: GraphicsConfiguration.MeshLODSettings(),
+        particleSettings: GraphicsConfiguration.ParticleSettings(),
+        lightingSettings: GraphicsConfiguration.LightingSettings()
+    )
+    
+    // MARK: - Loading Tasks
     private var loadingTasks: [String: Task<MeshResource, Error>] = [:]
+    private var materialTasks: [String: Task<Material, Error>] = [:]
     
-    private init() {}
+    private init() {
+        setupPerformanceMonitoring()
+    }
     
-    func loadMesh(named name: String, from bundle: Bundle = .main) async throws -> MeshResource {
+    // MARK: - Primary Interface
+    
+    /// Load mesh by name with automatic format detection and LOD generation
+    func loadMesh(named name: String, from bundle: Bundle = .main, lodLevel: Int? = nil) async throws -> MeshResource {
+        let cacheKey = "\(name)_\(bundle.bundleIdentifier ?? "main")_\(lodLevel ?? -1)"
+        
         // Check cache first
-        if let cachedMesh = meshCache[name] {
+        if let cachedMesh = meshCache.getMesh(for: cacheKey) {
+            performanceMonitor.recordCacheHit()
             return cachedMesh
         }
         
         // Check if already loading
-        if let existingTask = loadingTasks[name] {
+        if let existingTask = loadingTasks[cacheKey] {
             return try await existingTask.value
         }
         
         // Start loading
         let loadingTask = Task<MeshResource, Error> {
-            let mesh = try await loadMeshFromBundle(named: name, bundle: bundle)
+            isLoading = true
+            defer { isLoading = false }
+            
+            let mesh = try await loadMeshFromBundle(named: name, bundle: bundle, lodLevel: lodLevel)
+            
             await MainActor.run {
-                meshCache[name] = mesh
-                loadingTasks.removeValue(forKey: name)
+                meshCache.storeMesh(mesh, for: cacheKey)
+                loadingTasks.removeValue(forKey: cacheKey)
+                updateMetrics()
             }
+            
             return mesh
         }
         
-        loadingTasks[name] = loadingTask
+        loadingTasks[cacheKey] = loadingTask
+        performanceMonitor.recordCacheMiss()
+        
         return try await loadingTask.value
     }
     
-    func loadMesh(from url: URL) async throws -> MeshResource {
-        let cacheKey = url.absoluteString
+    /// Load mesh from URL with format detection
+    func loadMesh(from url: URL, lodLevel: Int? = nil) async throws -> MeshResource {
+        let cacheKey = "\(url.absoluteString)_\(lodLevel ?? -1)"
         
-        if let cachedMesh = meshCache[cacheKey] {
+        if let cachedMesh = meshCache.getMesh(for: cacheKey) {
+            performanceMonitor.recordCacheHit()
             return cachedMesh
         }
         
@@ -56,413 +103,314 @@ class MeshManager: ObservableObject {
         }
         
         let loadingTask = Task<MeshResource, Error> {
-            let mesh = try await loadMeshFromURL(url)
+            isLoading = true
+            defer { isLoading = false }
+            
+            let mesh = try await loadMeshFromURL(url, lodLevel: lodLevel)
+            
             await MainActor.run {
-                meshCache[cacheKey] = mesh
+                meshCache.storeMesh(mesh, for: cacheKey)
                 loadingTasks.removeValue(forKey: cacheKey)
+                updateMetrics()
             }
+            
             return mesh
         }
         
         loadingTasks[cacheKey] = loadingTask
+        performanceMonitor.recordCacheMiss()
+        
         return try await loadingTask.value
     }
     
-    private func loadMeshFromBundle(named name: String, bundle: Bundle) async throws -> MeshResource {
-        // Try different formats
-        let extensions = ["usdz", "usd", "obj", "dae"]
+    /// Generate procedural mesh with automatic caching
+    func generateMesh(type: ProceduralMeshType, parameters: [String: Any] = [:]) async -> MeshResource {
+        let cacheKey = "procedural_\(type.rawValue)_\(parameters.hashValue)"
+        
+        if let cachedMesh = meshCache.getMesh(for: cacheKey) {
+            performanceMonitor.recordCacheHit()
+            return cachedMesh
+        }
+        
+        let mesh = await proceduralGenerator.generateMesh(type: type, parameters: parameters)
+        meshCache.storeMesh(mesh, for: cacheKey)
+        updateMetrics()
+        
+        return mesh
+    }
+    
+    // MARK: - Advanced Features
+    
+    /// Load mesh with automatic LOD generation
+    func loadMeshWithLOD(named name: String, from bundle: Bundle = .main) async throws -> [MeshResource] {
+        var lodMeshes: [MeshResource] = []
+        
+        // Load base mesh
+        let baseMesh = try await loadMesh(named: name, from: bundle)
+        lodMeshes.append(baseMesh)
+        
+        // Generate LOD levels
+        for lodLevel in 1..<configuration.meshLODSettings.maxLODLevel {
+            do {
+                let lodMesh = try await lodManager.generateLOD(from: baseMesh, level: lodLevel)
+                lodMeshes.append(lodMesh)
+            } catch {
+                print("Failed to generate LOD level \(lodLevel): \(error)")
+                break
+            }
+        }
+        
+        return lodMeshes
+    }
+    
+    /// Create terrain mesh with advanced features
+    func createTerrainMesh(from heightmap: [[Float]], features: TerrainFeatures = TerrainFeatures()) async throws -> MeshResource {
+        return try await TerrainMeshGenerator.createMesh(
+            heightmap: heightmap,
+            features: features,
+            quality: configuration.qualityLevel
+        )
+    }
+    
+    /// Create avatar mesh with customization
+    func createAvatarMesh(for appearance: AvatarAppearance) async throws -> MeshResource {
+        return try await AvatarMeshGenerator.createMesh(
+            appearance: appearance,
+            quality: configuration.qualityLevel
+        )
+    }
+    
+    // MARK: - Material Management
+    
+    func loadMaterial(named name: String, from bundle: Bundle = .main) async throws -> Material {
+        let cacheKey = "\(name)_\(bundle.bundleIdentifier ?? "main")"
+        
+        if let cachedMaterial = materialCache.getMaterial(for: cacheKey) {
+            return cachedMaterial
+        }
+        
+        if let existingTask = materialTasks[cacheKey] {
+            return try await existingTask.value
+        }
+        
+        let loadingTask = Task<Material, Error> {
+            let material = try await MaterialLoader.loadMaterial(named: name, from: bundle)
+            
+            await MainActor.run {
+                materialCache.storeMaterial(material, for: cacheKey)
+                materialTasks.removeValue(forKey: cacheKey)
+            }
+            
+            return material
+        }
+        
+        materialTasks[cacheKey] = loadingTask
+        return try await loadingTask.value
+    }
+    
+    // MARK: - Configuration Management
+    
+    func updateConfiguration(_ newConfig: GraphicsConfiguration) {
+        configuration = newConfig
+        lodManager.updateSettings(newConfig.meshLODSettings)
+        proceduralGenerator.updateQuality(newConfig.qualityLevel)
+        
+        // Trigger cache optimization if quality changed significantly
+        optimizeCacheForQuality()
+    }
+    
+    func setQualityLevel(_ level: GraphicsConfiguration.QualityLevel) {
+        configuration.qualityLevel = level
+        optimizeCacheForQuality()
+    }
+    
+    // MARK: - Performance Management
+    
+    func optimizeMemoryUsage() async {
+        await meshCache.optimizeMemory(targetSize: 256 * 1024 * 1024) // 256MB limit
+        await materialCache.optimizeMemory(targetSize: 64 * 1024 * 1024) // 64MB limit
+        updateMetrics()
+    }
+    
+    func preloadAssets(_ assetNames: [String], from bundle: Bundle = .main) async {
+        await withTaskGroup(of: Void.self) { group in
+            for assetName in assetNames {
+                group.addTask {
+                    do {
+                        _ = try await self.loadMesh(named: assetName, from: bundle)
+                    } catch {
+                        print("Failed to preload asset \(assetName): \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func clearCache() {
+        meshCache.clearAll()
+        materialCache.clearAll()
+        
+        // Cancel ongoing tasks
+        for task in loadingTasks.values {
+            task.cancel()
+        }
+        loadingTasks.removeAll()
+        
+        for task in materialTasks.values {
+            task.cancel()
+        }
+        materialTasks.removeAll()
+        
+        updateMetrics()
+    }
+    
+    // MARK: - Private Implementation
+    
+    private func loadMeshFromBundle(named name: String, bundle: Bundle, lodLevel: Int?) async throws -> MeshResource {
+        // Try to find asset with various extensions
+        let extensions = MeshFormat.allCases.map { $0.rawValue }
         
         for ext in extensions {
             if let url = bundle.url(forResource: name, withExtension: ext) {
-                return try await loadMeshFromURL(url)
+                return try await loadMeshFromURL(url, lodLevel: lodLevel)
             }
         }
         
         // Fallback to procedural generation
-        return generateFallbackMesh(for: name)
+        print("Asset \(name) not found, generating procedurally")
+        return await generateFallbackMesh(for: name)
     }
     
-    private func loadMeshFromURL(_ url: URL) async throws -> MeshResource {
-        // Load based on file extension
-        let ext = url.pathExtension.lowercased()
+    private func loadMeshFromURL(_ url: URL, lodLevel: Int?) async throws -> MeshResource {
+        let format = MeshFormat(rawValue: url.pathExtension.lowercased()) ?? .obj
         
-        switch ext {
-        case "usdz", "usd":
-            return try await loadUSDZMesh(from: url)
-        case "obj":
-            return try await loadOBJMesh(from: url)
-        default:
-            throw MeshError.unsupportedFormat(ext)
+        return try await assetLoader.loadMesh(from: url, format: format, lodLevel: lodLevel)
+    }
+    
+    private func generateFallbackMesh(for name: String) async -> MeshResource {
+        let meshType = ProceduralMeshType.fromName(name)
+        return await proceduralGenerator.generateMesh(type: meshType, parameters: [:])
+    }
+    
+    private func optimizeCacheForQuality() {
+        Task {
+            await meshCache.optimizeForQuality(configuration.qualityLevel)
+            await materialCache.optimizeForQuality(configuration.qualityLevel)
+            updateMetrics()
         }
     }
     
-    private func loadUSDZMesh(from url: URL) async throws -> MeshResource {
-        // Try to load USDZ using RealityKit's entity loading
-        do {
-            let entity = try await Entity.load(contentsOf: url)
-            if let modelEntity = entity.findEntity(named: "model") as? ModelEntity,
-               let modelComponent = modelEntity.components[ModelComponent.self] {
-                return modelComponent.mesh
+    private func setupPerformanceMonitoring() {
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.updateMetrics()
             }
-            
-            // If no named model, find first ModelComponent
-            if let modelEntity = entity.children.first(where: { $0 is ModelEntity }) as? ModelEntity,
-               let modelComponent = modelEntity.components[ModelComponent.self] {
-                return modelComponent.mesh
-            }
-            
-            throw MeshError.noMeshFound
-        } catch {
-            throw MeshError.loadingFailed(error)
         }
     }
     
-    private func loadOBJMesh(from url: URL) async throws -> MeshResource {
-        // Custom OBJ loader
-        let objLoader = OBJLoader()
-        return try await objLoader.loadMesh(from: url)
+    private func updateMetrics() {
+        memoryUsage = meshCache.memoryUsage + materialCache.memoryUsage
+        cacheHitRate = performanceMonitor.cacheHitRate
+        activeMeshes = meshCache.count
     }
+}
+
+// MARK: - Procedural Mesh Types
+
+enum ProceduralMeshType: String, CaseIterable {
+    case cube = "cube"
+    case sphere = "sphere"
+    case cylinder = "cylinder"
+    case plane = "plane"
+    case avatarBase = "avatar_base"
+    case character = "character"
+    case harmonyBlossom = "harmony_blossom"
+    case flower = "flower"
+    case crystal = "crystal"
+    case gem = "gem"
+    case tree = "tree"
+    case rock = "rock"
+    case building = "building"
+    case terrain = "terrain"
     
-    private func generateFallbackMesh(for name: String) -> MeshResource {
-        // Generate procedural mesh based on name
-        switch name.lowercased() {
-        case "avatar_base", "character":
-            return MeshResource.generateBox(size: [0.5, 1.8, 0.3])
-        case "harmony_blossom", "flower":
-            return createFlowerMesh()
-        case "crystal", "gem":
-            return createCrystalMesh()
-        case "tree":
-            return createTreeMesh()
-        default:
-            return MeshResource.generateBox(size: [1, 1, 1])
-        }
-    }
-    
-    // MARK: - Procedural Mesh Generation
-    private func createFlowerMesh() -> MeshResource {
-        // Create a simple flower shape
-        var vertices: [SIMD3<Float>] = []
-        var indices: [UInt32] = []
+    static func fromName(_ name: String) -> ProceduralMeshType {
+        let lowercaseName = name.lowercased()
         
-        // Center
-        vertices.append([0, 0, 0])
-        
-        // Petals (8 petals around center)
-        let petalCount = 8
-        for i in 0..<petalCount {
-            let angle = Float(i) * 2 * .pi / Float(petalCount)
-            vertices.append([cos(angle) * 0.3, 0.1, sin(angle) * 0.3])
-            vertices.append([cos(angle) * 0.5, 0, sin(angle) * 0.5])
-        }
-        
-        // Create triangles
-        for i in 0..<petalCount {
-            let next = (i + 1) % petalCount
-            let center: UInt32 = 0
-            let inner1 = UInt32(1 + i * 2)
-            let outer1 = UInt32(2 + i * 2)
-            let inner2 = UInt32(1 + next * 2)
-            
-            // Inner triangle
-            indices.append(contentsOf: [center, inner1, inner2])
-            // Petal triangle
-            indices.append(contentsOf: [inner1, outer1, inner2])
-        }
-        
-        var descriptor = MeshDescriptor()
-        descriptor.positions = MeshBuffer(vertices)
-        descriptor.primitives = .triangles(indices)
-        
-        do {
-            return try MeshResource.generate(from: [descriptor])
-        } catch {
-            return MeshResource.generateBox(size: [0.3, 0.1, 0.3])
-        }
-    }
-    
-    private func createCrystalMesh() -> MeshResource {
-        // Create a crystal/gem shape
-        var vertices: [SIMD3<Float>] = []
-        var indices: [UInt32] = []
-        
-        // Bottom point
-        vertices.append([0, -0.5, 0])
-        
-        // Middle ring
-        let sides = 6
-        for i in 0..<sides {
-            let angle = Float(i) * 2 * .pi / Float(sides)
-            vertices.append([cos(angle) * 0.3, 0, sin(angle) * 0.3])
-        }
-        
-        // Top point
-        vertices.append([0, 0.5, 0])
-        
-        // Bottom triangles
-        for i in 0..<sides {
-            let next = (i + 1) % sides
-            indices.append(contentsOf: [0, UInt32(1 + i), UInt32(1 + next)])
-        }
-        
-        // Top triangles
-        let topIndex = UInt32(1 + sides)
-        for i in 0..<sides {
-            let next = (i + 1) % sides
-            indices.append(contentsOf: [topIndex, UInt32(1 + next), UInt32(1 + i)])
-        }
-        
-        var descriptor = MeshDescriptor()
-        descriptor.positions = MeshBuffer(vertices)
-        descriptor.primitives = .triangles(indices)
-        
-        do {
-            return try MeshResource.generate(from: [descriptor])
-        } catch {
-            return MeshResource.generateBox(size: [0.3, 1.0, 0.3])
-        }
-    }
-    
-    private func createTreeMesh() -> MeshResource {
-        // Simple tree: trunk + crown
-        var vertices: [SIMD3<Float>] = []
-        var indices: [UInt32] = []
-        
-        // Trunk (cylinder)
-        let trunkSides = 8
-        let trunkHeight: Float = 2.0
-        let trunkRadius: Float = 0.2
-        
-        // Bottom ring
-        for i in 0..<trunkSides {
-            let angle = Float(i) * 2 * .pi / Float(trunkSides)
-            vertices.append([cos(angle) * trunkRadius, 0, sin(angle) * trunkRadius])
-        }
-        
-        // Top ring
-        for i in 0..<trunkSides {
-            let angle = Float(i) * 2 * .pi / Float(trunkSides)
-            vertices.append([cos(angle) * trunkRadius, trunkHeight, sin(angle) * trunkRadius])
-        }
-        
-        // Trunk triangles
-        for i in 0..<trunkSides {
-            let next = (i + 1) % trunkSides
-            let bottom1 = UInt32(i)
-            let bottom2 = UInt32(next)
-            let top1 = UInt32(i + trunkSides)
-            let top2 = UInt32(next + trunkSides)
-            
-            indices.append(contentsOf: [bottom1, top1, bottom2])
-            indices.append(contentsOf: [bottom2, top1, top2])
-        }
-        
-        // Crown (simple sphere approximation)
-        let crownCenter = SIMD3<Float>(0, trunkHeight + 1, 0)
-        let crownRadius: Float = 1.5
-        let crownBaseIndex = UInt32(vertices.count)
-        
-        vertices.append(crownCenter)
-        
-        // Crown ring
-        let crownSides = 12
-        for i in 0..<crownSides {
-            let angle = Float(i) * 2 * .pi / Float(crownSides)
-            vertices.append([
-                cos(angle) * crownRadius,
-                trunkHeight + 0.5,
-                sin(angle) * crownRadius
-            ])
-        }
-        
-        // Crown triangles
-        for i in 0..<crownSides {
-            let next = (i + 1) % crownSides
-            indices.append(contentsOf: [
-                crownBaseIndex,
-                crownBaseIndex + 1 + UInt32(i),
-                crownBaseIndex + 1 + UInt32(next)
-            ])
-        }
-        
-        var descriptor = MeshDescriptor()
-        descriptor.positions = MeshBuffer(vertices)
-        descriptor.primitives = .triangles(indices)
-        
-        do {
-            return try MeshResource.generate(from: [descriptor])
-        } catch {
-            return MeshResource.generateBox(size: [3, 4, 3])
+        if lowercaseName.contains("avatar") || lowercaseName.contains("character") {
+            return .avatarBase
+        } else if lowercaseName.contains("flower") || lowercaseName.contains("blossom") {
+            return .harmonyBlossom
+        } else if lowercaseName.contains("crystal") || lowercaseName.contains("gem") {
+            return .crystal
+        } else if lowercaseName.contains("tree") {
+            return .tree
+        } else if lowercaseName.contains("rock") || lowercaseName.contains("stone") {
+            return .rock
+        } else if lowercaseName.contains("building") || lowercaseName.contains("structure") {
+            return .building
+        } else {
+            return .cube // Default fallback
         }
     }
 }
 
-// MARK: - OBJ Loader
-class OBJLoader {
-    func loadMesh(from url: URL) async throws -> MeshResource {
-        let content = try String(contentsOf: url)
-        return try parseMesh(from: content)
-    }
-    
-    private func parseMesh(from objContent: String) throws -> MeshResource {
-        var vertices: [SIMD3<Float>] = []
-        var indices: [UInt32] = []
-        var normals: [SIMD3<Float>] = []
-        var uvs: [SIMD2<Float>] = []
-        
-        let lines = objContent.components(separatedBy: .newlines)
-        
-        for line in lines {
-            let parts = line.trimmingCharacters(in: .whitespaces).components(separatedBy: .whitespaces)
-            guard !parts.isEmpty else { continue }
-            
-            switch parts[0] {
-            case "v": // Vertex
-                if parts.count >= 4 {
-                    let x = Float(parts[1]) ?? 0
-                    let y = Float(parts[2]) ?? 0
-                    let z = Float(parts[3]) ?? 0
-                    vertices.append([x, y, z])
-                }
-                
-            case "vn": // Normal
-                if parts.count >= 4 {
-                    let x = Float(parts[1]) ?? 0
-                    let y = Float(parts[2]) ?? 0
-                    let z = Float(parts[3]) ?? 0
-                    normals.append([x, y, z])
-                }
-                
-            case "vt": // Texture coordinate
-                if parts.count >= 3 {
-                    let u = Float(parts[1]) ?? 0
-                    let v = Float(parts[2]) ?? 0
-                    uvs.append([u, v])
-                }
-                
-            case "f": // Face
-                for i in 1..<parts.count {
-                    let faceData = parts[i].components(separatedBy: "/")
-                    if let vertexIndex = Int(faceData[0]) {
-                        indices.append(UInt32(vertexIndex - 1)) // OBJ indices are 1-based
-                    }
-                }
-                
-            default:
-                continue
-            }
-        }
-        
-        var descriptor = MeshDescriptor()
-        descriptor.positions = MeshBuffer(vertices)
-        if !normals.isEmpty {
-            descriptor.normals = MeshBuffer(normals)
-        }
-        if !uvs.isEmpty {
-            descriptor.textureCoordinates = MeshBuffer(uvs)
-        }
-        descriptor.primitives = .triangles(indices)
-        
-        return try MeshResource.generate(from: [descriptor])
-    }
+// MARK: - Terrain Features
+
+struct TerrainFeatures {
+    var enableNormals: Bool = true
+    var enableTextures: Bool = true
+    var enableLOD: Bool = true
+    var textureBlending: Bool = true
+    var detailTextures: Bool = false
+    var vertexColors: Bool = false
+    var triplanarMapping: Bool = false
+    var tessellation: Bool = false
 }
 
-// MARK: - Mesh Factory
-struct MeshFactory {
-    static func createAvatarMesh(for appearance: AvatarAppearance) async -> MeshResource {
-        // Generate avatar mesh based on appearance
-        let meshManager = MeshManager.shared
-        
-        do {
-            return try await meshManager.loadMesh(named: "avatar_\(appearance.bodyShape.rawValue)")
-        } catch {
-            // Fallback to procedural generation
-            return generateProceduralAvatar(appearance: appearance)
-        }
-    }
-    
-    static func createTerrainMesh(from heightmap: [[Float]]) async throws -> MeshResource {
-        var vertices: [SIMD3<Float>] = []
-        var normals: [SIMD3<Float>] = []
-        var uvs: [SIMD2<Float>] = []
-        var indices: [UInt32] = []
-        
-        let gridSize = heightmap.count
-        let scale: Float = 1.0      // 1 meter per grid unit
-        
-        // Generate vertices
-        for z in 0..<gridSize {
-            for x in 0..<gridSize {
-                let height = heightmap[z][x]
-                vertices.append(SIMD3<Float>(Float(x) * scale, height, Float(z) * scale))
-                uvs.append(SIMD2<Float>(Float(x) / Float(gridSize - 1), Float(z) / Float(gridSize - 1)))
-                
-                // Calculate normal (simplified)
-                let normal = calculateNormal(x: x, z: z, heightmap: heightmap)
-                normals.append(normal)
-            }
-        }
-        
-        // Generate indices for triangle mesh
-        for z in 0..<(gridSize - 1) {
-            for x in 0..<(gridSize - 1) {
-                let topLeft = UInt32(z * gridSize + x)
-                let topRight = topLeft + 1
-                let bottomLeft = UInt32((z + 1) * gridSize + x)
-                let bottomRight = bottomLeft + 1
-                
-                indices.append(contentsOf: [topLeft, bottomLeft, topRight])
-                indices.append(contentsOf: [topRight, bottomLeft, bottomRight])
-            }
-        }
-        
-        // Create mesh descriptor
-        var descriptor = MeshDescriptor()
-        descriptor.positions = MeshBuffer(vertices)
-        descriptor.normals = MeshBuffer(normals)
-        descriptor.textureCoordinates = MeshBuffer(uvs)
-        descriptor.primitives = .triangles(indices)
-        
-        return try MeshResource.generate(from: [descriptor])
-    }
-    
-    private static func generateProceduralAvatar(appearance: AvatarAppearance) -> MeshResource {
-        let scale = appearance.bodyShape.scaleModifiers
-        return MeshResource.generateBox(size: [0.5 * scale.x, 1.8 * scale.y, 0.3 * scale.z])
-    }
-    
-    private static func calculateNormal(x: Int, z: Int, heightmap: [[Float]]) -> SIMD3<Float> {
-        let gridSize = heightmap.count
-        
-        let left = x > 0 ? heightmap[z][x-1] : heightmap[z][x]
-        let right = x < gridSize-1 ? heightmap[z][x+1] : heightmap[z][x]
-        let up = z > 0 ? heightmap[z-1][x] : heightmap[z][x]
-        let down = z < gridSize-1 ? heightmap[z+1][x] : heightmap[z][x]
-        
-        let dx = SIMD3<Float>(2.0, right - left, 0.0)
-        let dz = SIMD3<Float>(0.0, down - up, 2.0)
-        
-        return normalize(cross(dz, dx))
-    }
-}
+// MARK: - Avatar Appearance
 
-// MARK: - Error Types
-enum MeshError: Error {
-    case unsupportedFormat(String)
-    case noMeshFound
-    case loadingFailed(Error)
-    case invalidOBJFormat
+struct AvatarAppearance {
+    var bodyShape: BodyShape = .humanoid
+    var height: Float = 1.8
+    var width: Float = 0.5
+    var skinColor: SIMD4<Float> = SIMD4<Float>(0.9, 0.8, 0.7, 1.0)
+    var clothingStyle: ClothingStyle = .casual
+    var accessories: [Accessory] = []
     
-    var localizedDescription: String {
-        switch self {
-        case .unsupportedFormat(let format):
-            return "Unsupported mesh format: \(format)"
-        case .noMeshFound:
-            return "No mesh found in the loaded entity"
-        case .loadingFailed(let error):
-            return "Failed to load mesh: \(error.localizedDescription)"
-        case .invalidOBJFormat:
-            return "Invalid OBJ file format"
+    enum BodyShape: String, CaseIterable {
+        case humanoid = "humanoid"
+        case ethereal = "ethereal"
+        case songweaver = "songweaver"
+        case guardian = "guardian"
+        
+        var scaleModifiers: SIMD3<Float> {
+            switch self {
+            case .humanoid: return SIMD3<Float>(1.0, 1.0, 1.0)
+            case .ethereal: return SIMD3<Float>(0.9, 1.1, 0.9)
+            case .songweaver: return SIMD3<Float>(1.0, 1.0, 1.0)
+            case .guardian: return SIMD3<Float>(1.2, 1.1, 1.2)
+            }
+        }
+    }
+    
+    enum ClothingStyle: String, CaseIterable {
+        case casual = "casual"
+        case formal = "formal"
+        case robes = "robes"
+        case armor = "armor"
+    }
+    
+    struct Accessory {
+        let type: AccessoryType
+        let color: SIMD4<Float>
+        let scale: Float
+        
+        enum AccessoryType: String, CaseIterable {
+            case hat = "hat"
+            case glasses = "glasses"
+            case necklace = "necklace"
+            case wings = "wings"
+            case cape = "cape"
         }
     }
 }

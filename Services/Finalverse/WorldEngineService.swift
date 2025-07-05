@@ -14,7 +14,7 @@ class WorldEngineService: ObservableObject {
     @Published var worldSeed: Int = 0
     @Published var activeEvents: [WorldEvent] = []
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     
     // Use the shared types from WorldTypes.swift
     private lazy var metabolismSimulator: MetabolismSimulator = {
@@ -26,7 +26,7 @@ class WorldEngineService: ObservableObject {
     }()
     
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .worldEngine)
+        self.networkClient = FinalverseClient(service: .worldEngine)
     }
     
     func initialize() async {

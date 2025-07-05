@@ -13,10 +13,10 @@ class SilenceService: ObservableObject {
     @Published var silenceLevel: Float = 0.0
     @Published var corruptedAreas: [CorruptedArea] = []
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .silenceService)
+        self.networkClient = FinalverseClient(service: .silenceService)
     }
     
     func initialize() async {

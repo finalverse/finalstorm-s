@@ -24,7 +24,7 @@
 		B42277F22E16536C00559A0B /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B02E16093100ED541D /* ChatView.swift */; };
 		B42277F32E16536C00559A0B /* ActionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86CF2E1611C300ED541D /* ActionBarView.swift */; };
 		B42277F42E16536C00559A0B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A72E1595B700ED541D /* NetworkManager.swift */; };
-		B42277F52E16536C00559A0B /* FinalverseNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */; };
+		B42277F52E16536C00559A0B /* FinalverseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseClient.swift */; };
 		B42277F62E16536C00559A0B /* SongEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86502E15417800ED541D /* SongEngine.swift */; };
 		B42277F72E16536C00559A0B /* EchoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86522E1541A000ED541D /* EchoEngine.swift */; };
 		B42277F82E16536C00559A0B /* AIOrchestra.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86542E1541DB00ED541D /* AIOrchestra.swift */; };
@@ -38,8 +38,7 @@
 		B42278082E16536C00559A0B /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
 		B42278092E16536C00559A0B /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
 		B422780A2E16536C00559A0B /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
-		B422780B2E16536C00559A0B /* TerrainPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */; };
-		B422780C2E16536C00559A0B /* ObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D32E1611FF00ED541D /* ObjectData.swift */; };
+		B422780B2E16536C00559A0B /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* Grid.swift */; };
 		B422780D2E16536C00559A0B /* AvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864A2E15225700ED541D /* AvatarSystem.swift */; };
 		B422780E2E16536C00559A0B /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86992E1594DE00ED541D /* AppStateManager.swift */; };
 		B422780F2E16536C00559A0B /* FinalverseServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */; };
@@ -52,7 +51,7 @@
 		B42278162E16538400559A0B /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B02E16093100ED541D /* ChatView.swift */; };
 		B42278172E16538400559A0B /* ActionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86CF2E1611C300ED541D /* ActionBarView.swift */; };
 		B42278182E16538400559A0B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A72E1595B700ED541D /* NetworkManager.swift */; };
-		B42278192E16538400559A0B /* FinalverseNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */; };
+		B42278192E16538400559A0B /* FinalverseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseClient.swift */; };
 		B422781A2E16538400559A0B /* SongEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86502E15417800ED541D /* SongEngine.swift */; };
 		B422781B2E16538400559A0B /* EchoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86522E1541A000ED541D /* EchoEngine.swift */; };
 		B422781C2E16538400559A0B /* AIOrchestra.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86542E1541DB00ED541D /* AIOrchestra.swift */; };
@@ -66,8 +65,7 @@
 		B422782C2E16538400559A0B /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
 		B422782D2E16538400559A0B /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
 		B422782E2E16538400559A0B /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
-		B422782F2E16538400559A0B /* TerrainPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */; };
-		B42278302E16538400559A0B /* ObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D32E1611FF00ED541D /* ObjectData.swift */; };
+		B422782F2E16538400559A0B /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* Grid.swift */; };
 		B42278312E16538400559A0B /* AvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864A2E15225700ED541D /* AvatarSystem.swift */; };
 		B42278322E16538400559A0B /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86992E1594DE00ED541D /* AppStateManager.swift */; };
 		B42278332E16538400559A0B /* FinalverseServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */; };
@@ -80,7 +78,7 @@
 		B422783A2E16539300559A0B /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B02E16093100ED541D /* ChatView.swift */; };
 		B422783B2E16539300559A0B /* ActionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86CF2E1611C300ED541D /* ActionBarView.swift */; };
 		B422783C2E16539300559A0B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A72E1595B700ED541D /* NetworkManager.swift */; };
-		B422783D2E16539300559A0B /* FinalverseNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */; };
+		B422783D2E16539300559A0B /* FinalverseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86A92E1595D300ED541D /* FinalverseClient.swift */; };
 		B422783E2E16539300559A0B /* SongEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86502E15417800ED541D /* SongEngine.swift */; };
 		B422783F2E16539300559A0B /* EchoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86522E1541A000ED541D /* EchoEngine.swift */; };
 		B42278402E16539300559A0B /* AIOrchestra.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86542E1541DB00ED541D /* AIOrchestra.swift */; };
@@ -94,8 +92,7 @@
 		B42278502E16539300559A0B /* WorldManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864D2E15228A00ED541D /* WorldManager.swift */; };
 		B42278512E16539300559A0B /* SceneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86B92E160FAD00ED541D /* SceneManager.swift */; };
 		B42278522E16539300559A0B /* RegionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86BB2E160FD200ED541D /* RegionManager.swift */; };
-		B42278532E16539300559A0B /* TerrainPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */; };
-		B42278542E16539300559A0B /* ObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D32E1611FF00ED541D /* ObjectData.swift */; };
+		B42278532E16539300559A0B /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86D12E1611DE00ED541D /* Grid.swift */; };
 		B42278552E16539300559A0B /* AvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE864A2E15225700ED541D /* AvatarSystem.swift */; };
 		B42278562E16539300559A0B /* AppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE86992E1594DE00ED541D /* AppStateManager.swift */; };
 		B42278572E16539300559A0B /* FinalverseServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */; };
@@ -153,6 +150,63 @@
 		B437BDBD2E18E9FD0045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDBC2E18E9FD0045436F /* SharedTypes.swift */; };
 		B437BDBE2E18E9FD0045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDBC2E18E9FD0045436F /* SharedTypes.swift */; };
 		B437BDBF2E18E9FD0045436F /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDBC2E18E9FD0045436F /* SharedTypes.swift */; };
+		B437BDC52E196FAA0045436F /* TerrainGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDC42E196FAA0045436F /* TerrainGenerator.swift */; };
+		B437BDC62E196FAA0045436F /* TerrainGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDC42E196FAA0045436F /* TerrainGenerator.swift */; };
+		B437BDC72E196FAA0045436F /* TerrainGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDC42E196FAA0045436F /* TerrainGenerator.swift */; };
+		B437BDC92E1975490045436F /* WaterDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDC82E1975490045436F /* WaterDetector.swift */; };
+		B437BDCA2E1975490045436F /* WaterDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDC82E1975490045436F /* WaterDetector.swift */; };
+		B437BDCB2E1975490045436F /* WaterDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDC82E1975490045436F /* WaterDetector.swift */; };
+		B437BDCD2E1975860045436F /* FeatureSpawner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDCC2E1975860045436F /* FeatureSpawner.swift */; };
+		B437BDCE2E1975860045436F /* FeatureSpawner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDCC2E1975860045436F /* FeatureSpawner.swift */; };
+		B437BDCF2E1975860045436F /* FeatureSpawner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDCC2E1975860045436F /* FeatureSpawner.swift */; };
+		B437BDD12E1975F70045436F /* WorldOptimizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD02E1975F70045436F /* WorldOptimizer.swift */; };
+		B437BDD22E1975F70045436F /* WorldOptimizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD02E1975F70045436F /* WorldOptimizer.swift */; };
+		B437BDD32E1975F70045436F /* WorldOptimizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD02E1975F70045436F /* WorldOptimizer.swift */; };
+		B437BDD52E1976280045436F /* WorldSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD42E1976280045436F /* WorldSystem.swift */; };
+		B437BDD62E1976280045436F /* WorldSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD42E1976280045436F /* WorldSystem.swift */; };
+		B437BDD72E1976280045436F /* WorldSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD42E1976280045436F /* WorldSystem.swift */; };
+		B437BDDA2E1980010045436F /* GraphicsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD92E1980010045436F /* GraphicsTypes.swift */; };
+		B437BDDB2E1980010045436F /* GraphicsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD92E1980010045436F /* GraphicsTypes.swift */; };
+		B437BDDC2E1980010045436F /* GraphicsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDD92E1980010045436F /* GraphicsTypes.swift */; };
+		B437BDDE2E1981E80045436F /* MeshCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDDD2E1981E80045436F /* MeshCache.swift */; };
+		B437BDDF2E1981E80045436F /* MeshCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDDD2E1981E80045436F /* MeshCache.swift */; };
+		B437BDE02E1981E80045436F /* MeshCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDDD2E1981E80045436F /* MeshCache.swift */; };
+		B437BDE22E1982090045436F /* LODManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE12E1982090045436F /* LODManager.swift */; };
+		B437BDE32E1982090045436F /* LODManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE12E1982090045436F /* LODManager.swift */; };
+		B437BDE42E1982090045436F /* LODManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE12E1982090045436F /* LODManager.swift */; };
+		B437BDE62E1982230045436F /* ProceduralMeshGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE52E1982230045436F /* ProceduralMeshGenerator.swift */; };
+		B437BDE72E1982230045436F /* ProceduralMeshGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE52E1982230045436F /* ProceduralMeshGenerator.swift */; };
+		B437BDE82E1982230045436F /* ProceduralMeshGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE52E1982230045436F /* ProceduralMeshGenerator.swift */; };
+		B437BDEA2E1982640045436F /* AssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE92E1982640045436F /* AssetLoader.swift */; };
+		B437BDEB2E1982640045436F /* AssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE92E1982640045436F /* AssetLoader.swift */; };
+		B437BDEC2E1982640045436F /* AssetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDE92E1982640045436F /* AssetLoader.swift */; };
+		B437BDEE2E1982830045436F /* MeshPerformanceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDED2E1982830045436F /* MeshPerformanceMonitor.swift */; };
+		B437BDEF2E1982830045436F /* MeshPerformanceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDED2E1982830045436F /* MeshPerformanceMonitor.swift */; };
+		B437BDF02E1982830045436F /* MeshPerformanceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDED2E1982830045436F /* MeshPerformanceMonitor.swift */; };
+		B437BDF22E19829D0045436F /* RenderingTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF12E19829D0045436F /* RenderingTypes.swift */; };
+		B437BDF32E19829D0045436F /* RenderingTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF12E19829D0045436F /* RenderingTypes.swift */; };
+		B437BDF42E19829D0045436F /* RenderingTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF12E19829D0045436F /* RenderingTypes.swift */; };
+		B437BDF62E19830C0045436F /* RenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF52E19830C0045436F /* RenderPipeline.swift */; };
+		B437BDF72E19830C0045436F /* RenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF52E19830C0045436F /* RenderPipeline.swift */; };
+		B437BDF82E19830C0045436F /* RenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF52E19830C0045436F /* RenderPipeline.swift */; };
+		B437BDFA2E1983D90045436F /* RenderPassManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF92E1983D90045436F /* RenderPassManager.swift */; };
+		B437BDFB2E1983D90045436F /* RenderPassManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF92E1983D90045436F /* RenderPassManager.swift */; };
+		B437BDFC2E1983D90045436F /* RenderPassManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDF92E1983D90045436F /* RenderPassManager.swift */; };
+		B437BDFE2E19841D0045436F /* HarmonyRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDFD2E19841D0045436F /* HarmonyRenderer.swift */; };
+		B437BDFF2E19841D0045436F /* HarmonyRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDFD2E19841D0045436F /* HarmonyRenderer.swift */; };
+		B437BE002E19841D0045436F /* HarmonyRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BDFD2E19841D0045436F /* HarmonyRenderer.swift */; };
+		B437BE022E1984420045436F /* ShaderLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE012E1984420045436F /* ShaderLibrary.swift */; };
+		B437BE032E1984420045436F /* ShaderLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE012E1984420045436F /* ShaderLibrary.swift */; };
+		B437BE042E1984420045436F /* ShaderLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE012E1984420045436F /* ShaderLibrary.swift */; };
+		B437BE062E1984C20045436F /* BufferPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE052E1984C20045436F /* BufferPool.swift */; };
+		B437BE072E1984C20045436F /* BufferPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE052E1984C20045436F /* BufferPool.swift */; };
+		B437BE082E1984C20045436F /* BufferPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE052E1984C20045436F /* BufferPool.swift */; };
+		B437BE0A2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */; };
+		B437BE0B2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */; };
+		B437BE0C2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */; };
+		B437BE0E2E1986DC0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BE0D2E1986DC0045436F /* README.md */; };
+		B437BE0F2E1986DC0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BE0D2E1986DC0045436F /* README.md */; };
+		B437BE102E1986DC0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BE0D2E1986DC0045436F /* README.md */; };
 		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -180,6 +234,25 @@
 		B437BDB42E18E99F0045436F /* AvatarTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarTypes.swift; sourceTree = "<group>"; };
 		B437BDB82E18E9C60045436F /* GameplayTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayTypes.swift; sourceTree = "<group>"; };
 		B437BDBC2E18E9FD0045436F /* SharedTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		B437BDC42E196FAA0045436F /* TerrainGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainGenerator.swift; sourceTree = "<group>"; };
+		B437BDC82E1975490045436F /* WaterDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterDetector.swift; sourceTree = "<group>"; };
+		B437BDCC2E1975860045436F /* FeatureSpawner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureSpawner.swift; sourceTree = "<group>"; };
+		B437BDD02E1975F70045436F /* WorldOptimizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldOptimizer.swift; sourceTree = "<group>"; };
+		B437BDD42E1976280045436F /* WorldSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldSystem.swift; sourceTree = "<group>"; };
+		B437BDD92E1980010045436F /* GraphicsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsTypes.swift; sourceTree = "<group>"; };
+		B437BDDD2E1981E80045436F /* MeshCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshCache.swift; sourceTree = "<group>"; };
+		B437BDE12E1982090045436F /* LODManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LODManager.swift; sourceTree = "<group>"; };
+		B437BDE52E1982230045436F /* ProceduralMeshGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralMeshGenerator.swift; sourceTree = "<group>"; };
+		B437BDE92E1982640045436F /* AssetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetLoader.swift; sourceTree = "<group>"; };
+		B437BDED2E1982830045436F /* MeshPerformanceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshPerformanceMonitor.swift; sourceTree = "<group>"; };
+		B437BDF12E19829D0045436F /* RenderingTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingTypes.swift; sourceTree = "<group>"; };
+		B437BDF52E19830C0045436F /* RenderPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPipeline.swift; sourceTree = "<group>"; };
+		B437BDF92E1983D90045436F /* RenderPassManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPassManager.swift; sourceTree = "<group>"; };
+		B437BDFD2E19841D0045436F /* HarmonyRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonyRenderer.swift; sourceTree = "<group>"; };
+		B437BE012E1984420045436F /* ShaderLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderLibrary.swift; sourceTree = "<group>"; };
+		B437BE052E1984C20045436F /* BufferPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferPool.swift; sourceTree = "<group>"; };
+		B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrustumCullingSystem.swift; sourceTree = "<group>"; };
+		B437BE0D2E1986DC0045436F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
 		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
 		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
@@ -201,7 +274,7 @@
 		B4CE86A32E15957D00ED541D /* SymphonyEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymphonyEngine.swift; sourceTree = "<group>"; };
 		B4CE86A52E15959D00ED541D /* SilenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilenceService.swift; sourceTree = "<group>"; };
 		B4CE86A72E1595B700ED541D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalverseNetworkClient.swift; sourceTree = "<group>"; };
+		B4CE86A92E1595D300ED541D /* FinalverseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalverseClient.swift; sourceTree = "<group>"; };
 		B4CE86AC2E1595F500ED541D /* MiniMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapView.swift; sourceTree = "<group>"; };
 		B4CE86AE2E15960C00ED541D /* InventoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
 		B4CE86B02E16093100ED541D /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -212,8 +285,7 @@
 		B4CE86CB2E1610FE00ED541D /* ImmersiveWorldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveWorldView.swift; sourceTree = "<group>"; };
 		B4CE86CD2E16114400ED541D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4CE86CF2E1611C300ED541D /* ActionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionBarView.swift; sourceTree = "<group>"; };
-		B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerrainPatch.swift; sourceTree = "<group>"; };
-		B4CE86D32E1611FF00ED541D /* ObjectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectData.swift; sourceTree = "<group>"; };
+		B4CE86D12E1611DE00ED541D /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		B4CE86D92E16151F00ED541D /* FinalStorm-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FinalStorm-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4CE86E82E16154300ED541D /* FinalStorm-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FinalStorm-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4CE86F82E16159A00ED541D /* FinalStorm-visionOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FinalStorm-visionOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -294,6 +366,12 @@
 			children = (
 				B437BD6C2E1705100045436F /* MeshSystem.swift */,
 				B437BD702E170B2F0045436F /* README.md */,
+				B437BDD92E1980010045436F /* GraphicsTypes.swift */,
+				B437BDDD2E1981E80045436F /* MeshCache.swift */,
+				B437BDE12E1982090045436F /* LODManager.swift */,
+				B437BDE52E1982230045436F /* ProceduralMeshGenerator.swift */,
+				B437BDE92E1982640045436F /* AssetLoader.swift */,
+				B437BDED2E1982830045436F /* MeshPerformanceMonitor.swift */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -330,6 +408,21 @@
 			path = Audio;
 			sourceTree = "<group>";
 		};
+		B437BDD82E197CA10045436F /* Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				B437BDF12E19829D0045436F /* RenderingTypes.swift */,
+				B437BDF52E19830C0045436F /* RenderPipeline.swift */,
+				B437BDF92E1983D90045436F /* RenderPassManager.swift */,
+				B437BDFD2E19841D0045436F /* HarmonyRenderer.swift */,
+				B437BE012E1984420045436F /* ShaderLibrary.swift */,
+				B437BE052E1984C20045436F /* BufferPool.swift */,
+				B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */,
+				B437BE0D2E1986DC0045436F /* README.md */,
+			);
+			path = Rendering;
+			sourceTree = "<group>";
+		};
 		B4CE860C2E1510C300ED541D = {
 			isa = PBXGroup;
 			children = (
@@ -362,6 +455,7 @@
 		B4CE863E2E151E7700ED541D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B437BDD82E197CA10045436F /* Rendering */,
 				B437BD6B2E1704F40045436F /* Graphics */,
 				B4CE86B42E160F4300ED541D /* Components */,
 				B4CE864C2E15227400ED541D /* World */,
@@ -387,7 +481,7 @@
 			isa = PBXGroup;
 			children = (
 				B4CE86A72E1595B700ED541D /* NetworkManager.swift */,
-				B4CE86A92E1595D300ED541D /* FinalverseNetworkClient.swift */,
+				B4CE86A92E1595D300ED541D /* FinalverseClient.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -466,9 +560,13 @@
 				B4CE864D2E15228A00ED541D /* WorldManager.swift */,
 				B4CE86B92E160FAD00ED541D /* SceneManager.swift */,
 				B4CE86BB2E160FD200ED541D /* RegionManager.swift */,
-				B4CE86D12E1611DE00ED541D /* TerrainPatch.swift */,
-				B4CE86D32E1611FF00ED541D /* ObjectData.swift */,
+				B4CE86D12E1611DE00ED541D /* Grid.swift */,
 				B437BD672E1700EB0045436F /* WorldTypes.swift */,
+				B437BDC42E196FAA0045436F /* TerrainGenerator.swift */,
+				B437BDC82E1975490045436F /* WaterDetector.swift */,
+				B437BDCC2E1975860045436F /* FeatureSpawner.swift */,
+				B437BDD02E1975F70045436F /* WorldOptimizer.swift */,
+				B437BDD42E1976280045436F /* WorldSystem.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -625,6 +723,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BE102E1986DC0045436F /* README.md in Resources */,
 				B437BD732E170B2F0045436F /* README.md in Resources */,
 				B42277C22E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
@@ -634,6 +733,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BE0F2E1986DC0045436F /* README.md in Resources */,
 				B437BD722E170B2F0045436F /* README.md in Resources */,
 				B42277C92E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
@@ -645,6 +745,7 @@
 			files = (
 				B437BD712E170B2F0045436F /* README.md in Resources */,
 				B42277EB2E1651CD00559A0B /* Info.plist in Resources */,
+				B437BE0E2E1986DC0045436F /* README.md in Resources */,
 				B42277D92E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -665,38 +766,55 @@
 				B437BD882E182C590045436F /* AssetService.swift in Sources */,
 				B42278132E16538400559A0B /* EchoEntity.swift in Sources */,
 				B42278142E16538400559A0B /* MiniMapView.swift in Sources */,
+				B437BDCB2E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BDEC2E1982640045436F /* AssetLoader.swift in Sources */,
+				B437BE062E1984C20045436F /* BufferPool.swift in Sources */,
 				B437BD822E182B1F0045436F /* LoginService.swift in Sources */,
+				B437BDDC2E1980010045436F /* GraphicsTypes.swift in Sources */,
 				B42278152E16538400559A0B /* InventoryView.swift in Sources */,
 				B42278162E16538400559A0B /* ChatView.swift in Sources */,
 				B42278172E16538400559A0B /* ActionBarView.swift in Sources */,
 				B42278182E16538400559A0B /* NetworkManager.swift in Sources */,
-				B42278192E16538400559A0B /* FinalverseNetworkClient.swift in Sources */,
+				B437BDF62E19830C0045436F /* RenderPipeline.swift in Sources */,
+				B437BE002E19841D0045436F /* HarmonyRenderer.swift in Sources */,
+				B42278192E16538400559A0B /* FinalverseClient.swift in Sources */,
+				B437BDD22E1975F70045436F /* WorldOptimizer.swift in Sources */,
+				B437BDE22E1982090045436F /* LODManager.swift in Sources */,
+				B437BDCD2E1975860045436F /* FeatureSpawner.swift in Sources */,
+				B437BE032E1984420045436F /* ShaderLibrary.swift in Sources */,
 				B422781A2E16538400559A0B /* SongEngine.swift in Sources */,
 				B437BDA92E1871B40045436F /* AudioManager.swift in Sources */,
 				B422781B2E16538400559A0B /* EchoEngine.swift in Sources */,
 				B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */,
+				B437BDD62E1976280045436F /* WorldSystem.swift in Sources */,
 				B422781C2E16538400559A0B /* AIOrchestra.swift in Sources */,
 				B437BD902E182D4D0045436F /* AssetManager.swift in Sources */,
+				B437BDFC2E1983D90045436F /* RenderPassManager.swift in Sources */,
 				B422781D2E16538400559A0B /* HarmonyService.swift in Sources */,
 				B422781E2E16538400559A0B /* StoryEngine.swift in Sources */,
 				B422781F2E16538400559A0B /* WorldEngineService.swift in Sources */,
 				B42278202E16538400559A0B /* SymphonyEngine.swift in Sources */,
 				B42278212E16538400559A0B /* SilenceService.swift in Sources */,
 				B42278232E16538400559A0B /* AnimationSystem.swift in Sources */,
+				B437BE0C2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */,
 				B42278242E16538400559A0B /* AppearanceManager.swift in Sources */,
 				B437BDA52E186B670045436F /* AudioTypes.swift in Sources */,
 				B437BDB22E18E97A0045436F /* ComponentTypes.swift in Sources */,
 				B437BD692E1700EB0045436F /* WorldTypes.swift in Sources */,
+				B437BDF02E1982830045436F /* MeshPerformanceMonitor.swift in Sources */,
 				B437BD932E182D770045436F /* ItemRenderer.swift in Sources */,
 				B422782C2E16538400559A0B /* WorldManager.swift in Sources */,
+				B437BDE02E1981E80045436F /* MeshCache.swift in Sources */,
 				B422782D2E16538400559A0B /* SceneManager.swift in Sources */,
+				B437BDC52E196FAA0045436F /* TerrainGenerator.swift in Sources */,
 				B422782E2E16538400559A0B /* RegionManager.swift in Sources */,
 				B437BDBD2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDB72E18E99F0045436F /* AvatarTypes.swift in Sources */,
-				B422782F2E16538400559A0B /* TerrainPatch.swift in Sources */,
+				B437BDF22E19829D0045436F /* RenderingTypes.swift in Sources */,
+				B422782F2E16538400559A0B /* Grid.swift in Sources */,
 				B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */,
-				B42278302E16538400559A0B /* ObjectData.swift in Sources */,
 				B42278312E16538400559A0B /* AvatarSystem.swift in Sources */,
+				B437BDE62E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
 				B42278322E16538400559A0B /* AppStateManager.swift in Sources */,
 				B437BDB92E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B42278332E16538400559A0B /* FinalverseServicesManager.swift in Sources */,
@@ -718,38 +836,55 @@
 				B437BD872E182C590045436F /* AssetService.swift in Sources */,
 				B42277EF2E16536C00559A0B /* EchoEntity.swift in Sources */,
 				B42277F02E16536C00559A0B /* MiniMapView.swift in Sources */,
+				B437BDC92E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BDEB2E1982640045436F /* AssetLoader.swift in Sources */,
+				B437BE082E1984C20045436F /* BufferPool.swift in Sources */,
 				B437BD832E182B1F0045436F /* LoginService.swift in Sources */,
+				B437BDDA2E1980010045436F /* GraphicsTypes.swift in Sources */,
 				B42277F12E16536C00559A0B /* InventoryView.swift in Sources */,
 				B42277F22E16536C00559A0B /* ChatView.swift in Sources */,
 				B42277F32E16536C00559A0B /* ActionBarView.swift in Sources */,
 				B42277F42E16536C00559A0B /* NetworkManager.swift in Sources */,
-				B42277F52E16536C00559A0B /* FinalverseNetworkClient.swift in Sources */,
+				B437BDF72E19830C0045436F /* RenderPipeline.swift in Sources */,
+				B437BDFE2E19841D0045436F /* HarmonyRenderer.swift in Sources */,
+				B42277F52E16536C00559A0B /* FinalverseClient.swift in Sources */,
+				B437BDD32E1975F70045436F /* WorldOptimizer.swift in Sources */,
+				B437BDE32E1982090045436F /* LODManager.swift in Sources */,
+				B437BDCE2E1975860045436F /* FeatureSpawner.swift in Sources */,
+				B437BE042E1984420045436F /* ShaderLibrary.swift in Sources */,
 				B42277F62E16536C00559A0B /* SongEngine.swift in Sources */,
 				B437BDAA2E1871B40045436F /* AudioManager.swift in Sources */,
 				B42277F72E16536C00559A0B /* EchoEngine.swift in Sources */,
 				B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */,
+				B437BDD52E1976280045436F /* WorldSystem.swift in Sources */,
 				B42277F82E16536C00559A0B /* AIOrchestra.swift in Sources */,
 				B437BD8F2E182D4D0045436F /* AssetManager.swift in Sources */,
+				B437BDFA2E1983D90045436F /* RenderPassManager.swift in Sources */,
 				B42277F92E16536C00559A0B /* HarmonyService.swift in Sources */,
 				B42277FA2E16536C00559A0B /* StoryEngine.swift in Sources */,
 				B42277FB2E16536C00559A0B /* WorldEngineService.swift in Sources */,
 				B42277FC2E16536C00559A0B /* SymphonyEngine.swift in Sources */,
 				B42277FD2E16536C00559A0B /* SilenceService.swift in Sources */,
 				B42277FF2E16536C00559A0B /* AnimationSystem.swift in Sources */,
+				B437BE0B2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */,
 				B42278002E16536C00559A0B /* AppearanceManager.swift in Sources */,
 				B437BDA42E186B670045436F /* AudioTypes.swift in Sources */,
 				B437BDB32E18E97A0045436F /* ComponentTypes.swift in Sources */,
 				B437BD682E1700EB0045436F /* WorldTypes.swift in Sources */,
+				B437BDEF2E1982830045436F /* MeshPerformanceMonitor.swift in Sources */,
 				B437BD942E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278082E16536C00559A0B /* WorldManager.swift in Sources */,
+				B437BDDE2E1981E80045436F /* MeshCache.swift in Sources */,
 				B42278092E16536C00559A0B /* SceneManager.swift in Sources */,
+				B437BDC62E196FAA0045436F /* TerrainGenerator.swift in Sources */,
 				B422780A2E16536C00559A0B /* RegionManager.swift in Sources */,
 				B437BDBF2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDB52E18E99F0045436F /* AvatarTypes.swift in Sources */,
-				B422780B2E16536C00559A0B /* TerrainPatch.swift in Sources */,
+				B437BDF32E19829D0045436F /* RenderingTypes.swift in Sources */,
+				B422780B2E16536C00559A0B /* Grid.swift in Sources */,
 				B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */,
-				B422780C2E16536C00559A0B /* ObjectData.swift in Sources */,
 				B422780D2E16536C00559A0B /* AvatarSystem.swift in Sources */,
+				B437BDE82E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
 				B422780E2E16536C00559A0B /* AppStateManager.swift in Sources */,
 				B437BDBB2E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B422780F2E16536C00559A0B /* FinalverseServicesManager.swift in Sources */,
@@ -762,26 +897,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B437BDCF2E1975860045436F /* FeatureSpawner.swift in Sources */,
 				B437BD862E182C590045436F /* AssetService.swift in Sources */,
+				B437BDEE2E1982830045436F /* MeshPerformanceMonitor.swift in Sources */,
 				B42278342E16539300559A0B /* BaseEntity.swift in Sources */,
+				B437BDDF2E1981E80045436F /* MeshCache.swift in Sources */,
+				B437BE072E1984C20045436F /* BufferPool.swift in Sources */,
+				B437BDFF2E19841D0045436F /* HarmonyRenderer.swift in Sources */,
 				B42278352E16539300559A0B /* AvatarEntity.swift in Sources */,
 				B437BDA62E186B670045436F /* AudioTypes.swift in Sources */,
 				B42278362E16539300559A0B /* ObjectEntity.swift in Sources */,
 				B42278372E16539300559A0B /* EchoEntity.swift in Sources */,
+				B437BDD72E1976280045436F /* WorldSystem.swift in Sources */,
 				B42278382E16539300559A0B /* MiniMapView.swift in Sources */,
+				B437BDD12E1975F70045436F /* WorldOptimizer.swift in Sources */,
 				B42278392E16539300559A0B /* InventoryView.swift in Sources */,
 				B437BDB62E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B422783A2E16539300559A0B /* ChatView.swift in Sources */,
 				B422783B2E16539300559A0B /* ActionBarView.swift in Sources */,
 				B422783C2E16539300559A0B /* NetworkManager.swift in Sources */,
-				B422783D2E16539300559A0B /* FinalverseNetworkClient.swift in Sources */,
+				B437BDE42E1982090045436F /* LODManager.swift in Sources */,
+				B422783D2E16539300559A0B /* FinalverseClient.swift in Sources */,
 				B422783E2E16539300559A0B /* SongEngine.swift in Sources */,
 				B437BDA82E1871B40045436F /* AudioManager.swift in Sources */,
 				B437BD6A2E1700EB0045436F /* WorldTypes.swift in Sources */,
 				B422783F2E16539300559A0B /* EchoEngine.swift in Sources */,
+				B437BDC72E196FAA0045436F /* TerrainGenerator.swift in Sources */,
 				B437BDA22E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
+				B437BDCA2E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BDEA2E1982640045436F /* AssetLoader.swift in Sources */,
 				B42278402E16539300559A0B /* AIOrchestra.swift in Sources */,
 				B42278412E16539300559A0B /* HarmonyService.swift in Sources */,
+				B437BDE72E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
 				B42278422E16539300559A0B /* StoryEngine.swift in Sources */,
 				B42278432E16539300559A0B /* WorldEngineService.swift in Sources */,
 				B42278442E16539300559A0B /* SymphonyEngine.swift in Sources */,
@@ -796,15 +943,20 @@
 				B437BD9A2E182DD80045436F /* SpatialAudioEngine.swift in Sources */,
 				B42278502E16539300559A0B /* WorldManager.swift in Sources */,
 				B42278512E16539300559A0B /* SceneManager.swift in Sources */,
+				B437BDF82E19830C0045436F /* RenderPipeline.swift in Sources */,
 				B42278522E16539300559A0B /* RegionManager.swift in Sources */,
+				B437BE022E1984420045436F /* ShaderLibrary.swift in Sources */,
 				B437BDB12E18E97A0045436F /* ComponentTypes.swift in Sources */,
-				B42278532E16539300559A0B /* TerrainPatch.swift in Sources */,
+				B437BDDB2E1980010045436F /* GraphicsTypes.swift in Sources */,
+				B437BDFB2E1983D90045436F /* RenderPassManager.swift in Sources */,
+				B42278532E16539300559A0B /* Grid.swift in Sources */,
 				B437BD6E2E1705100045436F /* MeshSystem.swift in Sources */,
-				B42278542E16539300559A0B /* ObjectData.swift in Sources */,
 				B42278552E16539300559A0B /* AvatarSystem.swift in Sources */,
 				B42278562E16539300559A0B /* AppStateManager.swift in Sources */,
 				B437BDBE2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDBA2E18E9C60045436F /* GameplayTypes.swift in Sources */,
+				B437BE0A2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */,
+				B437BDF42E19829D0045436F /* RenderingTypes.swift in Sources */,
 				B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278572E16539300559A0B /* FinalverseServicesManager.swift in Sources */,
 				B42277E92E16513600559A0B /* ImmersiveWorldView.swift in Sources */,

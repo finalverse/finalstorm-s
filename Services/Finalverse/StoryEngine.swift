@@ -14,10 +14,10 @@ class StoryEngine: ObservableObject {
     @Published var completedQuests: [Quest] = []
     @Published var availableQuests: [Quest] = []
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .storyEngine)
+        self.networkClient = FinalverseClient(service: .storyEngine)
     }
     
     func initialize() async {

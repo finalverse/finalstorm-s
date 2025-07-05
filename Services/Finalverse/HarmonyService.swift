@@ -13,10 +13,10 @@ class HarmonyService: ObservableObject {
     @Published var globalHarmony: Float = 1.0
     @Published var regionalHarmonies: [UUID: Float] = [:]
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .harmonyService)
+        self.networkClient = FinalverseClient(service: .harmonyService)
     }
     
     func initialize() async {

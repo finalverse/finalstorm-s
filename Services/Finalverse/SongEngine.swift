@@ -16,13 +16,13 @@ class SongEngine: ObservableObject {
     @Published var globalHarmony: Float = 1.0
     @Published var availableSongs: [Song] = []
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     private let audioEngine: SongweavingAudioEngine
     private var harmonyCancellable: AnyCancellable?
     
     // MARK: - Initialization
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .songEngine)
+        self.networkClient = FinalverseClient(service: .songEngine)
         self.audioEngine = SongweavingAudioEngine()
     }
     

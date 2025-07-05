@@ -15,13 +15,13 @@ class AIOrchestra: ObservableObject {
     @Published var isConnected = false
     @Published var activeConversations: [UUID: Conversation] = [:]
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     private let promptEngine: PromptEngine
     private var llmEndpoint: URL?
     
     // MARK: - Initialization
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .aiOrchestra)
+        self.networkClient = FinalverseClient(service: .aiOrchestra)
         self.promptEngine = PromptEngine()
     }
     

@@ -14,12 +14,12 @@ class SymphonyEngine: ObservableObject {
     @Published var isInitialized = false
     @Published var currentTheme: MusicTheme = .exploration
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     private let audioEngine = AVAudioEngine()
     private let songweavingAudioEngine = SongweavingAudioEngine()
     
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .symphonyEngine)
+        self.networkClient = FinalverseClient(service: .symphonyEngine)
     }
     
     func initialize() async {

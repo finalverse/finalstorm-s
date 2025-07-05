@@ -1,8 +1,8 @@
 //
-//  SceneManager.swift
+//  SceneManager.swift (FIXED)
 //  FinalStorm
 //
-//  Manages the RealityKit scene
+//  Manages the RealityKit scene with proper type usage
 //
 
 import RealityKit
@@ -29,7 +29,7 @@ class SceneManager {
             let terrainEntity = Entity()
             terrainEntity.components.set(ModelComponent(
                 mesh: terrain.mesh,
-                materials: [createTerrainMaterial(for: terrain.biome)]
+                materials: [createTerrainMaterial(for: terrain.biome)] // Fixed: using BiomeType
             ))
             gridAnchor.addChild(terrainEntity)
         }
@@ -43,6 +43,13 @@ class SceneManager {
         loadedGrids[grid.coordinate] = gridAnchor
     }
     
+    func updateGrid(_ grid: Grid) async {
+        // Remove old grid
+        removeGrid(grid.coordinate)
+        // Add updated grid
+        await addGrid(grid)
+    }
+    
     func removeGrid(_ coordinate: GridCoordinate) {
         if let gridAnchor = loadedGrids[coordinate] {
             gridAnchor.removeFromParent()
@@ -54,10 +61,9 @@ class SceneManager {
         rootAnchor?.addChild(entity)
     }
     
-    private func createTerrainMaterial(for biome: Biome) -> Material {
+    private func createTerrainMaterial(for biome: BiomeType) -> Material { // Fixed: BiomeType
         var material = PhysicallyBasedMaterial()
         
-        // Use direct color values for cross-platform compatibility
         switch biome {
         case .grassland:
             material.baseColor = .init(tint: .init(red: 0.0, green: 0.8, blue: 0.0, alpha: 1.0))
@@ -80,6 +86,18 @@ class SceneManager {
             material.roughness = 0.7
             material.emissiveColor = .init(color: .init(red: 0.6, green: 0.0, blue: 0.8, alpha: 1.0))
             material.emissiveIntensity = 0.1
+        case .ethereal:
+            material.baseColor = .init(tint: .init(red: 0.8, green: 0.8, blue: 1.0, alpha: 1.0))
+            material.roughness = 0.3
+            material.emissiveColor = .init(color: .init(red: 0.8, green: 0.8, blue: 1.0, alpha: 1.0))
+            material.emissiveIntensity = 0.2
+        case .crystal:
+            material.baseColor = .init(tint: .init(red: 0.7, green: 0.9, blue: 0.9, alpha: 1.0))
+            material.roughness = 0.1
+            material.metallic = 0.8
+        default:
+            material.baseColor = .init(tint: .init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0))
+            material.roughness = 0.8
         }
         
         return material

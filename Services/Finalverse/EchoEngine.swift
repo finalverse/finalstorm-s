@@ -22,7 +22,7 @@ class EchoEngine: ObservableObject {
     @Published var activeEchoes: [EchoEntityService] = []
     @Published var echoStates: [UUID: EchoState] = [:]
     
-    private let networkClient: FinalverseNetworkClient
+    private let networkClient: FinalverseClient
     private let aiOrchestra: AIOrchestra
     private let behaviorSystem: BehaviorSystem
     private var updateCancellable: AnyCancellable?
@@ -34,7 +34,7 @@ class EchoEngine: ObservableObject {
     private var ignis: EchoEntityService?
     
     init() {
-        self.networkClient = FinalverseNetworkClient(service: .echoEngine)
+        self.networkClient = FinalverseClient(service: .echoEngine)
         self.aiOrchestra = AIOrchestra()
         self.behaviorSystem = BehaviorSystem()
     }
