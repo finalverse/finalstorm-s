@@ -102,9 +102,6 @@
 		B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
 		B437BD6E2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
 		B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD6C2E1705100045436F /* MeshSystem.swift */; };
-		B437BD712E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
-		B437BD722E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
-		B437BD732E170B2F0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BD702E170B2F0045436F /* README.md */; };
 		B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
 		B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
 		B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BD7D2E182A520045436F /* OpenSimProtocol.swift */; };
@@ -204,9 +201,51 @@
 		B437BE0A2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */; };
 		B437BE0B2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */; };
 		B437BE0C2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */; };
-		B437BE0E2E1986DC0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BE0D2E1986DC0045436F /* README.md */; };
-		B437BE0F2E1986DC0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BE0D2E1986DC0045436F /* README.md */; };
-		B437BE102E1986DC0045436F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B437BE0D2E1986DC0045436F /* README.md */; };
+		B437BE122E1A20640045436F /* FinalStormCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE112E1A20640045436F /* FinalStormCore.swift */; };
+		B437BE132E1A20640045436F /* FinalStormCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE112E1A20640045436F /* FinalStormCore.swift */; };
+		B437BE142E1A20640045436F /* FinalStormCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE112E1A20640045436F /* FinalStormCore.swift */; };
+		B437BE162E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE152E1A21AC0045436F /* AdvRenderPipeline.swift */; };
+		B437BE172E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE152E1A21AC0045436F /* AdvRenderPipeline.swift */; };
+		B437BE182E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE152E1A21AC0045436F /* AdvRenderPipeline.swift */; };
+		B437BE1A2E1A23120045436F /* ProceduralGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE192E1A23120045436F /* ProceduralGeneration.swift */; };
+		B437BE1B2E1A23120045436F /* ProceduralGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE192E1A23120045436F /* ProceduralGeneration.swift */; };
+		B437BE1C2E1A23120045436F /* ProceduralGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE192E1A23120045436F /* ProceduralGeneration.swift */; };
+		B437BE1E2E1A23BF0045436F /* NetworkCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE1D2E1A23BF0045436F /* NetworkCore.swift */; };
+		B437BE1F2E1A23BF0045436F /* NetworkCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE1D2E1A23BF0045436F /* NetworkCore.swift */; };
+		B437BE202E1A23BF0045436F /* NetworkCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE1D2E1A23BF0045436F /* NetworkCore.swift */; };
+		B437BE222E1A24E60045436F /* FVServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE212E1A24E60045436F /* FVServicesManager.swift */; };
+		B437BE232E1A24E60045436F /* FVServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE212E1A24E60045436F /* FVServicesManager.swift */; };
+		B437BE242E1A24E60045436F /* FVServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE212E1A24E60045436F /* FVServicesManager.swift */; };
+		B437BE262E1A50020045436F /* AdvancedUISystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE252E1A50020045436F /* AdvancedUISystem.swift */; };
+		B437BE272E1A50020045436F /* AdvancedUISystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE252E1A50020045436F /* AdvancedUISystem.swift */; };
+		B437BE282E1A50020045436F /* AdvancedUISystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE252E1A50020045436F /* AdvancedUISystem.swift */; };
+		B437BE2A2E1A51300045436F /* AdvAvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE292E1A51300045436F /* AdvAvatarSystem.swift */; };
+		B437BE2B2E1A51300045436F /* AdvAvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE292E1A51300045436F /* AdvAvatarSystem.swift */; };
+		B437BE2C2E1A51300045436F /* AdvAvatarSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE292E1A51300045436F /* AdvAvatarSystem.swift */; };
+		B437BE2E2E1A56EE0045436F /* NeuralRenderingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE2D2E1A56EE0045436F /* NeuralRenderingSystem.swift */; };
+		B437BE2F2E1A56EE0045436F /* NeuralRenderingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE2D2E1A56EE0045436F /* NeuralRenderingSystem.swift */; };
+		B437BE302E1A56EE0045436F /* NeuralRenderingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE2D2E1A56EE0045436F /* NeuralRenderingSystem.swift */; };
+		B437BE332E1A57870045436F /* QuantumPhysicsSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE322E1A57870045436F /* QuantumPhysicsSystem.swift */; };
+		B437BE342E1A57870045436F /* QuantumPhysicsSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE322E1A57870045436F /* QuantumPhysicsSystem.swift */; };
+		B437BE352E1A57870045436F /* QuantumPhysicsSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE322E1A57870045436F /* QuantumPhysicsSystem.swift */; };
+		B437BE382E1A57C20045436F /* LivingWorldSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE372E1A57C20045436F /* LivingWorldSystem.swift */; };
+		B437BE392E1A57C20045436F /* LivingWorldSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE372E1A57C20045436F /* LivingWorldSystem.swift */; };
+		B437BE3A2E1A57C20045436F /* LivingWorldSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE372E1A57C20045436F /* LivingWorldSystem.swift */; };
+		B437BE3E2E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE3D2E1A583D0045436F /* ImmersiveAudioSystem.swift */; };
+		B437BE3F2E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE3D2E1A583D0045436F /* ImmersiveAudioSystem.swift */; };
+		B437BE402E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE3D2E1A583D0045436F /* ImmersiveAudioSystem.swift */; };
+		B437BE422E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */; };
+		B437BE432E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */; };
+		B437BE442E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */; };
+		B437BE482E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */; };
+		B437BE492E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */; };
+		B437BE4A2E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */; };
+		B437BE4C2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */; };
+		B437BE4D2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */; };
+		B437BE4E2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */; };
+		B437BE502E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */; };
+		B437BE512E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */; };
+		B437BE522E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */; };
 		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -218,7 +257,6 @@
 		B42277D12E162B5A00559A0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B437BD672E1700EB0045436F /* WorldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTypes.swift; sourceTree = "<group>"; };
 		B437BD6C2E1705100045436F /* MeshSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeshSystem.swift; sourceTree = "<group>"; };
-		B437BD702E170B2F0045436F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B437BD7D2E182A520045436F /* OpenSimProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSimProtocol.swift; sourceTree = "<group>"; };
 		B437BD812E182B1F0045436F /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		B437BD852E182C590045436F /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
@@ -252,7 +290,23 @@
 		B437BE012E1984420045436F /* ShaderLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderLibrary.swift; sourceTree = "<group>"; };
 		B437BE052E1984C20045436F /* BufferPool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferPool.swift; sourceTree = "<group>"; };
 		B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrustumCullingSystem.swift; sourceTree = "<group>"; };
-		B437BE0D2E1986DC0045436F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B437BE112E1A20640045436F /* FinalStormCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalStormCore.swift; sourceTree = "<group>"; };
+		B437BE152E1A21AC0045436F /* AdvRenderPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvRenderPipeline.swift; sourceTree = "<group>"; };
+		B437BE192E1A23120045436F /* ProceduralGeneration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralGeneration.swift; sourceTree = "<group>"; };
+		B437BE1D2E1A23BF0045436F /* NetworkCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCore.swift; sourceTree = "<group>"; };
+		B437BE212E1A24E60045436F /* FVServicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FVServicesManager.swift; sourceTree = "<group>"; };
+		B437BE252E1A50020045436F /* AdvancedUISystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedUISystem.swift; sourceTree = "<group>"; };
+		B437BE292E1A51300045436F /* AdvAvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvAvatarSystem.swift; sourceTree = "<group>"; };
+		B437BE2D2E1A56EE0045436F /* NeuralRenderingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuralRenderingSystem.swift; sourceTree = "<group>"; };
+		B437BE322E1A57870045436F /* QuantumPhysicsSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumPhysicsSystem.swift; sourceTree = "<group>"; };
+		B437BE372E1A57C20045436F /* LivingWorldSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivingWorldSystem.swift; sourceTree = "<group>"; };
+		B437BE3C2E1A57FD0045436F /* VirtualAssetBlockchain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualAssetBlockchain.swift; sourceTree = "<group>"; };
+		B437BE3D2E1A583D0045436F /* ImmersiveAudioSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveAudioSystem.swift; sourceTree = "<group>"; };
+		B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumNetworkingSystem.swift; sourceTree = "<group>"; };
+		B437BE462E1A58A60045436F /* QuantumSceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumSceneManager.swift; sourceTree = "<group>"; };
+		B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumEntitySystem.swift; sourceTree = "<group>"; };
+		B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialInterfaceSystem.swift; sourceTree = "<group>"; };
+		B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumOptimizationEngine.swift; sourceTree = "<group>"; };
 		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
 		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
 		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
@@ -365,7 +419,6 @@
 			isa = PBXGroup;
 			children = (
 				B437BD6C2E1705100045436F /* MeshSystem.swift */,
-				B437BD702E170B2F0045436F /* README.md */,
 				B437BDD92E1980010045436F /* GraphicsTypes.swift */,
 				B437BDDD2E1981E80045436F /* MeshCache.swift */,
 				B437BDE12E1982090045436F /* LODManager.swift */,
@@ -399,6 +452,7 @@
 		B437BD962E182DC80045436F /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				B437BE3D2E1A583D0045436F /* ImmersiveAudioSystem.swift */,
 				B437BDA32E186B670045436F /* AudioTypes.swift */,
 				B437BD972E182DD80045436F /* SpatialAudioEngine.swift */,
 				B437BD9B2E182DF90045436F /* SongweavingAudio.swift */,
@@ -418,25 +472,61 @@
 				B437BE012E1984420045436F /* ShaderLibrary.swift */,
 				B437BE052E1984C20045436F /* BufferPool.swift */,
 				B437BE092E1984EA0045436F /* FrustumCullingSystem.swift */,
-				B437BE0D2E1986DC0045436F /* README.md */,
+				B437BE152E1A21AC0045436F /* AdvRenderPipeline.swift */,
+				B437BE2D2E1A56EE0045436F /* NeuralRenderingSystem.swift */,
 			);
 			path = Rendering;
+			sourceTree = "<group>";
+		};
+		B437BE312E1A57180045436F /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				B437BE322E1A57870045436F /* QuantumPhysicsSystem.swift */,
+			);
+			path = Physics;
+			sourceTree = "<group>";
+		};
+		B437BE362E1A57B20045436F /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				B437BE372E1A57C20045436F /* LivingWorldSystem.swift */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		B437BE3B2E1A57DC0045436F /* Blockchain */ = {
+			isa = PBXGroup;
+			children = (
+				B4CE86B42E160F4300ED541D /* Components */,
+				B437BE3C2E1A57FD0045436F /* VirtualAssetBlockchain.swift */,
+			);
+			path = Blockchain;
+			sourceTree = "<group>";
+		};
+		B437BE452E1A58900045436F /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B437BE462E1A58A60045436F /* QuantumSceneManager.swift */,
+			);
+			path = Scene;
 			sourceTree = "<group>";
 		};
 		B4CE860C2E1510C300ED541D = {
 			isa = PBXGroup;
 			children = (
 				B4CE86972E158B7800ED541D /* README.md */,
+				B4CE863E2E151E7700ED541D /* Core */,
+				B4CE86422E151EB500ED541D /* Entities */,
+				B4CE86322E1517C700ED541D /* FinalStorm */,
+				B437BE312E1A57180045436F /* Physics */,
 				B4CE86462E151EE200ED541D /* visionOS */,
 				B4CE86452E151ED400ED541D /* macOS */,
 				B4CE86442E151ECC00ED541D /* iOS */,
 				B4CE86432E151EBE00ED541D /* Resources */,
-				B4CE86422E151EB500ED541D /* Entities */,
+				B437BE452E1A58900045436F /* Scene */,
 				B4CE86412E151EA900ED541D /* UI */,
 				B4CE86402E151E8E00ED541D /* Networking */,
 				B4CE863F2E151E8300ED541D /* Services */,
-				B4CE863E2E151E7700ED541D /* Core */,
-				B4CE86322E1517C700ED541D /* FinalStorm */,
 				B4CE86FA2E16159B00ED541D /* Packages */,
 				B4CE86162E1510C300ED541D /* Products */,
 			);
@@ -455,13 +545,16 @@
 		B4CE863E2E151E7700ED541D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B437BE362E1A57B20045436F /* AI */,
+				B4CE86492E15220F00ED541D /* Avatar */,
+				B437BE3B2E1A57DC0045436F /* Blockchain */,
 				B437BDD82E197CA10045436F /* Rendering */,
 				B437BD6B2E1704F40045436F /* Graphics */,
-				B4CE86B42E160F4300ED541D /* Components */,
 				B4CE864C2E15227400ED541D /* World */,
-				B4CE86492E15220F00ED541D /* Avatar */,
 				B4CE86992E1594DE00ED541D /* AppStateManager.swift */,
 				B4CE869B2E15950A00ED541D /* FinalverseServicesManager.swift */,
+				B437BE112E1A20640045436F /* FinalStormCore.swift */,
+				B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -473,6 +566,7 @@
 				B437BD892E182C840045436F /* Inventory */,
 				B437BD7C2E182A050045436F /* OpenSim */,
 				B4CE864F2E15416100ED541D /* Finalverse */,
+				B437BE212E1A24E60045436F /* FVServicesManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -480,8 +574,10 @@
 		B4CE86402E151E8E00ED541D /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */,
 				B4CE86A72E1595B700ED541D /* NetworkManager.swift */,
 				B4CE86A92E1595D300ED541D /* FinalverseClient.swift */,
+				B437BE1D2E1A23BF0045436F /* NetworkCore.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -489,6 +585,8 @@
 		B4CE86412E151EA900ED541D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B437BE252E1A50020045436F /* AdvancedUISystem.swift */,
+				B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */,
 				B4CE86AB2E1595E400ED541D /* Components */,
 			);
 			path = UI;
@@ -497,6 +595,7 @@
 		B4CE86422E151EB500ED541D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */,
 				B4CE868D2E1589E800ED541D /* BaseEntity.swift */,
 				B4CE868F2E158A1A00ED541D /* AvatarEntity.swift */,
 				B4CE86912E158A4E00ED541D /* ObjectEntity.swift */,
@@ -550,6 +649,7 @@
 				B437BDB42E18E99F0045436F /* AvatarTypes.swift */,
 				B4CE864A2E15225700ED541D /* AvatarSystem.swift */,
 				B4CE86B52E160F7500ED541D /* AnimationSystem.swift */,
+				B437BE292E1A51300045436F /* AdvAvatarSystem.swift */,
 			);
 			path = Avatar;
 			sourceTree = "<group>";
@@ -567,6 +667,7 @@
 				B437BDCC2E1975860045436F /* FeatureSpawner.swift */,
 				B437BDD02E1975F70045436F /* WorldOptimizer.swift */,
 				B437BDD42E1976280045436F /* WorldSystem.swift */,
+				B437BE192E1A23120045436F /* ProceduralGeneration.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -723,8 +824,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B437BE102E1986DC0045436F /* README.md in Resources */,
-				B437BD732E170B2F0045436F /* README.md in Resources */,
 				B42277C22E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -733,8 +832,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B437BE0F2E1986DC0045436F /* README.md in Resources */,
-				B437BD722E170B2F0045436F /* README.md in Resources */,
 				B42277C92E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -743,9 +840,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B437BD712E170B2F0045436F /* README.md in Resources */,
 				B42277EB2E1651CD00559A0B /* Info.plist in Resources */,
-				B437BE0E2E1986DC0045436F /* README.md in Resources */,
 				B42277D92E162B5A00559A0B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -761,19 +856,25 @@
 				B42278102E16538400559A0B /* BaseEntity.swift in Sources */,
 				B437BD8C2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42278112E16538400559A0B /* AvatarEntity.swift in Sources */,
+				B437BE122E1A20640045436F /* FinalStormCore.swift in Sources */,
 				B42278122E16538400559A0B /* ObjectEntity.swift in Sources */,
 				B437BD9C2E182DF90045436F /* SongweavingAudio.swift in Sources */,
 				B437BD882E182C590045436F /* AssetService.swift in Sources */,
 				B42278132E16538400559A0B /* EchoEntity.swift in Sources */,
 				B42278142E16538400559A0B /* MiniMapView.swift in Sources */,
 				B437BDCB2E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BE182E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */,
 				B437BDEC2E1982640045436F /* AssetLoader.swift in Sources */,
+				B437BE3E2E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */,
 				B437BE062E1984C20045436F /* BufferPool.swift in Sources */,
+				B437BE2C2E1A51300045436F /* AdvAvatarSystem.swift in Sources */,
 				B437BD822E182B1F0045436F /* LoginService.swift in Sources */,
 				B437BDDC2E1980010045436F /* GraphicsTypes.swift in Sources */,
+				B437BE332E1A57870045436F /* QuantumPhysicsSystem.swift in Sources */,
 				B42278152E16538400559A0B /* InventoryView.swift in Sources */,
 				B42278162E16538400559A0B /* ChatView.swift in Sources */,
 				B42278172E16538400559A0B /* ActionBarView.swift in Sources */,
+				B437BE382E1A57C20045436F /* LivingWorldSystem.swift in Sources */,
 				B42278182E16538400559A0B /* NetworkManager.swift in Sources */,
 				B437BDF62E19830C0045436F /* RenderPipeline.swift in Sources */,
 				B437BE002E19841D0045436F /* HarmonyRenderer.swift in Sources */,
@@ -786,6 +887,7 @@
 				B437BDA92E1871B40045436F /* AudioManager.swift in Sources */,
 				B422781B2E16538400559A0B /* EchoEngine.swift in Sources */,
 				B437BD6D2E1705100045436F /* MeshSystem.swift in Sources */,
+				B437BE272E1A50020045436F /* AdvancedUISystem.swift in Sources */,
 				B437BDD62E1976280045436F /* WorldSystem.swift in Sources */,
 				B422781C2E16538400559A0B /* AIOrchestra.swift in Sources */,
 				B437BD902E182D4D0045436F /* AssetManager.swift in Sources */,
@@ -793,10 +895,12 @@
 				B422781D2E16538400559A0B /* HarmonyService.swift in Sources */,
 				B422781E2E16538400559A0B /* StoryEngine.swift in Sources */,
 				B422781F2E16538400559A0B /* WorldEngineService.swift in Sources */,
+				B437BE1F2E1A23BF0045436F /* NetworkCore.swift in Sources */,
 				B42278202E16538400559A0B /* SymphonyEngine.swift in Sources */,
 				B42278212E16538400559A0B /* SilenceService.swift in Sources */,
 				B42278232E16538400559A0B /* AnimationSystem.swift in Sources */,
 				B437BE0C2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */,
+				B437BE502E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */,
 				B42278242E16538400559A0B /* AppearanceManager.swift in Sources */,
 				B437BDA52E186B670045436F /* AudioTypes.swift in Sources */,
 				B437BDB22E18E97A0045436F /* ComponentTypes.swift in Sources */,
@@ -805,19 +909,25 @@
 				B437BD932E182D770045436F /* ItemRenderer.swift in Sources */,
 				B422782C2E16538400559A0B /* WorldManager.swift in Sources */,
 				B437BDE02E1981E80045436F /* MeshCache.swift in Sources */,
+				B437BE4E2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */,
 				B422782D2E16538400559A0B /* SceneManager.swift in Sources */,
 				B437BDC52E196FAA0045436F /* TerrainGenerator.swift in Sources */,
 				B422782E2E16538400559A0B /* RegionManager.swift in Sources */,
 				B437BDBD2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDB72E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B437BDF22E19829D0045436F /* RenderingTypes.swift in Sources */,
+				B437BE482E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
 				B422782F2E16538400559A0B /* Grid.swift in Sources */,
 				B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278312E16538400559A0B /* AvatarSystem.swift in Sources */,
+				B437BE232E1A24E60045436F /* FVServicesManager.swift in Sources */,
 				B437BDE62E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
 				B42278322E16538400559A0B /* AppStateManager.swift in Sources */,
+				B437BE302E1A56EE0045436F /* NeuralRenderingSystem.swift in Sources */,
+				B437BE432E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */,
 				B437BDB92E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B42278332E16538400559A0B /* FinalverseServicesManager.swift in Sources */,
+				B437BE1C2E1A23120045436F /* ProceduralGeneration.swift in Sources */,
 				B42277E72E16512400559A0B /* ContentView_iOS.swift in Sources */,
 				B437BDA12E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
 			);
@@ -831,19 +941,25 @@
 				B42277EC2E16536C00559A0B /* BaseEntity.swift in Sources */,
 				B437BD8D2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42277ED2E16536C00559A0B /* AvatarEntity.swift in Sources */,
+				B437BE142E1A20640045436F /* FinalStormCore.swift in Sources */,
 				B42277EE2E16536C00559A0B /* ObjectEntity.swift in Sources */,
 				B437BD9E2E182DF90045436F /* SongweavingAudio.swift in Sources */,
 				B437BD872E182C590045436F /* AssetService.swift in Sources */,
 				B42277EF2E16536C00559A0B /* EchoEntity.swift in Sources */,
 				B42277F02E16536C00559A0B /* MiniMapView.swift in Sources */,
 				B437BDC92E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BE162E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */,
 				B437BDEB2E1982640045436F /* AssetLoader.swift in Sources */,
+				B437BE402E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */,
 				B437BE082E1984C20045436F /* BufferPool.swift in Sources */,
+				B437BE2A2E1A51300045436F /* AdvAvatarSystem.swift in Sources */,
 				B437BD832E182B1F0045436F /* LoginService.swift in Sources */,
 				B437BDDA2E1980010045436F /* GraphicsTypes.swift in Sources */,
+				B437BE342E1A57870045436F /* QuantumPhysicsSystem.swift in Sources */,
 				B42277F12E16536C00559A0B /* InventoryView.swift in Sources */,
 				B42277F22E16536C00559A0B /* ChatView.swift in Sources */,
 				B42277F32E16536C00559A0B /* ActionBarView.swift in Sources */,
+				B437BE392E1A57C20045436F /* LivingWorldSystem.swift in Sources */,
 				B42277F42E16536C00559A0B /* NetworkManager.swift in Sources */,
 				B437BDF72E19830C0045436F /* RenderPipeline.swift in Sources */,
 				B437BDFE2E19841D0045436F /* HarmonyRenderer.swift in Sources */,
@@ -856,6 +972,7 @@
 				B437BDAA2E1871B40045436F /* AudioManager.swift in Sources */,
 				B42277F72E16536C00559A0B /* EchoEngine.swift in Sources */,
 				B437BD6F2E1705100045436F /* MeshSystem.swift in Sources */,
+				B437BE282E1A50020045436F /* AdvancedUISystem.swift in Sources */,
 				B437BDD52E1976280045436F /* WorldSystem.swift in Sources */,
 				B42277F82E16536C00559A0B /* AIOrchestra.swift in Sources */,
 				B437BD8F2E182D4D0045436F /* AssetManager.swift in Sources */,
@@ -863,10 +980,12 @@
 				B42277F92E16536C00559A0B /* HarmonyService.swift in Sources */,
 				B42277FA2E16536C00559A0B /* StoryEngine.swift in Sources */,
 				B42277FB2E16536C00559A0B /* WorldEngineService.swift in Sources */,
+				B437BE1E2E1A23BF0045436F /* NetworkCore.swift in Sources */,
 				B42277FC2E16536C00559A0B /* SymphonyEngine.swift in Sources */,
 				B42277FD2E16536C00559A0B /* SilenceService.swift in Sources */,
 				B42277FF2E16536C00559A0B /* AnimationSystem.swift in Sources */,
 				B437BE0B2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */,
+				B437BE522E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */,
 				B42278002E16536C00559A0B /* AppearanceManager.swift in Sources */,
 				B437BDA42E186B670045436F /* AudioTypes.swift in Sources */,
 				B437BDB32E18E97A0045436F /* ComponentTypes.swift in Sources */,
@@ -875,19 +994,25 @@
 				B437BD942E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278082E16536C00559A0B /* WorldManager.swift in Sources */,
 				B437BDDE2E1981E80045436F /* MeshCache.swift in Sources */,
+				B437BE4C2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */,
 				B42278092E16536C00559A0B /* SceneManager.swift in Sources */,
 				B437BDC62E196FAA0045436F /* TerrainGenerator.swift in Sources */,
 				B422780A2E16536C00559A0B /* RegionManager.swift in Sources */,
 				B437BDBF2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDB52E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B437BDF32E19829D0045436F /* RenderingTypes.swift in Sources */,
+				B437BE492E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
 				B422780B2E16536C00559A0B /* Grid.swift in Sources */,
 				B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B422780D2E16536C00559A0B /* AvatarSystem.swift in Sources */,
+				B437BE222E1A24E60045436F /* FVServicesManager.swift in Sources */,
 				B437BDE82E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
 				B422780E2E16536C00559A0B /* AppStateManager.swift in Sources */,
+				B437BE2E2E1A56EE0045436F /* NeuralRenderingSystem.swift in Sources */,
+				B437BE422E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */,
 				B437BDBB2E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B422780F2E16536C00559A0B /* FinalverseServicesManager.swift in Sources */,
+				B437BE1A2E1A23120045436F /* ProceduralGeneration.swift in Sources */,
 				B437BDA02E182E3A0045436F /* EnvironmentalAudio.swift in Sources */,
 				B42277E82E16512B00559A0B /* ContentView_macOS.swift in Sources */,
 			);
@@ -898,15 +1023,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				B437BDCF2E1975860045436F /* FeatureSpawner.swift in Sources */,
+				B437BE4A2E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
+				B437BE3A2E1A57C20045436F /* LivingWorldSystem.swift in Sources */,
 				B437BD862E182C590045436F /* AssetService.swift in Sources */,
 				B437BDEE2E1982830045436F /* MeshPerformanceMonitor.swift in Sources */,
+				B437BE132E1A20640045436F /* FinalStormCore.swift in Sources */,
 				B42278342E16539300559A0B /* BaseEntity.swift in Sources */,
 				B437BDDF2E1981E80045436F /* MeshCache.swift in Sources */,
 				B437BE072E1984C20045436F /* BufferPool.swift in Sources */,
 				B437BDFF2E19841D0045436F /* HarmonyRenderer.swift in Sources */,
+				B437BE1B2E1A23120045436F /* ProceduralGeneration.swift in Sources */,
 				B42278352E16539300559A0B /* AvatarEntity.swift in Sources */,
 				B437BDA62E186B670045436F /* AudioTypes.swift in Sources */,
 				B42278362E16539300559A0B /* ObjectEntity.swift in Sources */,
+				B437BE3F2E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */,
+				B437BE2F2E1A56EE0045436F /* NeuralRenderingSystem.swift in Sources */,
 				B42278372E16539300559A0B /* EchoEntity.swift in Sources */,
 				B437BDD72E1976280045436F /* WorldSystem.swift in Sources */,
 				B42278382E16539300559A0B /* MiniMapView.swift in Sources */,
@@ -915,6 +1046,7 @@
 				B437BDB62E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B422783A2E16539300559A0B /* ChatView.swift in Sources */,
 				B422783B2E16539300559A0B /* ActionBarView.swift in Sources */,
+				B437BE202E1A23BF0045436F /* NetworkCore.swift in Sources */,
 				B422783C2E16539300559A0B /* NetworkManager.swift in Sources */,
 				B437BDE42E1982090045436F /* LODManager.swift in Sources */,
 				B422783D2E16539300559A0B /* FinalverseClient.swift in Sources */,
@@ -930,12 +1062,16 @@
 				B42278412E16539300559A0B /* HarmonyService.swift in Sources */,
 				B437BDE72E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
 				B42278422E16539300559A0B /* StoryEngine.swift in Sources */,
+				B437BE262E1A50020045436F /* AdvancedUISystem.swift in Sources */,
 				B42278432E16539300559A0B /* WorldEngineService.swift in Sources */,
 				B42278442E16539300559A0B /* SymphonyEngine.swift in Sources */,
 				B437BD912E182D4D0045436F /* AssetManager.swift in Sources */,
 				B437BD952E182D770045436F /* ItemRenderer.swift in Sources */,
 				B42278452E16539300559A0B /* SilenceService.swift in Sources */,
 				B42278472E16539300559A0B /* AnimationSystem.swift in Sources */,
+				B437BE172E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */,
+				B437BE2B2E1A51300045436F /* AdvAvatarSystem.swift in Sources */,
+				B437BE442E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */,
 				B437BD8B2E182C9B0045436F /* InventorySystem.swift in Sources */,
 				B42278482E16539300559A0B /* AppearanceManager.swift in Sources */,
 				B437BD842E182B1F0045436F /* LoginService.swift in Sources */,
@@ -946,7 +1082,9 @@
 				B437BDF82E19830C0045436F /* RenderPipeline.swift in Sources */,
 				B42278522E16539300559A0B /* RegionManager.swift in Sources */,
 				B437BE022E1984420045436F /* ShaderLibrary.swift in Sources */,
+				B437BE4D2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */,
 				B437BDB12E18E97A0045436F /* ComponentTypes.swift in Sources */,
+				B437BE352E1A57870045436F /* QuantumPhysicsSystem.swift in Sources */,
 				B437BDDB2E1980010045436F /* GraphicsTypes.swift in Sources */,
 				B437BDFB2E1983D90045436F /* RenderPassManager.swift in Sources */,
 				B42278532E16539300559A0B /* Grid.swift in Sources */,
@@ -957,8 +1095,10 @@
 				B437BDBA2E18E9C60045436F /* GameplayTypes.swift in Sources */,
 				B437BE0A2E1984EA0045436F /* FrustumCullingSystem.swift in Sources */,
 				B437BDF42E19829D0045436F /* RenderingTypes.swift in Sources */,
+				B437BE512E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */,
 				B437BD7F2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B42278572E16539300559A0B /* FinalverseServicesManager.swift in Sources */,
+				B437BE242E1A24E60045436F /* FVServicesManager.swift in Sources */,
 				B42277E92E16513600559A0B /* ImmersiveWorldView.swift in Sources */,
 				B42277EA2E16513600559A0B /* ContentView_visionOS.swift in Sources */,
 			);
