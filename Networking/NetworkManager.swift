@@ -1,476 +1,589 @@
 //
-//  Networking/NetworkManager.swift
-//  FinalStorm
-//
-//  Enhanced network manager with unified ServerInfo and improved error handling
+// File Path: Networking/NetworkManager.swift
+// Description: Core networking system for FinalStorm
+// Handles all network communication with OpenSim/MutSea servers
 //
 
 import Foundation
 import Combine
+import Network
 
 @MainActor
 class NetworkManager: ObservableObject {
-    @Published var isConnected = false
-    @Published var connectionStatus: ConnectionStatus = .disconnected
-    @Published var latency: TimeInterval = 0
-    @Published var lastError: NetworkError?
-    @Published var isConnecting = false
+    // MARK: - Published Properties
+    @Published var connectionState: ConnectionState = .disconnected
+    @Published var currentLatency: TimeInterval = 0
+    @Published var networkQuality: NetworkQuality = .good
+    @Published var connectedRegion: String = ""
+    @Published var connectedGrid: String = ""
     
-    private var webSocketTask: URLSessionWebSocketTask?
-    private var urlSession: URLSession
+    // MARK: - Private Properties
+    private var tcpConnection: NWConnection?
+    private var udpConnection: NWConnection?
+    private let networkQueue = DispatchQueue(label: "com.finalstorm.network")
+    
+    private var messageHandler: MessageHandler
+    private var packetHandler: PacketHandler
+    private var loginService: LoginService
+    private var assetService: AssetService
+    
     private var pingTimer: Timer?
     private var reconnectTimer: Timer?
-    private var reconnectAttempts = 0
-    private let maxReconnectAttempts = 5
+    private var cancellables = Set<AnyCancellable>()
     
-    // Message handling
-    private var messageHandlers: [NetworkMessage.MessageType: (NetworkMessage) -> Void] = [:]
-    private var pendingMessages: [NetworkMessage] = []
-    
-    enum ConnectionStatus {
+    // MARK: - Connection State
+    enum ConnectionState {
         case disconnected
         case connecting
         case connected
-        case reconnecting
-        case error(String)
-        
-        var description: String {
-            switch self {
-            case .disconnected: return "Disconnected"
-            case .connecting: return "Connecting..."
-            case .connected: return "Connected"
-            case .reconnecting: return "Reconnecting..."
-            case .error(let message): return "Error: \(message)"
-            }
-        }
+        case authenticating
+        case authenticated
+        case error(Error)
     }
     
-    enum NetworkError: Error, LocalizedError {
-        case invalidURL
-        case notConnected
-        case connectionFailed
-        case authenticationFailed
-        case serverUnavailable
-        case timeout
-        case encodingFailed
-        case decodingFailed
-        case messageQueueFull
-        case unknownError(String)
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidURL: return "Invalid server URL"
-            case .notConnected: return "Not connected to server"
-            case .connectionFailed: return "Failed to connect to server"
-            case .authenticationFailed: return "Authentication failed"
-            case .serverUnavailable: return "Server is unavailable"
-            case .timeout: return "Connection timeout"
-            case .encodingFailed: return "Failed to encode message"
-            case .decodingFailed: return "Failed to decode message"
-            case .messageQueueFull: return "Message queue is full"
-            case .unknownError(let message): return message
-            }
-        }
+    enum NetworkQuality {
+        case excellent  // < 50ms
+        case good      // 50-100ms
+        case fair      // 100-200ms
+        case poor      // > 200ms
     }
     
+    // MARK: - Initialization
     init() {
-        let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 30.0
-        config.timeoutIntervalForResource = 60.0
-        config.waitsForConnectivity = true
-        self.urlSession = URLSession(configuration: config)
+        self.messageHandler = MessageHandler()
+        self.packetHandler = PacketHandler()
+        self.loginService = LoginService()
+        self.assetService = AssetService()
         
         setupMessageHandlers()
     }
     
-    // MARK: - Connection Management
+    // MARK: - Setup
+    func initialize() async {
+        // Initialize services
+        await loginService.initialize()
+        await assetService.initialize()
+        
+        // Setup network monitoring
+        setupNetworkMonitoring()
+    }
     
-    func connect(to server: ServerInfo) async throws {
-        guard !isConnecting else { return }
-        
-        isConnecting = true
-        connectionStatus = .connecting
-        lastError = nil
-        
-        defer {
-            isConnecting = false
+    private func setupMessageHandlers() {
+        // Handle incoming messages
+        messageHandler.onMessage = { [weak self] message in
+            Task { @MainActor in
+                self?.handleIncomingMessage(message)
+            }
         }
         
+        // Handle packet data
+        packetHandler.onPacket = { [weak self] packet in
+            Task { @MainActor in
+                self?.handleIncomingPacket(packet)
+            }
+        }
+    }
+    
+    private func setupNetworkMonitoring() {
+        let monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { [weak self] path in
+            Task { @MainActor in
+                self?.handleNetworkPathUpdate(path)
+            }
+        }
+        
+        let queue = DispatchQueue(label: "com.finalstorm.networkmonitor")
+        monitor.start(queue: queue)
+    }
+    
+    // MARK: - Connection Management
+    func connectToServer(host: String, port: Int) async throws {
+        connectionState = .connecting
+        
+        // Create TCP connection for reliable data
+        let tcpParams = NWParameters.tcp
+        tcpParams.prohibitedInterfaceTypes = [.cellular] // WiFi only for now
+        
+        let tcpEndpoint = NWEndpoint.hostPort(
+            host: NWEndpoint.Host(host),
+            port: NWEndpoint.Port(integerLiteral: UInt16(port))
+        )
+        
+        tcpConnection = NWConnection(to: tcpEndpoint, using: tcpParams)
+        
+        // Create UDP connection for real-time data
+        let udpParams = NWParameters.udp
+        let udpPort = port + 1 // Convention: UDP port is TCP port + 1
+        
+        let udpEndpoint = NWEndpoint.hostPort(
+            host: NWEndpoint.Host(host),
+            port: NWEndpoint.Port(integerLiteral: UInt16(udpPort))
+        )
+        
+        udpConnection = NWConnection(to: udpEndpoint, using: udpParams)
+        
+        // Setup connection handlers
+        setupConnectionHandlers()
+        
+        // Start connections
+        tcpConnection?.start(queue: networkQueue)
+        udpConnection?.start(queue: networkQueue)
+        
+        // Wait for connection
+        try await waitForConnection()
+    }
+    
+    func connectToDefaultServer() async {
         do {
-            // Build WebSocket URL
-            let scheme = server.isSecure ? "wss" : "ws"
-            let urlString = "\(scheme)://\(server.url.host ?? server.address):\(server.port)/ws"
+            // Get default server from preferences
+            let host = UserDefaults.standard.string(forKey: "defaultServerHost") ?? "localhost"
+            let port = UserDefaults.standard.integer(forKey: "defaultServerPort")
             
-            guard let url = URL(string: urlString) else {
-                throw NetworkError.invalidURL
+            if port == 0 {
+                // Default OpenSim port
+                try await connectToServer(host: host, port: 9000)
+            } else {
+                try await connectToServer(host: host, port: port)
+            }
+        } catch {
+            connectionState = .error(error)
+        }
+    }
+    
+    private func setupConnectionHandlers() {
+        // TCP Connection handlers
+        tcpConnection?.stateUpdateHandler = { [weak self] state in
+            Task { @MainActor in
+                self?.handleConnectionStateChange(state, isUDP: false)
+            }
+        }
+        
+        tcpConnection?.betterPathUpdateHandler = { [weak self] betterPath in
+            if betterPath {
+                print("Better network path available")
+            }
+        }
+        
+        // UDP Connection handlers
+        udpConnection?.stateUpdateHandler = { [weak self] state in
+            Task { @MainActor in
+                self?.handleConnectionStateChange(state, isUDP: true)
+            }
+        }
+        
+        // Start receiving data
+        receiveData()
+    }
+    
+    private func handleConnectionStateChange(_ state: NWConnection.State, isUDP: Bool) {
+        switch state {
+        case .ready:
+            if !isUDP { // Only update state for TCP
+                connectionState = .connected
+                startPingTimer()
             }
             
-            // Create WebSocket connection
-            webSocketTask = urlSession.webSocketTask(with: url)
-            webSocketTask?.resume()
+        case .failed(let error):
+            if !isUDP {
+                connectionState = .error(error)
+                attemptReconnect()
+            }
             
-            // Start listening for messages
-            startListening()
+        case .cancelled:
+            if !isUDP {
+                connectionState = .disconnected
+            }
             
-            // Start ping for latency monitoring
-            startPingTimer()
+        default:
+            break
+        }
+    }
+    
+    private func waitForConnection() async throws {
+        let timeout: TimeInterval = 10.0
+        let startTime = Date()
+        
+        while connectionState == .connecting {
+            if Date().timeIntervalSince(startTime) > timeout {
+                throw NetworkError.connectionTimeout
+            }
             
-            connectionStatus = .connected
-            isConnected = true
-            reconnectAttempts = 0
-            
-            // Send any pending messages
-            await sendPendingMessages()
-            
-            print("Connected to server: \(server.name)")
-            
-        } catch {
-            connectionStatus = .error(error.localizedDescription)
-            lastError = error as? NetworkError ?? .unknownError(error.localizedDescription)
-            isConnected = false
+            try await Task.sleep(nanoseconds: 100_000_000) // 0.1 second
+        }
+        
+        if case .error(let error) = connectionState {
             throw error
         }
     }
     
-    func disconnect() {
-        stopTimers()
-        
-        webSocketTask?.cancel(with: .goingAway, reason: Data("Client disconnect".utf8))
-        webSocketTask = nil
-        
-        isConnected = false
-        connectionStatus = .disconnected
-        reconnectAttempts = 0
-        
-        print("Disconnected from server")
-    }
-    
-    private func attemptReconnect(to server: ServerInfo) {
-        guard reconnectAttempts < maxReconnectAttempts else {
-            connectionStatus = .error("Max reconnection attempts reached")
-            return
+    // MARK: - Authentication
+    func authenticate(username: String, password: String) async throws {
+        guard connectionState == .connected else {
+            throw NetworkError.notConnected
         }
         
-        reconnectAttempts += 1
-        connectionStatus = .reconnecting
+        connectionState = .authenticating
         
-        let delay = min(pow(2.0, Double(reconnectAttempts)), 30.0) // Exponential backoff, max 30s
+        do {
+            // Perform login through LoginService
+            let loginResponse = try await loginService.login(
+                username: username,
+                password: password,
+                connection: tcpConnection
+            )
+            
+            // Store session info
+            connectedRegion = loginResponse.regionName
+            connectedGrid = loginResponse.gridName
+            
+            // Update state
+            connectionState = .authenticated
+            
+            // Request initial data
+            await requestInitialData()
+            
+        } catch {
+            connectionState = .error(error)
+            throw error
+        }
+    }
+    
+    // MARK: - Data Transmission
+    func send(message: NetworkMessage) async throws {
+        guard let connection = tcpConnection else {
+            throw NetworkError.notConnected
+        }
         
-        reconnectTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
-            Task { @MainActor in
-                do {
-                    try await self?.connect(to: server)
-                } catch {
-                    self?.attemptReconnect(to: server)
-                }
+        let data = try messageHandler.encode(message)
+        
+        connection.send(content: data, completion: .contentProcessed { error in
+            if let error = error {
+                print("Send error: \(error)")
+            }
+        })
+    }
+    
+    func sendUnreliable(packet: NetworkPacket) async throws {
+        guard let connection = udpConnection else {
+            throw NetworkError.notConnected
+        }
+        
+        let data = try packetHandler.encode(packet)
+        
+        connection.send(content: data, completion: .contentProcessed { _ in
+            // UDP is fire-and-forget
+        })
+    }
+    
+    private func receiveData() {
+        // Receive TCP data
+        tcpConnection?.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, _, error in
+            if let data = data, !data.isEmpty {
+                self?.messageHandler.processData(data)
+            }
+            
+            if error == nil {
+                self?.receiveData() // Continue receiving
             }
         }
         
-        print("Attempting reconnect \(reconnectAttempts)/\(maxReconnectAttempts) in \(delay)s")
+        // Receive UDP data
+        udpConnection?.receiveMessage { [weak self] data, _, _, error in
+            if let data = data, !data.isEmpty {
+                self?.packetHandler.processData(data)
+            }
+            
+            if error == nil {
+                self?.receiveUDPData() // Continue receiving
+            }
+        }
+    }
+    
+    private func receiveUDPData() {
+        udpConnection?.receiveMessage { [weak self] data, _, _, error in
+            if let data = data, !data.isEmpty {
+                self?.packetHandler.processData(data)
+            }
+            
+            if error == nil {
+                self?.receiveUDPData() // Continue receiving
+            }
+        }
     }
     
     // MARK: - Message Handling
+    private func handleIncomingMessage(_ message: NetworkMessage) {
+        switch message.type {
+        case .worldData:
+            handleWorldData(message)
+            
+        case .entityUpdate:
+            handleEntityUpdate(message)
+            
+        case .chatMessage:
+            handleChatMessage(message)
+            
+        case .assetData:
+            handleAssetData(message)
+            
+        case .inventoryUpdate:
+            handleInventoryUpdate(message)
+            
+        case .systemMessage:
+            handleSystemMessage(message)
+            
+        default:
+            print("Unhandled message type: \(message.type)")
+        }
+    }
     
-    private func startListening() {
-        guard let webSocketTask = webSocketTask else { return }
+    private func handleIncomingPacket(_ packet: NetworkPacket) {
+        switch packet.type {
+        case .movement:
+            handleMovementPacket(packet)
+            
+        case .animation:
+            handleAnimationPacket(packet)
+            
+        case .audio:
+            handleAudioPacket(packet)
+            
+        default:
+            break
+        }
+    }
+    
+    // MARK: - World Data
+    func fetchWorldData(worldName: String) async throws -> WorldData {
+        let request = NetworkMessage(
+            type: .worldDataRequest,
+            payload: ["worldName": worldName]
+        )
         
-        webSocketTask.receive { [weak self] result in
-            switch result {
-            case .success(let message):
-                Task { @MainActor in
-                    await self?.handleMessage(message)
-                }
-                // Continue listening
-                self?.startListening()
-                
-            case .failure(let error):
-                Task { @MainActor in
-                    self?.handleConnectionError(error)
-                }
+        try await send(message: request)
+        
+        // Wait for response
+        return try await withCheckedThrowingContinuation { continuation in
+            messageHandler.onWorldData = { worldData in
+                continuation.resume(returning: worldData)
             }
         }
     }
     
-    private func handleMessage(_ message: URLSessionWebSocketTask.Message) async {
-        switch message {
-        case .string(let text):
-            await handleTextMessage(text)
-            
-        case .data(let data):
-            await handleBinaryMessage(data)
-            
-        @unknown default:
-            print("Received unknown message type")
+    private func handleWorldData(_ message: NetworkMessage) {
+        // Parse world data
+        if let worldData = try? JSONDecoder().decode(WorldData.self, from: message.data) {
+            messageHandler.onWorldData?(worldData)
         }
     }
     
-    private func handleTextMessage(_ text: String) async {
-        do {
-            let data = text.data(using: .utf8) ?? Data()
-            let message = try JSONDecoder().decode(NetworkMessage.self, from: data)
-            
-            // Call registered handler
-            if let handler = messageHandlers[message.type] {
-                handler(message)
-            } else {
-                print("No handler for message type: \(message.type)")
-            }
-            
-        } catch {
-            print("Failed to decode text message: \(error)")
-            lastError = .decodingFailed
+    // MARK: - Entity Updates
+    private func handleEntityUpdate(_ message: NetworkMessage) {
+        // Notify entity system
+        NotificationCenter.default.post(
+            name: .entityUpdate,
+            object: nil,
+            userInfo: ["message": message]
+        )
+    }
+    
+    private func handleMovementPacket(_ packet: NetworkPacket) {
+        // Fast path for movement updates
+        NotificationCenter.default.post(
+            name: .entityMovement,
+            object: nil,
+            userInfo: ["packet": packet]
+        )
+    }
+    
+    // MARK: - Chat
+    private func handleChatMessage(_ message: NetworkMessage) {
+        NotificationCenter.default.post(
+            name: .chatMessageReceived,
+            object: nil,
+            userInfo: ["message": message]
+        )
+    }
+    
+    // MARK: - Assets
+    private func handleAssetData(_ message: NetworkMessage) {
+        Task {
+            await assetService.handleAssetData(message)
         }
     }
     
-    private func handleBinaryMessage(_ data: Data) async {
-        do {
-            let message = try JSONDecoder().decode(NetworkMessage.self, from: data)
-            
-            // Call registered handler
-            if let handler = messageHandlers[message.type] {
-                handler(message)
-            } else {
-                print("No handler for message type: \(message.type)")
-            }
-            
-        } catch {
-            print("Failed to decode binary message: \(error)")
-            lastError = .decodingFailed
-        }
+    // MARK: - Inventory
+    private func handleInventoryUpdate(_ message: NetworkMessage) {
+        NotificationCenter.default.post(
+            name: .inventoryUpdate,
+            object: nil,
+            userInfo: ["message": message]
+        )
     }
     
-    private func handleConnectionError(_ error: Error) {
-        connectionStatus = .error(error.localizedDescription)
-        lastError = .connectionFailed
-        isConnected = false
-        
-        print("Connection error: \(error)")
+    // MARK: - System Messages
+    private func handleSystemMessage(_ message: NetworkMessage) {
+        // Handle server notifications, alerts, etc.
+        print("System message: \(message)")
     }
     
-    // MARK: - Message Sending
-    
-    func send(_ message: NetworkMessage) async throws {
-        guard isConnected, let webSocketTask = webSocketTask else {
-            // Queue message for later if not connected
-            if pendingMessages.count < 100 { // Limit queue size
-                pendingMessages.append(message)
-            } else {
-                throw NetworkError.messageQueueFull
-            }
-            throw NetworkError.notConnected
-        }
-        
-        do {
-            let data = try JSONEncoder().encode(message)
-            let wsMessage = URLSessionWebSocketTask.Message.data(data)
-            try await webSocketTask.send(wsMessage)
-            
-        } catch {
-            lastError = .encodingFailed
-            throw NetworkError.encodingFailed
-        }
-    }
-    
-    func sendText(_ text: String) async throws {
-        guard isConnected, let webSocketTask = webSocketTask else {
-            throw NetworkError.notConnected
-        }
-        
-        let message = URLSessionWebSocketTask.Message.string(text)
-        try await webSocketTask.send(message)
-    }
-    
-    private func sendPendingMessages() async {
-        for message in pendingMessages {
-            do {
-                try await send(message)
-            } catch {
-                print("Failed to send pending message: \(error)")
-                break // Stop on first failure
-            }
-        }
-        pendingMessages.removeAll()
-    }
-    
-    // MARK: - Message Handler Registration
-    
-    func registerHandler(for messageType: NetworkMessage.MessageType, handler: @escaping (NetworkMessage) -> Void) {
-        messageHandlers[messageType] = handler
-    }
-    
-    func unregisterHandler(for messageType: NetworkMessage.MessageType) {
-        messageHandlers.removeValue(forKey: messageType)
-    }
-    
-    private func setupMessageHandlers() {
-        // Default handlers
-        registerHandler(for: .worldUpdate) { message in
-            print("Received world update")
-        }
-        
-        registerHandler(for: .chat) { message in
-            print("Received chat message")
-        }
-    }
-    
-    // MARK: - Ping System
-    
+    // MARK: - Network Quality
     private func startPingTimer() {
-        pingTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                await self?.ping()
+        pingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            Task {
+                await self?.measureLatency()
             }
         }
     }
     
-    private func ping() async {
-        guard let webSocketTask = webSocketTask else { return }
+    private func measureLatency() async {
+        let startTime = Date()
         
-        let start = Date()
-        webSocketTask.sendPing { [weak self] error in
-            Task { @MainActor in
-                if error == nil {
-                    self?.latency = Date().timeIntervalSince(start)
-                } else {
-                    self?.lastError = .connectionFailed
+        let pingMessage = NetworkMessage(type: .ping, payload: [:])
+        
+        do {
+            try await send(message: pingMessage)
+            
+            // Wait for pong
+            await withCheckedContinuation { continuation in
+                messageHandler.onPong = {
+                    continuation.resume()
                 }
+            }
+            
+            currentLatency = Date().timeIntervalSince(startTime)
+            updateNetworkQuality()
+            
+        } catch {
+            print("Ping failed: \(error)")
+        }
+    }
+    
+    private func updateNetworkQuality() {
+        if currentLatency < 0.05 {
+            networkQuality = .excellent
+        } else if currentLatency < 0.1 {
+            networkQuality = .good
+        } else if currentLatency < 0.2 {
+            networkQuality = .fair
+        } else {
+            networkQuality = .poor
+        }
+    }
+    
+    // MARK: - Reconnection
+    private func attemptReconnect() {
+        reconnectTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] _ in
+            Task {
+                await self?.connectToDefaultServer()
             }
         }
     }
     
     // MARK: - Cleanup
-    
-    private func stopTimers() {
+    func disconnect() {
         pingTimer?.invalidate()
-        pingTimer = nil
-        
         reconnectTimer?.invalidate()
-        reconnectTimer = nil
+        
+        tcpConnection?.cancel()
+        udpConnection?.cancel()
+        
+        connectionState = .disconnected
     }
     
-    deinit {
-        stopTimers()
-        disconnect()
+    private func handleNetworkPathUpdate(_ path: NWPath) {
+        // Handle network changes (WiFi/Cellular/None)
+        print("Network path update: \(path.status)")
+    }
+    
+    private func requestInitialData() async {
+        // Request initial world state, inventory, etc.
+        let requests = [
+            NetworkMessage(type: .inventoryRequest, payload: [:]),
+            NetworkMessage(type: .friendsListRequest, payload: [:]),
+            NetworkMessage(type: .groupsRequest, payload: [:])
+        ]
+        
+        for request in requests {
+            try? await send(message: request)
+        }
     }
 }
 
 // MARK: - Network Message Types
+enum NetworkMessageType: String, Codable {
+    case ping
+    case pong
+    case worldDataRequest
+    case worldData
+    case entityUpdate
+    case chatMessage
+    case assetData
+    case inventoryUpdate
+    case inventoryRequest
+    case friendsListRequest
+    case groupsRequest
+    case systemMessage
+}
 
 struct NetworkMessage: Codable {
-    let type: MessageType
-    let payload: Data
+    let id: UUID
+    let type: NetworkMessageType
     let timestamp: Date
-    let messageId: UUID
+    let payload: [String: Any]
+    let data: Data
     
-    enum MessageType: String, Codable, CaseIterable {
-        case login = "login"
-        case logout = "logout"
-        case movement = "movement"
-        case chat = "chat"
-        case action = "action"
-        case worldUpdate = "world_update"
-        case playerUpdate = "player_update"
-        case entityUpdate = "entity_update"
-        case terrainRequest = "terrain_request"
-        case harmonyUpdate = "harmony_update"
-        case songweaving = "songweaving"
-        case ping = "ping"
-        case pong = "pong"
-    }
-    
-    init(type: MessageType, payload: Data) {
+    init(type: NetworkMessageType, payload: [String: Any]) {
+        self.id = UUID()
         self.type = type
+        self.timestamp = Date()
         self.payload = payload
-        self.timestamp = Date()
-        self.messageId = UUID()
+        self.data = Data()
     }
+}
+
+enum NetworkPacketType: UInt8 {
+    case movement = 1
+    case animation = 2
+    case audio = 3
+    case input = 4
+}
+
+struct NetworkPacket {
+    let type: NetworkPacketType
+    let sequenceNumber: UInt32
+    let timestamp: UInt64
+    let data: Data
+}
+
+// MARK: - Network Errors
+enum NetworkError: LocalizedError {
+    case notConnected
+    case connectionTimeout
+    case authenticationFailed
+    case invalidResponse
+    case serverError(String)
     
-    init<T: Codable>(type: MessageType, data: T) throws {
-        self.type = type
-        self.payload = try JSONEncoder().encode(data)
-        self.timestamp = Date()
-        self.messageId = UUID()
-    }
-    
-    func decode<T: Codable>(_ type: T.Type) throws -> T {
-        return try JSONDecoder().decode(type, from: payload)
-    }
-}
-
-// MARK: - Specific Message Payloads
-
-struct LoginPayload: Codable {
-    let username: String
-    let avatarId: UUID
-    let clientVersion: String
-}
-
-struct MovementPayload: Codable {
-    let position: SIMD3<Float>
-    let rotation: simd_quatf
-    let velocity: SIMD3<Float>
-    let timestamp: Date
-}
-
-struct ChatPayload: Codable {
-    let message: String
-    let channel: String
-    let senderId: UUID
-}
-
-struct WorldUpdatePayload: Codable {
-    let regionId: UUID
-    let gridUpdates: [GridUpdate]
-    let entityUpdates: [EntityUpdate]
-}
-
-struct GridUpdate: Codable {
-    let coordinate: GridCoordinate
-    let harmonyLevel: Float
-    let entitiesChanged: [UUID]
-}
-
-struct EntityUpdate: Codable {
-    let entityId: UUID
-    let position: SIMD3<Float>
-    let rotation: simd_quatf
-    let properties: [String: String]
-}
-
-// MARK: - SIMD Codable Support
-
-extension SIMD3: Codable where Scalar: Codable {
-    public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        let x = try container.decode(Scalar.self)
-        let y = try container.decode(Scalar.self)
-        let z = try container.decode(Scalar.self)
-        self.init(x, y, z)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
-        try container.encode(x)
-        try container.encode(y)
-        try container.encode(z)
+    var errorDescription: String? {
+        switch self {
+        case .notConnected:
+            return "Not connected to server"
+        case .connectionTimeout:
+            return "Connection timeout"
+        case .authenticationFailed:
+            return "Authentication failed"
+        case .invalidResponse:
+            return "Invalid server response"
+        case .serverError(let message):
+            return "Server error: \(message)"
+        }
     }
 }
 
-extension simd_quatf: Codable {
-    public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        let x = try container.decode(Float.self)
-        let y = try container.decode(Float.self)
-        let z = try container.decode(Float.self)
-        let w = try container.decode(Float.self)
-        self.init(ix: x, iy: y, iz: z, r: w)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
-        try container.encode(imag.x)
-        try container.encode(imag.y)
-        try container.encode(imag.z)
-        try container.encode(real)
-    }
+// MARK: - Notifications
+extension Notification.Name {
+    static let entityUpdate = Notification.Name("entityUpdate")
+    static let entityMovement = Notification.Name("entityMovement")
+    static let chatMessageReceived = Notification.Name("chatMessageReceived")
+    static let inventoryUpdate = Notification.Name("inventoryUpdate")
 }

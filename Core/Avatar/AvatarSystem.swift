@@ -1,182 +1,506 @@
 //
-//  Core/Avatar/AvatarSystem.swift
-//  FinalStorm
-//
-//  Core avatar management system with proper platform-specific handling
+// File Path: Core/Avatar/AvatarSystem.swift
+// Description: Core avatar management and control system
+// Handles avatar creation, customization, animation, and behavior
 //
 
+import Foundation
 import RealityKit
 import Combine
-import simd
-import Foundation
-#if canImport(SwiftUI)
-import SwiftUI
-#endif
 
 @MainActor
 class AvatarSystem: ObservableObject {
-    // MARK: - Properties
-    @Published var localAvatar: AvatarEntity?
-    @Published var remoteAvatars: [UUID: AvatarEntity] = [:]
-    @Published var appearance: AvatarAppearance = .default
-    @Published var resonanceLevel: ResonanceLevel = .novice
+    // MARK: - Published Properties
+    @Published var currentAvatar: AvatarEntity?
+    @Published var avatarState: AvatarState = .idle
+    @Published var avatarHealth: Float = 100.0
+    @Published var avatarEnergy: Float = 100.0
+    @Published var avatarLevel: Int = 1
+    @Published var avatarExperience: Float = 0
     
-    private var avatarUpdateCancellables = Set<AnyCancellable>()
-    private let animationSystem = AnimationSystem()
-    private let appearanceManager = AppearanceManager()
+    // MARK: - Private Properties
+    private let animationSystem: AnimationSystem
+    private let appearanceManager: AppearanceManager
+    private let avatarPhysics: AvatarPhysicsController
+    private let avatarInventory: AvatarInventoryManager
+    
+    private var movementController: MovementController?
+    private var stateUpdateTimer: Timer?
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Avatar State
+    enum AvatarState {
+        case idle
+        case walking
+        case running
+        case jumping
+        case flying
+        case swimming
+        case sitting
+        case dancing
+        case combat
+        case crafting
+        case dead
+    }
+    
+    // MARK: - Initialization
+    init() {
+        self.animationSystem = AnimationSystem()
+        self.appearanceManager = AppearanceManager()
+        self.avatarPhysics = AvatarPhysicsController()
+        self.avatarInventory = AvatarInventoryManager()
+        
+        setupBindings()
+    }
+    
+    // MARK: - Setup
+    func initialize() async {
+        await animationSystem.loadAnimations()
+        await appearanceManager.loadAppearanceData()
+        
+        // Start state monitoring
+        startStateMonitoring()
+    }
+    
+    func start() async {
+        stateUpdateTimer?.fire()
+    }
+    
+    private func setupBindings() {
+        // Bind avatar state changes to animation system
+        $avatarState
+            .sink { [weak self] state in
+                self?.animationSystem.transitionToState(state)
+            }
+            .store(in: &cancellables)
+    }
     
     // MARK: - Avatar Creation
-    func createLocalAvatar(profile: UserProfile) async throws -> AvatarEntity {
-        // Create base avatar entity with RealityKit
+    func createAvatar(with config: AvatarConfiguration) async throws -> AvatarEntity {
+        // Create base avatar entity
         let avatar = AvatarEntity()
-        avatar.setupForProfile(profile)
         
-        // Load avatar mesh based on appearance settings
-        let mesh = try await loadAvatarMesh(for: appearance)
-        avatar.components.set(ModelComponent(mesh: mesh, materials: []))
+        // Apply appearance
+        await appearanceManager.applyAppearance(config.appearance, to: avatar)
         
-        // Add physics for movement
-        avatar.components.set(PhysicsBodyComponent(
-            massProperties: .init(mass: 70.0),
-            material: .generate(friction: 0.5, restitution: 0.1),
-            mode: .kinematic
-        ))
+        // Setup physics
+        avatarPhysics.setupPhysics(for: avatar)
         
-        // Add collision for interaction
-        avatar.components.set(CollisionComponent(shapes: [
-            .generateCapsule(height: 1.8, radius: 0.3)
-        ]))
+        // Setup animations
+        animationSystem.setupAnimations(for: avatar)
         
-        // Initialize Finalverse-specific components
-        avatar.components.set(SongweaverComponent(resonanceLevel: resonanceLevel))
-        avatar.components.set(HarmonyComponent())
+        // Initialize movement controller
+        movementController = MovementController(avatar: avatar)
         
-        // Setup animation controller
-        animationSystem.setupAvatar(avatar)
+        // Set as current avatar
+        currentAvatar = avatar
         
-        self.localAvatar = avatar
+        // Apply initial stats
+        applyInitialStats(from: config)
+        
         return avatar
     }
     
+    private func applyInitialStats(from config: AvatarConfiguration) {
+        avatarLevel = config.startingLevel
+        avatarHealth = config.baseHealth
+        avatarEnergy = config.baseEnergy
+        avatarExperience = 0
+    }
+    
     // MARK: - Avatar Movement
-    func moveAvatar(to position: SIMD3<Float>, rotation: simd_quatf) {
-        guard let avatar = localAvatar else { return }
+    func moveAvatar(direction: SIMD3<Float>, speed: Float = 1.0) {
+        guard let avatar = currentAvatar,
+              let controller = movementController else { return }
         
-        // Smooth movement with interpolation - correct parameter order
-        let duration: TimeInterval = 0.1
-        avatar.move(to: Transform(rotation: rotation, translation: position),
-                   relativeTo: nil,
-                   duration: duration)
-        
-        // Trigger walking animation if moving
-        if distance(avatar.position, position) > 0.01 {
-            animationSystem.playAnimation(.walking, on: avatar)
-        }
-    }
-    
-    // MARK: - Songweaving Integration
-    func performSongweaving(_ melody: Melody, target: Entity?) {
-        guard let avatar = localAvatar,
-              let songweaver = avatar.components[SongweaverComponent.self] else { return }
-        
-        // Check if avatar has required resonance level
-        guard songweaver.canPerform(melody) else {
-            // Show feedback that resonance is too low
-            return
+        // Update state based on speed
+        if speed == 0 {
+            avatarState = .idle
+        } else if speed < 0.5 {
+            avatarState = .walking
+        } else {
+            avatarState = .running
         }
         
-        // Create visual effect for songweaving
-        let effect = createSongweavingEffect(melody: melody)
-        avatar.addChild(effect)
-        
-        // Apply harmony changes to target
-        if let target = target {
-            applyHarmonyEffect(melody: melody, to: target)
-        }
-        
-        // Update resonance based on action
-        updateResonance(for: melody.type)
+        // Apply movement
+        controller.move(direction: direction, speed: speed)
     }
     
-    // MARK: - Helper Methods
-    private func loadAvatarMesh(for appearance: AvatarAppearance) async throws -> MeshResource {
-        // BASIC IMPLEMENTATION - just use generated mesh for now
-        // TODO: Load actual avatar meshes when assets are available
-        return MeshResource.generateBox(size: [0.5, 1.8, 0.3])
-    }
-    
-    private func createSongweavingEffect(melody: Melody) -> Entity {
-        let effect = Entity()
+    func jumpAvatar() {
+        guard avatarState != .jumping && avatarState != .flying else { return }
         
-        // SIMPLIFIED PARTICLE SYSTEM - avoid advanced APIs that might not exist
-        #if os(iOS) || os(macOS) || os(visionOS)
-        var particleEmitter = ParticleEmitterComponent()
-        particleEmitter.emitterShape = .sphere
+        avatarState = .jumping
+        movementController?.jump()
         
-        // Use basic configuration only
-        particleEmitter.mainEmitter.birthRate = 100
-        particleEmitter.mainEmitter.lifeSpan = 3.0
-        
-        // Skip advanced color configuration for now - use basic approach
-        effect.components.set(particleEmitter)
-        #endif
-        
-        // Add basic spatial audio component
-        effect.components.set(SpatialAudioComponent(melody: melody))
-        
-        return effect
-    }
-    
-    private func applyHarmonyEffect(melody: Melody, to target: Entity) {
-        // Apply Finalverse harmony mechanics
-        if var harmony = target.components[HarmonyComponent.self] {
-            harmony.applyMelody(melody)
-            target.components.set(harmony)
-        }
-    }
-    
-    private func updateResonance(for actionType: MelodyType) {
-        switch actionType {
-        case .restoration:
-            resonanceLevel.restorationResonance += 10
-        case .exploration:
-            resonanceLevel.explorationResonance += 5
-        case .creation:
-            resonanceLevel.creativeResonance += 15
-        case .protection:
-            resonanceLevel.restorationResonance += 8
-        case .transformation:
-            resonanceLevel.creativeResonance += 12
-        }
-    }
-    
-    // MARK: - Appearance Management
-    func updateAppearance(_ newAppearance: AvatarAppearance) async {
-        appearance = newAppearance
-        
-        guard let avatar = localAvatar else { return }
-        
-        // SIMPLIFIED - just update basic properties for now
-        do {
-            let mesh = try await loadAvatarMesh(for: newAppearance)
-            if var modelComponent = avatar.components[ModelComponent.self] {
-                modelComponent.mesh = mesh
-                avatar.components.set(modelComponent)
+        // Return to previous state after jump
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+            if self?.avatarState == .jumping {
+                self?.avatarState = .idle
             }
-        } catch {
-            print("Failed to update appearance: \(error)")
         }
     }
     
-    // Add method to learn new melodies
-    func learnMelody(_ melody: Melody) {
-        guard let avatar = localAvatar,
-              var songweaver = avatar.components[SongweaverComponent.self] else { return }
-        
-        // Add melody ID to known melodies
-        if !songweaver.knownMelodies.contains(melody.id) {
-            songweaver.knownMelodies.append(melody.id)
-            avatar.components.set(songweaver)
+    func toggleFlying() {
+        if avatarState == .flying {
+            avatarState = .idle
+            movementController?.setFlying(false)
+        } else {
+            avatarState = .flying
+            movementController?.setFlying(true)
         }
     }
+    
+    // MARK: - Avatar Interaction
+    func interactWithObject(_ object: Entity) {
+        // Determine interaction type
+        if let interactable = object as? InteractableEntity {
+            switch interactable.interactionType {
+            case .pickup:
+                pickupItem(interactable)
+            case .activate:
+                activateObject(interactable)
+            case .talk:
+                startConversation(with: interactable)
+            case .craft:
+                openCraftingInterface(with: interactable)
+            }
+        }
+    }
+    
+    private func pickupItem(_ item: InteractableEntity) {
+        if avatarInventory.canAddItem(item) {
+            avatarInventory.addItem(item)
+            item.removeFromParent()
+            
+            // Play pickup animation
+            animationSystem.playOneShot(.pickup)
+        }
+    }
+    
+    private func activateObject(_ object: InteractableEntity) {
+        object.activate()
+        animationSystem.playOneShot(.interact)
+    }
+    
+    private func startConversation(with npc: InteractableEntity) {
+        avatarState = .idle
+        // Trigger conversation UI
+        NotificationCenter.default.post(
+            name: .startConversation,
+            object: nil,
+            userInfo: ["npc": npc]
+        )
+    }
+    
+    private func openCraftingInterface(with station: InteractableEntity) {
+        avatarState = .crafting
+        // Open crafting UI
+        NotificationCenter.default.post(
+            name: .openCrafting,
+            object: nil,
+            userInfo: ["station": station]
+        )
+    }
+    
+    // MARK: - Avatar Customization
+    func updateAppearance(_ appearance: AvatarAppearance) async {
+        guard let avatar = currentAvatar else { return }
+        
+        await appearanceManager.updateAppearance(appearance, for: avatar)
+        
+        // Save appearance preferences
+        saveAvatarPreferences()
+    }
+    
+    func equipItem(_ item: EquipmentItem, slot: EquipmentSlot) {
+        guard let avatar = currentAvatar else { return }
+        
+        // Update visual
+        appearanceManager.equipItem(item, on: avatar, slot: slot)
+        
+        // Update stats
+        applyEquipmentStats(item)
+        
+        // Play equip animation
+        animationSystem.playOneShot(.equip)
+    }
+    
+    private func applyEquipmentStats(_ item: EquipmentItem) {
+        // Apply item bonuses
+        avatarHealth = min(avatarHealth + item.healthBonus, getMaxHealth())
+        avatarEnergy = min(avatarEnergy + item.energyBonus, getMaxEnergy())
+    }
+    
+    // MARK: - Avatar Stats
+    func takeDamage(_ amount: Float) {
+        avatarHealth = max(0, avatarHealth - amount)
+        
+        if avatarHealth == 0 {
+            avatarState = .dead
+            handleDeath()
+        } else {
+            // Play hurt animation
+            animationSystem.playOneShot(.hurt)
+        }
+    }
+    
+    func heal(_ amount: Float) {
+        avatarHealth = min(avatarHealth + amount, getMaxHealth())
+        
+        // Visual feedback
+        animationSystem.playOneShot(.heal)
+    }
+    
+    func useEnergy(_ amount: Float) -> Bool {
+        if avatarEnergy >= amount {
+            avatarEnergy -= amount
+            return true
+        }
+        return false
+    }
+    
+    func gainExperience(_ amount: Float) {
+        avatarExperience += amount
+        
+        // Check for level up
+        while avatarExperience >= getExperienceForNextLevel() {
+            levelUp()
+        }
+    }
+    
+    private func levelUp() {
+        avatarLevel += 1
+        avatarExperience -= getExperienceForNextLevel()
+        
+        // Increase stats
+        let healthIncrease: Float = 10
+        let energyIncrease: Float = 5
+        
+        avatarHealth = getMaxHealth() + healthIncrease
+        avatarEnergy = getMaxEnergy() + energyIncrease
+        
+        // Visual feedback
+        animationSystem.playOneShot(.levelUp)
+        
+        // Notify UI
+        NotificationCenter.default.post(name: .avatarLevelUp, object: nil)
+    }
+    
+    private func getMaxHealth() -> Float {
+        return 100 + Float(avatarLevel - 1) * 10
+    }
+    
+    private func getMaxEnergy() -> Float {
+        return 100 + Float(avatarLevel - 1) * 5
+    }
+    
+    private func getExperienceForNextLevel() -> Float {
+        return Float(avatarLevel * 100)
+    }
+    
+    // MARK: - State Monitoring
+    private func startStateMonitoring() {
+        stateUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.updateAvatarState()
+        }
+    }
+    
+    private func updateAvatarState() {
+        // Regenerate energy over time
+        if avatarState == .idle || avatarState == .sitting {
+            avatarEnergy = min(avatarEnergy + 1, getMaxEnergy())
+        }
+        
+        // Check for state-specific updates
+        switch avatarState {
+        case .swimming:
+            // Consume energy while swimming
+            if !useEnergy(0.5) {
+                // Exit water if no energy
+                avatarState = .idle
+            }
+        case .flying:
+            // Consume energy while flying
+            if !useEnergy(1.0) {
+                toggleFlying()
+            }
+        case .combat:
+            // Combat-specific updates
+            break
+        default:
+            break
+        }
+    }
+    
+    // MARK: - Death Handling
+    private func handleDeath() {
+        // Stop all animations
+        animationSystem.stopAllAnimations()
+        
+        // Play death animation
+        animationSystem.playOneShot(.death)
+        
+        // Notify game systems
+        NotificationCenter.default.post(name: .avatarDied, object: nil)
+        
+        // Schedule respawn
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [weak self] in
+            self?.respawn()
+        }
+    }
+    
+    private func respawn() {
+        // Reset stats
+        avatarHealth = getMaxHealth() * 0.5
+        avatarEnergy = getMaxEnergy() * 0.5
+        avatarState = .idle
+        
+        // Move to spawn point
+        currentAvatar?.position = SIMD3<Float>(0, 0, 0)
+        
+        // Play respawn effect
+        animationSystem.playOneShot(.respawn)
+    }
+    
+    // MARK: - Persistence
+    private func saveAvatarPreferences() {
+        guard let avatar = currentAvatar else { return }
+        
+        let preferences = AvatarPreferences(
+            appearance: appearanceManager.getCurrentAppearance(),
+            level: avatarLevel,
+            experience: avatarExperience
+        )
+        
+        // Save to user defaults or cloud
+        if let data = try? JSONEncoder().encode(preferences) {
+            UserDefaults.standard.set(data, forKey: "avatarPreferences")
+        }
+    }
+    
+    func loadAvatarPreferences() -> AvatarPreferences? {
+        guard let data = UserDefaults.standard.data(forKey: "avatarPreferences"),
+              let preferences = try? JSONDecoder().decode(AvatarPreferences.self, from: data) else {
+            return nil
+        }
+        
+        return preferences
+    }
+}
+
+// MARK: - Supporting Types
+struct AvatarConfiguration {
+    let name: String
+    let appearance: AvatarAppearance
+    let startingLevel: Int
+    let baseHealth: Float
+    let baseEnergy: Float
+    let startingClass: AvatarClass?
+}
+
+struct AvatarAppearance: Codable {
+    var bodyType: BodyType
+    var skinTone: SIMD3<Float>
+    var hairStyle: HairStyle
+    var hairColor: SIMD3<Float>
+    var faceShape: FaceShape
+    var eyeColor: SIMD3<Float>
+    var height: Float
+    var build: Float
+}
+
+enum BodyType: String, Codable, CaseIterable {
+    case masculine
+    case feminine
+    case androgynous
+}
+
+enum HairStyle: String, Codable, CaseIterable {
+    case short
+    case medium
+    case long
+    case ponytail
+    case mohawk
+    case bald
+    case curly
+    case braided
+}
+
+enum FaceShape: String, Codable, CaseIterable {
+    case round
+    case oval
+    case square
+    case heart
+    case diamond
+}
+
+enum AvatarClass: String, Codable {
+    case warrior
+    case mage
+    case ranger
+    case rogue
+    case healer
+    case bard
+}
+
+struct AvatarPreferences: Codable {
+    let appearance: AvatarAppearance
+    let level: Int
+    let experience: Float
+}
+
+// MARK: - Movement Controller
+class MovementController {
+    weak var avatar: AvatarEntity?
+    private var velocity = SIMD3<Float>.zero
+    private var isFlying = false
+    private var isGrounded = true
+    
+    init(avatar: AvatarEntity) {
+        self.avatar = avatar
+    }
+    
+    func move(direction: SIMD3<Float>, speed: Float) {
+        guard let avatar = avatar else { return }
+        
+        let normalizedDirection = normalize(direction)
+        let movement = normalizedDirection * speed * 0.1
+        
+        if isFlying {
+            // Full 3D movement when flying
+            avatar.position += movement
+        } else {
+            // Ground-based movement
+            avatar.position.x += movement.x
+            avatar.position.z += movement.z
+            
+            // Apply gravity if not grounded
+            if !isGrounded {
+                velocity.y -= 0.02 // Gravity
+                avatar.position.y += velocity.y
+            }
+        }
+    }
+    
+    func jump() {
+        guard isGrounded else { return }
+        
+        velocity.y = 0.3
+        isGrounded = false
+    }
+    
+    func setFlying(_ flying: Bool) {
+        isFlying = flying
+        if flying {
+            velocity.y = 0
+        }
+    }
+}
+
+// MARK: - Notifications
+extension Notification.Name {
+    static let avatarLevelUp = Notification.Name("avatarLevelUp")
+    static let avatarDied = Notification.Name("avatarDied")
+    static let startConversation = Notification.Name("startConversation")
+    static let openCrafting = Notification.Name("openCrafting")
 }
