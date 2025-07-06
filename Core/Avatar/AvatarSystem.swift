@@ -109,29 +109,43 @@ class AvatarSystem: ObservableObject {
     }
     
     // MARK: - Avatar Movement
-    func moveAvatar(direction: SIMD3<Float>, speed: Float = 1.0) {
+    enum MovementModifier {
+        case normal
+        case boost
+    }
+
+    func moveAvatar(direction: SIMD3<Float>, speed: Float = 1.0, modifier: MovementModifier = .normal) {
         guard let avatar = currentAvatar,
               let controller = movementController else { return }
-        
-        // Update state based on speed
-        if speed == 0 {
+
+        let finalSpeed = (modifier == .boost) ? speed * 2.0 : speed
+
+        if finalSpeed == 0 {
             avatarState = .idle
-        } else if speed < 0.5 {
+        } else if finalSpeed < 0.5 {
             avatarState = .walking
         } else {
             avatarState = .running
         }
-        
-        // Apply movement
-        controller.move(direction: direction, speed: speed)
+
+        controller.move(direction: direction, speed: finalSpeed)
     }
     
+    func triggerJumpEffect() {
+        // Placeholder for VFX or sound
+        print("Jump effect triggered")
+    }
+
+    func triggerFlightEffect() {
+        // Placeholder for VFX or sound
+        print("Flight effect triggered")
+    }
+
     func jumpAvatar() {
         guard avatarState != .jumping && avatarState != .flying else { return }
-        
         avatarState = .jumping
         movementController?.jump()
-        
+        triggerJumpEffect()
         // Return to previous state after jump
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
             if self?.avatarState == .jumping {
@@ -139,7 +153,7 @@ class AvatarSystem: ObservableObject {
             }
         }
     }
-    
+
     func toggleFlying() {
         if avatarState == .flying {
             avatarState = .idle
@@ -147,7 +161,16 @@ class AvatarSystem: ObservableObject {
         } else {
             avatarState = .flying
             movementController?.setFlying(true)
+            triggerFlightEffect()
         }
+    }
+    
+    func ascendWhileFlying() {
+        movementController?.ascend()
+    }
+    
+    func descendWhileFlying() {
+        movementController?.descend()
     }
     
     // MARK: - Avatar Interaction
@@ -494,6 +517,16 @@ class MovementController {
         if flying {
             velocity.y = 0
         }
+    }
+    
+    func ascend() {
+        guard isFlying, let avatar = avatar else { return }
+        avatar.position.y += 0.1
+    }
+    
+    func descend() {
+        guard isFlying, let avatar = avatar else { return }
+        avatar.position.y -= 0.1
     }
 }
 

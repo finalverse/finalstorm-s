@@ -59,42 +59,100 @@ struct ContentView_iOS: View {
 // MARK: - World View for iOS
 struct WorldView_iOS: View {
     @EnvironmentObject var worldManager: WorldManager
+    @EnvironmentObject var avatarSystem: AvatarSystem
+    @State private var cameraYaw: Float = 0
+    @State private var cameraPitch: Float = 0
+    @State private var cameraDistance: Float = 6
     @State private var cameraPosition = SIMD3<Float>(0, 5, 10)
+    @State private var targetCameraPosition = SIMD3<Float>(0, 5, 10)
     @State private var showMiniMap = true
+    @State private var reticleEntity: Entity?
     
     var body: some View {
         ZStack {
             // Main 3D View
             RealityView { content in
                 // Setup scene
-                if let scene = try? await Entity.load(named: "WorldScene") {
-                    content.add(scene)
+                let worldEntity = worldManager.createWorldEntity()
+                content.add(worldEntity)
+                
+                if let avatar = try? await avatarSystem.createLocalAvatar() {
+                    content.add(avatar)
                 }
                 
-                // Add lighting
-                let light = DirectionalLight()
-                light.light.intensity = 1000
-                light.light.isRealWorldProxy = true
-                light.shadow?.maximumDistance = 50
-                light.look(at: SIMD3<Float>(0, 0, 0), from: SIMD3<Float>(5, 10, 5), relativeTo: nil)
-                content.add(light)
+                let camera = PerspectiveCamera()
+                camera.position = SIMD3<Float>(0, 5, 10)
+                camera.look(at: SIMD3<Float>(0, 0, 0), from: camera.position, relativeTo: nil)
+                content.add(camera)
+                
+                let reticle = Entity()
+                let reticleMaterial = SimpleMaterial(color: .blue, isMetallic: false)
+                reticle.components.set(ModelComponent(mesh: .generateSphere(radius: 0.05), materials: [reticleMaterial]))
+                content.add(reticle)
+                reticleEntity = reticle
                 
             } update: { content in
-                // Update world content
-                if let worldEntity = content.entities.first {
+                guard let camera = content.entities.compactMap({ $0 as? PerspectiveCamera }).first else { return }
+                
+                // Smoothly interpolate camera position
+                targetCameraPosition = orbitCamera(yaw: cameraYaw, pitch: cameraPitch, distance: cameraDistance)
+                cameraPosition = lerp(cameraPosition, targetCameraPosition, 0.1)
+                camera.position = cameraPosition
+                camera.look(at: SIMD3<Float>(0, 0, 0), from: camera.position, relativeTo: nil)
+                
+                // Update avatar
+                avatarSystem.updateAvatar(in: content)
+                
+                if let avatar = avatarSystem.currentAvatar,
+                   let reticle = reticleEntity {
+                    let forward = SIMD3<Float>(0, 0, -1)
+                    let transform = avatar.transform.matrix
+                    let worldForward = (transform * SIMD4<Float>(forward.x, forward.y, forward.z, 0)).xyz
+                    let targetPosition = avatar.position + normalize(worldForward) * 2.0
+                    reticle.position = targetPosition
+
+                    // Animate pulsing scale
+                    let scale = 1.0 + 0.1 * sin(Float(Date().timeIntervalSinceReferenceDate * 2))
+                    reticle.scale = SIMD3<Float>(repeating: scale)
+
+                    // Color shift when close
+                    let dist = distance(avatar.position, targetPosition)
+                    let newColor: UIColor = dist < 1.5 ? .green : .blue
+                    if var model = reticle.model {
+                        model.materials = [SimpleMaterial(color: newColor, isMetallic: false)]
+                        reticle.model = model
+                    }
+                }
+                
+                // Update world entity
+                if let worldEntity = content.entities.first(where: { $0 != camera && $0.name != "Avatar" }) {
                     worldManager.updateWorldEntity(worldEntity)
                 }
             }
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        handleCameraDrag(value)
+                        let delta = value.translation
+                        cameraYaw += Float(delta.width) * 0.005
+                        cameraPitch -= Float(delta.height) * 0.005
+                        cameraPitch = max(-.pi / 2 + 0.1, min(.pi / 2 - 0.1, cameraPitch))
                     }
             )
             .gesture(
                 MagnificationGesture()
                     .onChanged { value in
-                        handleCameraZoom(value)
+                        let scale = Float(value)
+                        cameraDistance /= scale
+                        cameraDistance = max(2, min(50, cameraDistance))
+                    }
+            )
+            .gesture(
+                TapGesture()
+                    .onEnded {
+                        if let avatar = avatarSystem.currentAvatar,
+                           let reticle = reticleEntity {
+                            avatar.position = reticle.position
+                        }
                     }
             )
             
@@ -128,15 +186,15 @@ struct WorldView_iOS: View {
         .navigationBarHidden(true)
     }
     
-    private func handleCameraDrag(_ value: DragGesture.Value) {
-        let delta = value.translation
-        cameraPosition.x -= Float(delta.width) * 0.01
-        cameraPosition.z += Float(delta.height) * 0.01
+    private func lerp(_ a: SIMD3<Float>, _ b: SIMD3<Float>, _ t: Float) -> SIMD3<Float> {
+        return a + (b - a) * t
     }
     
-    private func handleCameraZoom(_ value: CGFloat) {
-        let scale = Float(value)
-        cameraPosition.y = max(2, min(50, cameraPosition.y / scale))
+    private func orbitCamera(yaw: Float, pitch: Float, distance: Float) -> SIMD3<Float> {
+        let x = distance * cos(pitch) * sin(yaw)
+        let y = distance * sin(pitch)
+        let z = distance * cos(pitch) * cos(yaw)
+        return SIMD3<Float>(x, y, z)
     }
 }
 

@@ -87,6 +87,15 @@ struct WorldView_macOS: View {
     @State private var cameraController = CameraController()
     @State private var showOverlay = true
     @State private var selectedEntity: Entity?
+    @State private var cameraEntity: PerspectiveCamera? = nil
+    @GestureState private var dragOffset = CGSize.zero
+    @State private var cameraYaw: Float = 0
+    @State private var cameraPitch: Float = 0
+    @State private var cameraDistance: Float = 5.0
+    @State private var reticleEntity: Entity?
+
+    private let minCameraDistance: Float = 2.0
+    private let maxCameraDistance: Float = 12.0
     
     var body: some View {
         ZStack {
@@ -99,21 +108,80 @@ struct WorldView_macOS: View {
                 if let worldEntity = await worldManager.createWorldEntity() {
                     scene.addChild(worldEntity)
                 }
+
+                // Add avatar to scene
+                if let avatarEntity = await avatarSystem.createLocalAvatar() {
+                    scene.addChild(avatarEntity)
+                }
                 
                 // Setup lighting
                 setupLighting(in: scene)
                 
                 // Add camera
                 let cameraEntity = PerspectiveCamera()
-                cameraEntity.position = SIMD3<Float>(0, 10, 20)
-                cameraEntity.look(at: SIMD3<Float>(0, 0, 0), from: cameraEntity.position, relativeTo: nil)
                 scene.addChild(cameraEntity)
+                // Assign to state property
+                self.cameraEntity = cameraEntity
+
+                // Add teleportation reticle
+                let reticle = Entity()
+                let reticleMaterial = SimpleMaterial(color: .blue, isMetallic: false)
+                reticle.components.set(ModelComponent(mesh: .generateSphere(radius: 0.05), materials: [reticleMaterial]))
+                scene.addChild(reticle)
+                self.reticleEntity = reticle
+
+                // Set initial avatar position and camera follow
+                avatarSystem.setAvatarPosition(SIMD3<Float>(0, 0, 0))
+                cameraEntity.position = SIMD3<Float>(0, 2, 5)
+                cameraEntity.look(at: SIMD3<Float>(0, 1, 0), from: cameraEntity.position, relativeTo: nil)
                 
                 content.add(scene)
                 
             } update: { content in
                 // Update world state
                 worldManager.updateContent(content)
+                avatarSystem.updateAvatar(in: content)
+                if let avatar = avatarSystem.currentAvatar, let camera = cameraEntity {
+                    let avatarPosition = avatar.position
+                    
+                    // Orbit camera around avatar using yaw and pitch
+                    let radius = cameraDistance
+                    
+                    // Create offset vectors based on spherical coordinates
+                    let offsetX = radius * cos(cameraPitch) * sin(cameraYaw)
+                    let offsetY = radius * sin(cameraPitch)
+                    let offsetZ = radius * cos(cameraPitch) * cos(cameraYaw)
+                    
+                    // Calculate target position by adding offset to avatar position, with vertical offset
+                    let targetPosition = SIMD3<Float>(offsetX, offsetY + 2.0, offsetZ) + avatarPosition
+
+                    // Smooth camera movement using linear interpolation (lerp)
+                    let lerpFactor: Float = 0.1
+                    camera.position = mix(camera.position, targetPosition, t: lerpFactor)
+                    
+                    // Look at avatar position from camera's current position
+                    camera.look(at: avatarPosition, from: camera.position, relativeTo: nil)
+                }
+                if let avatar = avatarSystem.currentAvatar,
+                   let reticle = reticleEntity {
+                    let forward = SIMD3<Float>(0, 0, -1)
+                    let transform = avatar.transform.matrix
+                    let worldForward = (transform * SIMD4<Float>(forward.x, forward.y, forward.z, 0)).xyz
+                    let targetPosition = avatar.position + normalize(worldForward) * 2.0
+                    reticle.position = targetPosition
+
+                    // Animate pulsing scale
+                    let scale = 1.0 + 0.1 * sin(Float(Date().timeIntervalSinceReferenceDate * 2))
+                    reticle.scale = SIMD3<Float>(repeating: scale)
+
+                    // Color shift when close
+                    let dist = distance(avatar.position, targetPosition)
+                    let newColor: NSColor = dist < 1.5 ? .green : .blue
+                    if var model = reticle.model {
+                        model.materials = [SimpleMaterial(color: newColor, isMetallic: false)]
+                        reticle.model = model
+                    }
+                }
             }
             .onContinuousHover { phase in
                 handleMouseHover(phase)
@@ -122,6 +190,32 @@ struct WorldView_macOS: View {
             .onKeyPress { press in
                 handleKeyPress(press)
             }
+            .onScroll { event in
+                // Adjust zoom level with scroll delta
+                let zoomSpeed: Float = 0.2
+                cameraDistance -= Float(event.deltaY) * zoomSpeed
+                cameraDistance = min(max(cameraDistance, minCameraDistance), maxCameraDistance)
+            }
+            .gesture(DragGesture(minimumDistance: 0).updating($dragOffset) { value, state, _ in
+                state = value.translation
+            }.onEnded { value in
+                let sensitivity: Float = 0.005
+                // Adjust yaw based on horizontal drag
+                cameraYaw += Float(value.translation.width) * sensitivity
+                // Adjust pitch based on vertical drag
+                cameraPitch += Float(value.translation.height) * sensitivity
+                // Clamp pitch to avoid flipping camera upside down
+                cameraPitch = max(-.pi / 4, min(.pi / 4, cameraPitch))
+            })
+            .gesture(
+                TapGesture()
+                    .onEnded {
+                        if let avatar = avatarSystem.currentAvatar,
+                           let reticle = reticleEntity {
+                            avatar.position = reticle.position
+                        }
+                    }
+            )
             
             // Overlay UI
             if showOverlay {
@@ -173,6 +267,38 @@ struct WorldView_macOS: View {
     
     private func handleKeyPress(_ press: KeyPress) -> KeyPress.Result {
         switch press.key {
+        case .w:
+            let isBoosting = press.modifiers.contains(.shift)
+            let modifier: AvatarSystem.MovementModifier = isBoosting ? .boost : .normal
+            avatarSystem.moveAvatar(direction: .forward, modifier: modifier)
+            return .handled
+        case .s:
+            let isBoosting = press.modifiers.contains(.shift)
+            let modifier: AvatarSystem.MovementModifier = isBoosting ? .boost : .normal
+            avatarSystem.moveAvatar(direction: .backward, modifier: modifier)
+            return .handled
+        case .a:
+            let isBoosting = press.modifiers.contains(.shift)
+            let modifier: AvatarSystem.MovementModifier = isBoosting ? .boost : .normal
+            avatarSystem.moveAvatar(direction: .left, modifier: modifier)
+            return .handled
+        case .d:
+            let isBoosting = press.modifiers.contains(.shift)
+            let modifier: AvatarSystem.MovementModifier = isBoosting ? .boost : .normal
+            avatarSystem.moveAvatar(direction: .right, modifier: modifier)
+            return .handled
+        case .space:
+            avatarSystem.jumpAvatar()
+            return .handled
+        case .f:
+            avatarSystem.toggleFlying()
+            return .handled
+        case .q:
+            avatarSystem.ascendWhileFlying()
+            return .handled
+        case .e:
+            avatarSystem.descendWhileFlying()
+            return .handled
         case .upArrow:
             cameraController.moveForward()
             return .handled

@@ -402,7 +402,7 @@ class CorruptedEntity: Entity {
 
 // MARK: - Avatar System Stubs
 
-struct AvatarSystem {
+struct AvatarSystemStub {
     var localAvatar: Avatar?
     
     func performSongweaving(_ type: SongweavingType, target: Entity) {
