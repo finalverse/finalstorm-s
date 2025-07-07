@@ -14,6 +14,15 @@ class AnimationSystem {
         // Load default animations
         loadDefaultAnimations()
     }
+
+    func loadAnimations() async {
+        // Public interface to trigger animation loading from outside
+        loadDefaultAnimations()
+    }
+
+    func setupAnimations(for avatar: AvatarEntity) {
+        setupAvatar(avatar)
+    }
     
     private func loadDefaultAnimations() {
         // Load animation resources
@@ -34,6 +43,26 @@ class AnimationSystem {
         guard let animation = animations[type.rawValue] else { return }
         
         avatar.playAnimation(animation.repeat())
+    }
+
+    /// Transitions the avatar to the provided animation state.
+    func transitionToState(_ type: AnimationType, for avatar: AvatarEntity) {
+        switch type {
+        case .idle:
+            playAnimation(.idle, on: avatar)
+        case .walk:
+            playAnimation(.walk, on: avatar)
+        case .run:
+            playAnimation(.run, on: avatar)
+        case .jump:
+            playAnimation(.jump, on: avatar) // Placeholder, not yet implemented
+        case .emote(let emote):
+            print("Playing emote animation: \(emote)")
+        case .combat(let action):
+            print("Playing combat animation: \(action)")
+        case .interact(let interaction):
+            print("Playing interaction animation: \(interaction)")
+        }
     }
     
     private func createIdleAnimation() async throws -> AnimationResource {
@@ -73,11 +102,29 @@ class AnimationSystem {
     }
 }
 
-enum AnimationType: String {
+enum AnimationType: Equatable {
     case idle
-    case walking
-    case running
-    case jumping
-    case casting
-    case interacting
+    case walk
+    case run
+    case jump
+    case emote(EmoteType)
+    case combat(CombatAction)
+    case interact(InteractionType)
+
+    var rawValue: String {
+        switch self {
+        case .idle: return "idle"
+        case .walk: return "walking"
+        case .run: return "running"
+        case .jump: return "jumping"
+        case .emote: return "emote"
+        case .combat: return "combat"
+        case .interact: return "interact"
+        }
+    }
 }
+
+    func playOneShot(_ type: AnimationType, on avatar: AvatarEntity) {
+        guard let animation = animations[type.rawValue] else { return }
+        avatar.playAnimation(animation)
+    }

@@ -246,6 +246,12 @@
 		B437BE502E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */; };
 		B437BE512E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */; };
 		B437BE522E1A59160045436F /* QuantumOptimizationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */; };
+		B437BE542E1C0D460045436F /* AvatarPhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE532E1C0D460045436F /* AvatarPhysicsController.swift */; };
+		B437BE552E1C0D460045436F /* AvatarPhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE532E1C0D460045436F /* AvatarPhysicsController.swift */; };
+		B437BE562E1C0D460045436F /* AvatarPhysicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE532E1C0D460045436F /* AvatarPhysicsController.swift */; };
+		B437BE582E1C0D660045436F /* AvatarInventoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE572E1C0D660045436F /* AvatarInventoryManager.swift */; };
+		B437BE592E1C0D660045436F /* AvatarInventoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE572E1C0D660045436F /* AvatarInventoryManager.swift */; };
+		B437BE5A2E1C0D660045436F /* AvatarInventoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE572E1C0D660045436F /* AvatarInventoryManager.swift */; };
 		B4CE86FD2E16159B00ED541D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = B4CE86FC2E16159B00ED541D /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
@@ -307,6 +313,8 @@
 		B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumEntitySystem.swift; sourceTree = "<group>"; };
 		B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialInterfaceSystem.swift; sourceTree = "<group>"; };
 		B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumOptimizationEngine.swift; sourceTree = "<group>"; };
+		B437BE532E1C0D460045436F /* AvatarPhysicsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPhysicsController.swift; sourceTree = "<group>"; };
+		B437BE572E1C0D660045436F /* AvatarInventoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarInventoryManager.swift; sourceTree = "<group>"; };
 		B4CE864A2E15225700ED541D /* AvatarSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarSystem.swift; sourceTree = "<group>"; };
 		B4CE864D2E15228A00ED541D /* WorldManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldManager.swift; sourceTree = "<group>"; };
 		B4CE86502E15417800ED541D /* SongEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongEngine.swift; sourceTree = "<group>"; };
@@ -650,6 +658,8 @@
 				B4CE864A2E15225700ED541D /* AvatarSystem.swift */,
 				B4CE86B52E160F7500ED541D /* AnimationSystem.swift */,
 				B437BE292E1A51300045436F /* AdvAvatarSystem.swift */,
+				B437BE532E1C0D460045436F /* AvatarPhysicsController.swift */,
+				B437BE572E1C0D660045436F /* AvatarInventoryManager.swift */,
 			);
 			path = Avatar;
 			sourceTree = "<group>";
@@ -863,6 +873,7 @@
 				B42278132E16538400559A0B /* EchoEntity.swift in Sources */,
 				B42278142E16538400559A0B /* MiniMapView.swift in Sources */,
 				B437BDCB2E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BE542E1C0D460045436F /* AvatarPhysicsController.swift in Sources */,
 				B437BE182E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */,
 				B437BDEC2E1982640045436F /* AssetLoader.swift in Sources */,
 				B437BE3E2E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */,
@@ -919,6 +930,7 @@
 				B437BE482E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
 				B422782F2E16538400559A0B /* Grid.swift in Sources */,
 				B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */,
+				B437BE592E1C0D660045436F /* AvatarInventoryManager.swift in Sources */,
 				B42278312E16538400559A0B /* AvatarSystem.swift in Sources */,
 				B437BE232E1A24E60045436F /* FVServicesManager.swift in Sources */,
 				B437BDE62E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
@@ -948,6 +960,7 @@
 				B42277EF2E16536C00559A0B /* EchoEntity.swift in Sources */,
 				B42277F02E16536C00559A0B /* MiniMapView.swift in Sources */,
 				B437BDC92E1975490045436F /* WaterDetector.swift in Sources */,
+				B437BE562E1C0D460045436F /* AvatarPhysicsController.swift in Sources */,
 				B437BE162E1A21AC0045436F /* AdvRenderPipeline.swift in Sources */,
 				B437BDEB2E1982640045436F /* AssetLoader.swift in Sources */,
 				B437BE402E1A583D0045436F /* ImmersiveAudioSystem.swift in Sources */,
@@ -1004,6 +1017,7 @@
 				B437BE492E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
 				B422780B2E16536C00559A0B /* Grid.swift in Sources */,
 				B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */,
+				B437BE582E1C0D660045436F /* AvatarInventoryManager.swift in Sources */,
 				B422780D2E16536C00559A0B /* AvatarSystem.swift in Sources */,
 				B437BE222E1A24E60045436F /* FVServicesManager.swift in Sources */,
 				B437BDE82E1982230045436F /* ProceduralMeshGenerator.swift in Sources */,
@@ -1033,6 +1047,7 @@
 				B437BE072E1984C20045436F /* BufferPool.swift in Sources */,
 				B437BDFF2E19841D0045436F /* HarmonyRenderer.swift in Sources */,
 				B437BE1B2E1A23120045436F /* ProceduralGeneration.swift in Sources */,
+				B437BE5A2E1C0D660045436F /* AvatarInventoryManager.swift in Sources */,
 				B42278352E16539300559A0B /* AvatarEntity.swift in Sources */,
 				B437BDA62E186B670045436F /* AudioTypes.swift in Sources */,
 				B42278362E16539300559A0B /* ObjectEntity.swift in Sources */,
@@ -1078,6 +1093,7 @@
 				B437BD9D2E182DF90045436F /* SongweavingAudio.swift in Sources */,
 				B437BD9A2E182DD80045436F /* SpatialAudioEngine.swift in Sources */,
 				B42278502E16539300559A0B /* WorldManager.swift in Sources */,
+				B437BE552E1C0D460045436F /* AvatarPhysicsController.swift in Sources */,
 				B42278512E16539300559A0B /* SceneManager.swift in Sources */,
 				B437BDF82E19830C0045436F /* RenderPipeline.swift in Sources */,
 				B42278522E16539300559A0B /* RegionManager.swift in Sources */,

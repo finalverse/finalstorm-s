@@ -1,3 +1,10 @@
+// MARK: - CodableColor Static Constants
+extension CodableColor {
+    static let blue = CodableColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
+    static let brown = CodableColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0)
+    static let gray = CodableColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+}
+
 //
 //  Core/Avatar/AvatarTypes.swift
 //  FinalStorm
@@ -136,4 +143,34 @@ struct Accessory: Codable, Equatable, Identifiable {
     enum AttachPoint: String, CaseIterable, Codable {
         case head, neck, leftHand, rightHand, back
     }
+}
+
+// MARK: - Animation Support Types
+
+enum EmoteType: String, CaseIterable, Codable {
+    case wave
+    case cheer
+    case sit
+    case dance
+    case laugh
+}
+
+enum CombatAction: String, CaseIterable, Codable {
+    case attack
+    case block
+    case dodge
+    case cast
+    case parry
+}
+
+enum InteractionType: String, CaseIterable, Codable {
+    case pickup
+    case activate
+    case talk
+    case trade
+}
+
+// MARK: - EquipSlot Enum
+enum EquipSlot: String, Codable, CaseIterable {
+    case head, chest, legs, feet, hands, back
 }

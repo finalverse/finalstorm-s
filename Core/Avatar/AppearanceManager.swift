@@ -69,4 +69,25 @@ class AppearanceManager {
         
         return material
     }
+    func loadAppearanceData(for avatarID: String) async -> AvatarAppearance {
+        // Placeholder: return a default appearance for now
+        return AvatarAppearance.default
+    }
+
+    func applyAppearance(_ appearance: AvatarAppearance, to entity: Entity) {
+        Task {
+            do {
+                let materials = try await generateMaterials(for: appearance)
+                if let modelEntity = entity as? ModelEntity {
+                    for (index, material) in materials.enumerated() {
+                        if index < modelEntity.model?.materials.count ?? 0 {
+                            modelEntity.model?.materials[index] = material
+                        }
+                    }
+                }
+            } catch {
+                print("Failed to apply appearance: \(error)")
+            }
+        }
+    }
 }

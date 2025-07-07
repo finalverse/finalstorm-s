@@ -1,5 +1,5 @@
 //
-// File Path: /FinalStorm/Core/Avatar/AdvancedAvatarSystem.swift
+// File Path: Core/Avatar/AdvancedAvatarSystem.swift
 // Description: Next-generation avatar system with advanced customization
 // Implements procedural animation, clothing physics, and expression system
 //
@@ -409,17 +409,6 @@ struct SkinDetails: Codable {
 
  enum EyeColor: String, Codable {
     case brown, blue, green, gray, hazel, amber, red, violet, heterochromia
- }
-
- // MARK: - Animation Types
- enum AnimationType: Equatable {
-    case idle
-    case walk
-    case run
-    case jump
-    case emote(EmoteType)
-    case combat(CombatAction)
-    case interact(InteractionType)
  }
 
  enum EmoteType: String, Codable {

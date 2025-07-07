@@ -8,6 +8,10 @@ import Foundation
 import RealityKit
 import Combine
 
+// Placeholder for InteractableEntity if not implemented elsewhere
+// Remove or replace with actual implementation as needed.
+// class InteractableEntity: Entity {} // (Stub, see full definition at bottom)
+
 @MainActor
 class AvatarSystem: ObservableObject {
     // MARK: - Published Properties
@@ -536,4 +540,21 @@ extension Notification.Name {
     static let avatarDied = Notification.Name("avatarDied")
     static let startConversation = Notification.Name("startConversation")
     static let openCrafting = Notification.Name("openCrafting")
+}
+
+
+// MARK: - Placeholder Types
+class InteractableEntity: Entity {
+    enum InteractionType {
+        case pickup
+        case activate
+        case talk
+        case craft
+    }
+
+    var interactionType: InteractionType = .pickup
+
+    func activate() {
+        // Placeholder interaction logic
+    }
 }
