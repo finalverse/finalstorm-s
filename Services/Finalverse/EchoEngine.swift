@@ -112,7 +112,7 @@ class EchoEngine: ObservableObject {
             primaryColor: primaryColor
         )
         
-        echo.behaviorComponent = AIBehaviorComponent(
+        echo.behaviorComponent = EchoBehaviorComponent(
             behaviorTree: createBehaviorTree(for: type)
         )
         
@@ -732,7 +732,7 @@ class EchoEntityService {
     
     // Components (stored as properties instead of Entity components for service layer)
     var echoComponent: EchoComponent?
-    var behaviorComponent: AIBehaviorComponent?
+    var behaviorComponent: EchoBehaviorComponent?
     var dialogueComponent: DialogueComponent?
     
     // Transform properties
@@ -906,7 +906,7 @@ class EchoEntityService {
 }
 
 // MARK: - Behavior Tree Components
-struct AIBehaviorComponent {
+struct EchoBehaviorComponent {
     let behaviorTree: BehaviorTree
 }
 
