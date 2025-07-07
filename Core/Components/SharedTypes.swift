@@ -150,12 +150,12 @@ enum EchoType: String, CaseIterable, Codable {
         }
     }
     
-    var personality: PersonalityType {
+    var personality: EchoPersonalityType {
         switch self {
-        case .lumi: return .playful
-        case .kai: return .wise
-        case .terra: return .protective
-        case .ignis: return .friendly
+        case .lumi: return .hopeful
+        case .kai: return .logical
+        case .terra: return .nurturing
+        case .ignis: return .passionate
         }
     }
     
@@ -165,6 +165,40 @@ enum EchoType: String, CaseIterable, Codable {
         case .kai: return VoiceProfile(pitch: 0.9, speed: 0.95, timbre: .digital)
         case .terra: return VoiceProfile(pitch: 0.7, speed: 0.85, timbre: .warm)
         case .ignis: return VoiceProfile(pitch: 1.0, speed: 1.15, timbre: .bold)
+        }
+    }
+}
+
+// MARK: - Echo Personality Types
+
+enum EchoPersonalityType {
+    case hopeful
+    case logical
+    case nurturing
+    case passionate
+    case playful
+    case wise
+    case protective
+    case friendly
+
+    func respondToInteraction() -> EchoState.Mood {
+        switch self {
+        case .hopeful:
+            return .happy
+        case .logical:
+            return .neutral
+        case .nurturing:
+            return .concerned
+        case .passionate:
+            return .excited
+        case .playful:
+            return .excited
+        case .wise:
+            return .neutral
+        case .protective:
+            return .determined
+        case .friendly:
+            return .happy
         }
     }
 }
@@ -513,6 +547,35 @@ struct Melody: Identifiable, Codable {
         )
     }()
     
+    /// Melody of Protection - creates barriers and shields
+    static let protection: Melody = {
+        return Melody(
+            id: UUID(),
+            type: MelodyType.protection,
+            strength: 1.2,
+            duration: 4.0,
+            harmonyColor: CodableColor.yellow,
+            requiredResonance: 15,
+            harmonyBoost: 0.12,
+            dissonanceReduction: 0.15
+        )
+    }()
+
+    /// Melody of Transformation - changes the nature of things
+    /// Alters objects, creatures, or environments in meaningful ways
+    static let transformation: Melody = {
+        return Melody(
+            id: UUID(),
+            type: MelodyType.transformation,
+            strength: 1.3,
+            duration: 3.2,
+            harmonyColor: CodableColor.orange,
+            requiredResonance: 30,
+            harmonyBoost: 0.25,
+            dissonanceReduction: 0.20
+        )
+    }()
+    
     // MARK: - Melody Aliases
     // Convenient aliases for specific use cases to improve code readability
     
@@ -619,60 +682,6 @@ struct Melody: Identifiable, Codable {
     }
     
     func availableMelodies(forResonance resonance: ResonanceLevel) -> [Melody] {
-        return self.filter { $0.canBeCast(withResonance: resonance) }
+        return self.filter { $0.canBeCast(withResonance: resonance.totalResonance) }
     }
- }
-
- // MARK: - Predefined Melodies
-
- extension Melody {
-    static let restoration = Melody(
-        type: .restoration,
-        strength: 1.0,
-        duration: 3.0,
-        harmonyColor: .green,
-        requiredResonance: 10,
-        harmonyBoost: 0.15,
-        dissonanceReduction: 0.20
-    )
-    
-    static let exploration = Melody(
-        type: .exploration,
-        strength: 0.9,
-        duration: 3.0,
-        harmonyColor: .blue,
-        requiredResonance: 5,
-        harmonyBoost: 0.10,
-        dissonanceReduction: 0.08
-    )
-    
-    static let creation = Melody(
-        type: .creation,
-        strength: 1.5,
-        duration: 5.0,
-        harmonyColor: .purple,
-        requiredResonance: 25,
-        harmonyBoost: 0.20,
-        dissonanceReduction: 0.05
-    )
-    
-    static let protection = Melody(
-        type: .protection,
-        strength: 1.2,
-        duration: 4.0,
-        harmonyColor: .yellow,
-        requiredResonance: 15,
-        harmonyBoost: 0.12,
-        dissonanceReduction: 0.15
-    )
-    
-    static let transformation = Melody(
-        type: .transformation,
-        strength: 1.3,
-        duration: 3.2,
-        harmonyColor: .orange,
-        requiredResonance: 30,
-        harmonyBoost: 0.25,
-        dissonanceReduction: 0.20
-    )
  }

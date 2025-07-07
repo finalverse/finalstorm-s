@@ -505,7 +505,6 @@
 		B437BE3B2E1A57DC0045436F /* Blockchain */ = {
 			isa = PBXGroup;
 			children = (
-				B4CE86B42E160F4300ED541D /* Components */,
 				B437BE3C2E1A57FD0045436F /* VirtualAssetBlockchain.swift */,
 			);
 			path = Blockchain;
@@ -556,6 +555,7 @@
 				B437BE362E1A57B20045436F /* AI */,
 				B4CE86492E15220F00ED541D /* Avatar */,
 				B437BE3B2E1A57DC0045436F /* Blockchain */,
+				B4CE86B42E160F4300ED541D /* Components */,
 				B437BDD82E197CA10045436F /* Rendering */,
 				B437BD6B2E1704F40045436F /* Graphics */,
 				B4CE864C2E15227400ED541D /* World */,

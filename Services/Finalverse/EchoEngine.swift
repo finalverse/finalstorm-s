@@ -97,7 +97,7 @@ class EchoEngine: ObservableObject {
         type: EchoType,
         name: String,
         appearance: EchoAppearance,
-        personality: PersonalityType,
+        personality: EchoPersonalityType,
         primaryColor: CodableColor
     ) async -> EchoEntityService {
         let echo = EchoEntityService(type: type, name: name)
@@ -702,7 +702,7 @@ struct EchoState {
     var companionTarget: UUID?
     
     enum Mood {
-        case happy, neutral, concerned, excited
+        case happy, neutral, concerned, excited, determined
     }
     
     enum EchoActivity {
@@ -718,30 +718,10 @@ struct EchoState {
 
 struct EchoComponent {
     let type: EchoType
-    let personality: PersonalityType
+    let personality: EchoPersonalityType
     let primaryColor: CodableColor
     var knownMelodies: [Melody] = []
     var teachingCooldown: TimeInterval = 0
-}
-
-enum PersonalityType {
-    case hopeful
-    case logical
-    case nurturing
-    case passionate
-    
-    func respondToInteraction() -> EchoState.Mood {
-        switch self {
-        case .hopeful:
-            return .happy
-        case .logical:
-            return .neutral
-        case .nurturing:
-            return .concerned
-        case .passionate:
-            return .excited
-        }
-    }
 }
 
 // MARK: - Echo Entity Service Class
