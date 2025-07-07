@@ -237,9 +237,9 @@
 		B437BE422E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */; };
 		B437BE432E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */; };
 		B437BE442E1A58540045436F /* QuantumNetworkingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */; };
-		B437BE482E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */; };
-		B437BE492E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */; };
-		B437BE4A2E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */; };
+		B437BE482E1A58CA0045436F /* QuantumEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntity.swift */; };
+		B437BE492E1A58CA0045436F /* QuantumEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntity.swift */; };
+		B437BE4A2E1A58CA0045436F /* QuantumEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE472E1A58CA0045436F /* QuantumEntity.swift */; };
 		B437BE4C2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */; };
 		B437BE4D2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */; };
 		B437BE4E2E1A58DF0045436F /* SpatialInterfaceSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */; };
@@ -310,7 +310,7 @@
 		B437BE3D2E1A583D0045436F /* ImmersiveAudioSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveAudioSystem.swift; sourceTree = "<group>"; };
 		B437BE412E1A58540045436F /* QuantumNetworkingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumNetworkingSystem.swift; sourceTree = "<group>"; };
 		B437BE462E1A58A60045436F /* QuantumSceneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumSceneManager.swift; sourceTree = "<group>"; };
-		B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumEntitySystem.swift; sourceTree = "<group>"; };
+		B437BE472E1A58CA0045436F /* QuantumEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumEntity.swift; sourceTree = "<group>"; };
 		B437BE4B2E1A58DF0045436F /* SpatialInterfaceSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialInterfaceSystem.swift; sourceTree = "<group>"; };
 		B437BE4F2E1A59160045436F /* QuantumOptimizationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantumOptimizationEngine.swift; sourceTree = "<group>"; };
 		B437BE532E1C0D460045436F /* AvatarPhysicsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarPhysicsController.swift; sourceTree = "<group>"; };
@@ -603,7 +603,7 @@
 		B4CE86422E151EB500ED541D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				B437BE472E1A58CA0045436F /* QuantumEntitySystem.swift */,
+				B437BE472E1A58CA0045436F /* QuantumEntity.swift */,
 				B4CE868D2E1589E800ED541D /* BaseEntity.swift */,
 				B4CE868F2E158A1A00ED541D /* AvatarEntity.swift */,
 				B4CE86912E158A4E00ED541D /* ObjectEntity.swift */,
@@ -927,7 +927,7 @@
 				B437BDBD2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDB72E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B437BDF22E19829D0045436F /* RenderingTypes.swift in Sources */,
-				B437BE482E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
+				B437BE482E1A58CA0045436F /* QuantumEntity.swift in Sources */,
 				B422782F2E16538400559A0B /* Grid.swift in Sources */,
 				B437BD7E2E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B437BE592E1C0D660045436F /* AvatarInventoryManager.swift in Sources */,
@@ -1014,7 +1014,7 @@
 				B437BDBF2E18E9FD0045436F /* SharedTypes.swift in Sources */,
 				B437BDB52E18E99F0045436F /* AvatarTypes.swift in Sources */,
 				B437BDF32E19829D0045436F /* RenderingTypes.swift in Sources */,
-				B437BE492E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
+				B437BE492E1A58CA0045436F /* QuantumEntity.swift in Sources */,
 				B422780B2E16536C00559A0B /* Grid.swift in Sources */,
 				B437BD802E182A520045436F /* OpenSimProtocol.swift in Sources */,
 				B437BE582E1C0D660045436F /* AvatarInventoryManager.swift in Sources */,
@@ -1037,7 +1037,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B437BDCF2E1975860045436F /* FeatureSpawner.swift in Sources */,
-				B437BE4A2E1A58CA0045436F /* QuantumEntitySystem.swift in Sources */,
+				B437BE4A2E1A58CA0045436F /* QuantumEntity.swift in Sources */,
 				B437BE3A2E1A57C20045436F /* LivingWorldSystem.swift in Sources */,
 				B437BD862E182C590045436F /* AssetService.swift in Sources */,
 				B437BDEE2E1982830045436F /* MeshPerformanceMonitor.swift in Sources */,

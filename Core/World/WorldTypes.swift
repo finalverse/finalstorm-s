@@ -376,22 +376,6 @@ class ObjectEntity: Entity {
     // Finalverse object entity
 }
 
-struct HarmonyComponent: Component {
-    var harmonyLevel: Float = 1.0
-    var resonanceRadius: Float = 10.0
-}
-
-struct InteractionComponent: Component {
-    let interactionRadius: Float
-    let requiresLineOfSight: Bool
-    let interactionType: InteractionType
-    let onInteract: () -> Void
-    
-    enum InteractionType {
-        case activate, pickup, examine, songweave
-    }
-}
-
 class HarmonyBlossomEntity: Entity {
     // Harmony blossom entity
 }

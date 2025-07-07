@@ -1,12 +1,5 @@
 //
-//  QuantumEntitySystem.swift
-//  finalstorm-s
-//
-//  Created by Wenyan Qin on 2025-07-06.
-//
-
-
-// File Path: src/ECS/QuantumEntitySystem.swift
+// File Path: Entities/QuantumEntity.swift
 // Description: Next-generation ECS with quantum superposition
 // Allows entities to exist in multiple states simultaneously
 
@@ -14,7 +7,7 @@ import Foundation
 import simd
 
 @MainActor
-final class QuantumEntitySystem: ObservableObject {
+final class QuantumEntity: ObservableObject {
     
     // MARK: - Quantum Entity
     struct QuantumEntity {

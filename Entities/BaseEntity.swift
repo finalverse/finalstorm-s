@@ -59,11 +59,3 @@ class BaseEntity: Entity {
         removeFromParent()
     }
 }
-
-// MARK: - Health Component (InteractionComponent is defined in AvatarComponents.swift)
-struct HealthComponent: Component {
-    var current: Float
-    var maximum: Float
-    var regenerationRate: Float = 0
-    var isInvulnerable: Bool = false
-}
