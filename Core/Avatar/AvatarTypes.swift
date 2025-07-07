@@ -1,10 +1,3 @@
-// MARK: - CodableColor Static Constants
-extension CodableColor {
-    static let blue = CodableColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-    static let brown = CodableColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0)
-    static let gray = CodableColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-}
-
 //
 //  Core/Avatar/AvatarTypes.swift
 //  FinalStorm

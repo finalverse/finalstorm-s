@@ -418,33 +418,6 @@ enum SongweavingType {
     case restoration, purification, harmony, creation
 }
 
-// MARK: - Enhanced Color System
-
-struct CodableColor: Codable {
-    let red: Float
-    let green: Float
-    let blue: Float
-    let alpha: Float
-    
-    init(red: Float, green: Float, blue: Float, alpha: Float = 1.0) {
-        self.red = red
-        self.green = green
-        self.blue = blue
-        self.alpha = alpha
-    }
-    
-    static let gray = CodableColor(red: 0.5, green: 0.5, blue: 0.5)
-    static let darkGray = CodableColor(red: 0.3, green: 0.3, blue: 0.3)
-    static let purple = CodableColor(red: 0.6, green: 0.0, blue: 0.8)
-    static let lightGray = CodableColor(red: 0.8, green: 0.8, blue: 0.8)
-    static let ethereal = CodableColor(red: 0.9, green: 0.9, blue: 1.0)
-    static let golden = CodableColor(red: 1.0, green: 0.8, blue: 0.2)
-    static let red = CodableColor(red: 1.0, green: 0.0, blue: 0.0)
-    static let green = CodableColor(red: 0.0, green: 1.0, blue: 0.0)
-    static let yellow = CodableColor(red: 1.0, green: 1.0, blue: 0.0)
-    static let gold = CodableColor(red: 1.0, green: 0.84, blue: 0.0)
-}
-
 // MARK: - Mesh Factory
 
 struct MeshFactory {
